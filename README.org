@@ -1,0 +1,43 @@
+*** Construction d'un dictionnaire français pour Plover
+La base de construction du dictionnaire sténotypique provient de la
+base de données lexicales libre [[http://www.lexique.org/][Lexique]].
+
+Le fichier original contenant cette base de données est ~Lexique380.texte~.
+
+Les champs qui nous intéressent dans cette large base, qui se présente
+sous forme de tableau texte, sont les ~1_ortho~ et ~23_syll~.
+
+J'ai dû m'y reprendre à plusieurs reprises sur une période de quelques
+mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
+
+Le fichier ~dict-base-uniq.txt~ est une version expurgée des doublons
+qui représentent 16962 entrées.
+
+
+*** A propos de la sténotypie
+La sténpotypie tend à représenter le parole dans une langue donnée
+par les sons que celle-ci est en mesure de produire.
+
+Elle tire son héritage de la sténographie.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#  LocalWords:  Plover sténotypique texte
+
+* Footnotes
+
+[fn:1] Le fichier est une correspondance orthograph<-->stenogramme
+selon la disposition de clavier sténotypique français. Se rapporter à
+[[https://github.com/azizyemloul/plover-france][Plover-france]] pour plus d'informations.
