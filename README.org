@@ -1,43 +1,108 @@
 *** Construction d'un dictionnaire français pour Plover
-La base de construction du dictionnaire sténotypique provient de la
-base de données lexicales libre [[http://www.lexique.org/][Lexique]].
+La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
+construction d'un dictionnaire sténotypique au format JSON requis par
+le projet [[http://plover.stenoknight.com/][Plover]].
 
-Le fichier original contenant cette base de données est ~Lexique380.texte~.
+Le fichier original contenant cette base de données est ~Lexique380.txt~.
 
-Les champs qui nous intéressent dans cette large base, qui se présente
-sous forme de tableau texte, sont les ~1_ortho~ et ~23_syll~.
+Les colonnes qui nous intéressent dans cette large base, qui se présente
+sous forme d'un tableau texte géant, sont ~1_ortho~ et ~23_syll~.
 
 J'ai dû m'y reprendre à plusieurs reprises sur une période de quelques
 mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
 
-Le fichier ~dict-base-uniq.txt~ est une version expurgée des doublons
-qui représentent 16962 entrées.
+Le fichier ~dict-base-uniq.txt~ est une version expurgée de doublons.
 
+Le fichier ~france_french_words.txt~ servant à la vérification
+orthographique[fn:2] provient également de la base [[http://www.lexique.org/listes/liste_mots.txt][Lexique]].
 
-*** A propos de la sténotypie
-La sténpotypie tend à représenter le parole dans une langue donnée
+Le fichier ~fr.aff~ fait partie de la distribution [[http://hunspell.sourceforge.net/][Hunspell]], un
+analyseur orthographique et morphologique prenant en charge la langue
+française. Il sert de base à la définition des règles d'affixation
+contenus dans ~orthography.py~.
+
+*** À propos de la sténotypie
+La sténotypie tend représenter le parole dans une langue donnée
 par les sons que celle-ci est en mesure de produire.
 
-Elle tire son héritage de la sténographie.
+Elle tire en cela son héritage de la sténographie en lui apportant une
+importante amélioration : tracés à la main, les caractères
+sténographiques sont propres au sténographe qui les a dessinés et
+peuvent difficilement être interprétés par un autre lecteur.
+
+La sténotype - ainsi est appelée la machine de sténotypie - apporte
+donc le moyen de produire des signes sténographiques "types"
+reconnaissables par n'importe quel lecture instruit des règles de
+base.
+
+Représenter une langue par ses sons permet aux sténotypistes
+professionnels d'atteindre des vitesses de prises dépassant les 230
+mots par minute. Cette caractéristique a, toutefois, son revers. Les
+~homophones~  :
+
+- vos = veau
+- eau = aux
+- ce = se
+- à faire = affaire
+- abreuver = abreuvés = abreuvez
+- ...
+
+Aux homophones s'ajoutent les caractéristiques de la disposition du
+clavier français :
+
+- Ville  = F*Il
+- Vire   = F*Il
+- Vile   = F*Il
+
+- bref   = P*RE$
+- braise = P*RE$
+- ...
+
+Plusieurs mots s'écrivent en utilisant les mêmes accords. Une des
+raisons est que le concepteur de la disposition du clavier, Marc
+Grandjean, a choisi d'assigner à certaines touches plusieurs valeurs
+potentielles afin que la composition de tous les sons soit possible sur
+21 touches. Ainsi :
+
+- l peut désigner les sons "L" ou "R"
+- $ peut désigner les sons "S", "Z", "F" ou "V"
+- D peut désigner les sons "T", "D", "P" ou "B"
+- C peut désigner les sons "K" ou "G"
+
+En dépit de tout cela, le lecteur peut déduire la correspondance
+correcte, souvent par un mécanisme inconscient de mise en contexte.
+
+Cette opération mentale, plus complexe qu'il n'y paraît, n'est pas
+implémentée dans Plover et l'est d'une manière dont l'efficacité est
+toute relative dans les logiciels propriétaires payants de
+sténotypie assistée par ordinateur.
+
+Le champs d'études le plus en lien avec ce type de problématiques est
+le Traitement automatique du langage naturel (TalN).[fn:3]
+
+*** À propos du dictionnaire français Plover
+Très vite se pose la question de comment gérer la situation suivante :
 
 
+*** Les règles de bases de la sténotypie sur Plover
 
 
+| S | P | T | * | N |   | O | A | I | n | D |
+| K | M | F | R | L |   | E | U | l | $ | C |
+|   |   |   |   | L | Y | E |   |   |   |   |
 
+| A | Z | E | R | T |   | Y | U | I | O | P |
+| Q | S | D | F | G |   | H | J | K | L | M |
+|   |   |   |   | V | B | N |   |   |   |   |
 
-
-
-
-
-
-
-
-
-
-#  LocalWords:  Plover sténotypique texte
-
-* Footnotes
-
-[fn:1] Le fichier est une correspondance orthograph<-->stenogramme
+* Renvois
+[fn:1] Le fichier est une correspondance orthographe<-->sténogramme
 selon la disposition de clavier sténotypique français. Se rapporter à
 [[https://github.com/azizyemloul/plover-france][Plover-france]] pour plus d'informations.
+[fn:2] https://groups.google.com/forum/#!topic/ploversteno/pO6WVs9MzK8
+[fn:3] Ceci est une piste de travail que je souhaiterai éprouver
+notamment dans le cadre de ce projet Plover mais dont la technicité
+requière une implication exceptionnelle.
+
+#  LocalWords:  Plover sténotypique texte JSON LocalWords Grandjean
+#  LocalWords:  Hunspell orthography.py
