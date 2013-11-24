@@ -165,26 +165,11 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 | TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$             |              |
 | TROU-P*L-RE | troublerait | TROU-P*L-RE-AID             |              |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 *** Les règles de bases de la sténotypie sur Plover
 
 
-| S | P | T | * | N |   | O | A | I | n | D |
-| K | M | F | R | L |   | E | U | l | $ | C |
+| S | P | T | * | N |   | O | A | I | ᴎ | D |
+| K | M | F | R | L |   | E | U | ł | $ | C |
 |   |   |   |   | L | Y | E |   |   |   |   |
 
 
