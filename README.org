@@ -80,8 +80,66 @@ sténotypie assistée par ordinateur.
 Le champs d'études le plus en lien avec ce type de problématiques est
 le Traitement automatique du langage naturel (TalN).[fn:3]
 
-*** À propos du dictionnaire français Plover
-Très vite se pose la question de comment gérer la situation suivante :
+*** À propos du dictionnaire français pour Plover
+En appliquant une approche purement phonétique pour la construction
+d'un dictionnaire sténotypique, on est confronté à la réalité suivante :
+
+Sur les quelques 125 700 entrées du dictionnaire de base, *92 000*
+mots souffrent d'homophonie, qui représentent *31 000* entrées du
+dictionnaire sténotypique.
+
+Un exemple parmi beaucoup d'autres :
+
+#+BEGIN_EXAMPLE
+A-LE 	 halez
+A-LE 	 hâlés
+A-LE 	 halés
+A-LE 	 haler
+A-LE 	 hâlées
+A-LE 	 hâlée
+A-LE 	 halée
+A-LE 	 hâlé
+A-LE 	 halé
+A-LE 	 hâlait
+A-LE 	 halait
+A-LE 	 halaient
+A-LE 	 allez
+A-LE 	 allés
+A-LE 	 allers
+A-LE 	 aller
+A-LE 	 allées
+A-LE 	 allée
+A-LE 	 allé
+A-LE 	 allait
+A-LE 	 allais
+A-LE 	 allaient
+A-LE 	 allai
+#+END_EXAMPLE
+23 mots du dictionnaire se transcrivent phonétiquement de la même
+manière, avec un seul sténogramme.
+
+Résoudre cette problématique s'avère donc incontournable afin de
+parvenir à un usage raisonnablement fiable de la sténotypie avec
+Plover.
+
+Les écoles américaines de sténotypie tendent à introduire une part
+d'orthographe plus ou moins importante dans leurs méthodes.
+
+Cette méthode a ses inconvénients : ajouts de frappes, dérives vers
+des compositions qui n'ont plus aucun trait à la phonétique,
+divergences des méthodes...
+
+
+Voici donc le parti pris pour la construction du dictionnaire français :
+
+- La méthode phonétique de base est le socle du dictionnaire.
+- La distinction entre les homophones se fait par le biais de frappes
+  supplémentaires suivant une convention qui sera détaillée au titre suivant.
+
+
+
+
+
 
 
 *** Les règles de bases de la sténotypie sur Plover
