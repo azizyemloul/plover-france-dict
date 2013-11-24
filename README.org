@@ -198,13 +198,19 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 #+BEGIN_EXAMPLE
  | S | P | T | * | N | O | A | I | ᴎ | D | Z |
   | K | M | F | R | L | E | U | Ł | $ | C | Q |
-            |   |   | Y |   |   |             
+            |   | L | Y | E |   |             
+
+_____________________________________________
+_|_S_|_P_|_T_|_*_|_N_|_O_|_A_|_I_|_ᴎ_|_D_|_Z_|
+__|_K_|_M_|_F_|_R_|_L_|_E_|_U_|_Ł_|_$_|_C_|_Q_|
+____________|___|_L_|_Y_|_E_|___|_____________
+
 #+END_EXAMPLE
 **** french steno v2
 #+BEGIN_EXAMPLE
- | S | P | T | * | N |  | O | A | I | ᴎ | D |
-  | K | M | F | R | L |  | E | U | Ł | $ | C |
-            |   |   | B |   |   |             
+ | S | P | T | * | N |   | O | A | I | ᴎ | D |
+  | K | M | F | R | L |   | E | U | Ł | $ | C |
+            |   |   | Y |   |   |             
 #+END_EXAMPLE
 
 
