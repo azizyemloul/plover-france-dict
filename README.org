@@ -127,9 +127,13 @@ avec Plover.
 Les écoles américaines de sténotypie tendent à introduire une part
 d'orthographe plus ou moins importante dans leurs méthodes.
 
-Cette méthode a ses inconvénients : ajouts de frappes, dérives vers
-des compositions qui n'ont plus aucun trait à la phonétique,
-divergences des méthodes...
+Ce procédé amène des inconvénients : ajouts de frappes ; dérives vers
+des compositions qui n'ont plus aucun trait à la phonétique ;
+divergences et cloisonnement des écoles et des méthodes... Rien qui ne
+va vers une standardisation de la transcription sténographique.
+
+La contrepartie de cette option aux yeux des sténographes participants
+au [[https://groups.google.com/forum/#!forum/ploversteno][groupe de discussion Plover]]
 
 Voici donc le parti pris pour la construction du dictionnaire français :
 
@@ -141,41 +145,62 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 - Le H muet en début de mot prend une étoile. Ainsi :
   - *An-TRE pour HANTERAIT, qui nous permettra de le distinguer de An-TRE pour ENTRER
 - La terminaison des verbes est marquée. Ainsi :
-| Phonétique  | orthographe | Ortho-ergonomico-phonétique | Commentaires |
-|-------------+-------------+-----------------------------+--------------|
-| TROU-P*L    | trouble     | TROU-P*L                    |              |
-| TROU-P*L    | troubles    | TROU-P*L-$                  |              |
-| TROU-P*L    | troublent   | TROU-P*L-EnD                |              |
-| TROU-P*LAn  | troublant   | TROU-P*LAn                  |              |
-| TROU-P*LAn  | troublants  | TROU-P*LAn-$                |              |
-| TROU-P*LAnD | troublante  | TROU-P*LAnD                 |              |
-| TROU-P*LAnD | troublantes | TROU-P*LAnD-$               |              |
-| TROU-P*LE   | troubler    | TROU-P*LE                   |              |
-| TROU-P*LE   | troublez    | TROU-P*LE-$                 |              |
-| TROU-P*LE   | troublé     | TROU-P*LE-E                 |              |
-| TROU-P*LE   | troublés    | TROU-P*LE-E$                |              |
-| TROU-P*LE   | troublée    | TROU-P*LE-EU                |              |
-| TROU-P*LE   | troublées   | TROU-P*LE-EU$               |              |
-| TROU-P*LE   | troublais   | TROU-P*LE-AI$               |              |
-| TROU-P*LE   | troublait   | TROU-P*LE-AID               |              |
-| TROU-P*LE   | troublaient | TROU-P*LE-EnD               |              |
-| TROU-P*LE   | troublai    | TROU-P*LE-*                 |              |
-| TROU-P*LA   | troubla     | TROU-P*LA                   |              |
-| TROU-P*LA   | troublât    | TROU-P*LA-*                 |              |
-| TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$             |              |
-| TROU-P*L-RE | troublerait | TROU-P*L-RE-AID             |              |
+| Phonétique  | orthographe | Ortho-phonétique | Ortho-ergonomico-phonétique |
+|-------------+-------------+------------------+-----------------------------|
+| TROU-P*L    | trouble     | TROU-P*L         | TROU-P*L                    |
+| TROU-P*L    | troubles    | TROU-P*L-$       | TROU-P*L$C                  |
+| TROU-P*L    | troublent   | TROU-P*L-EᴎD     | TROU-P*LEᴎD                 |
+|             |             |                  |                             |
+| TROU-P*LAn  | troublant   | TROU-P*LAᴎ       | TROU-P*LAᴎ                  |
+| TROU-P*LAn  | troublants  | TROU-P*LAᴎ-$     | TROU-P*LAᴎ$C                |
+| TROU-P*LAnD | troublante  | TROU-P*LAᴎD      | TROU-P*LAᴎD                 |
+| TROU-P*LAnD | troublantes | TROU-P*LAᴎD-$    | TROU-P*LAᴎD-$C              |
+|             |             |                  |                             |
+| TROU-P*LE   | troubler    | TROU-P*LE        | TROU-P*LE                   |
+| TROU-P*LE   | troublez    | TROU-P*LE-$      | TROU-P*LE$C                 |
+| TROU-P*LE   | troublé     | TROU-P*LE-E      | TROU-P*LE-E                 |
+| TROU-P*LE   | troublés    | TROU-P*LE-E$     | TROU-P*LE-E$C               |
+| TROU-P*LE   | troublée    | TROU-P*LE-EU     | TROU-P*LEU                  |
+| TROU-P*LE   | troublées   | TROU-P*LE-EU$    | TROU-P*LEU$C                |
+| TROU-P*LE   | troublais   | TROU-P*LE-AI$    | TROU-P*LEŁ$C                |
+| TROU-P*LE   | troublait   | TROU-P*LE-AID    | TROU-P*LEIᴎD                |
+| TROU-P*LE   | troublaient | TROU-P*LE-EᴎD    | TROU-P*LE-EᴎD               |
+| TROU-P*LE   | troublai    | TROU-P*LE-*      | TROU-P*LE                   |
+|             |             |                  |                             |
+| TROU-P*LA   | troubla     | TROU-P*LA        | TROU-P*LA                   |
+| TROU-P*LA   | troublât    | TROU-P*LA-*      | TROU-P*LA                   |
+|             |             |                  |                             |
+| TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$  | TROU-P*L-RE                 |
+| TROU-P*L-RE | troublerait | TROU-P*L-RE-AID  | TROU-P*L-RE                 |
+#+TBLFM: "$4"="$1"
 
 *** Les règles de bases de la sténotypie sur Plover
 
 
 | S | P | T | * | N |   | O | A | I | ᴎ | D |
-| K | M | F | R | L |   | E | U | ł | $ | C |
+| K | M | F | R | L |   | E | U | Ł | $ | C |
 |   |   |   |   | L | Y | E |   |   |   |   |
 
 
-| A | Z | E | R | T |   | Y | U | I | O | P |
-| Q | S | D | F | G |   | H | J | K | L | M |
-|   |   |   |   | V | B | N |   |   |   |   |
+**** azerty
+ | A | Z | E | R | T | Y | U | I | O | P | ^ |
+  | Q | S | D | F | G | H | J | K | L | M | ù |
+    |   |   | C | V |   | N | ; |   |   |   |
+**** américain steno
+ | S | T | P | H | * | * | F | P | L | T | D |
+  | S | K | W | R | * | * | R | B | G | S | Z |
+   |   |   | A | O |   |   | E | U |   |   |   |
+
+**** french steno v1
+ | S | P | T | * | N |   | O | A | I | ᴎ | D |
+  | K | M | F | R | L |   | E | U | Ł | $ | C |
+   |   |   |   |   | L | Y | E |   |   |   |   |
+
+**** french steno v2
+ | S | P | T | * | N |   | A | I | ᴎ | D | Z |
+  | K | M | F | R | L |   | U | Ł | $ | C | Q |
+   |   |   |   |   | L | Y | E |   |   |   |   |
+
 
 * Renvois
 [fn:1] Le fichier est une correspondance orthographe<-->sténogramme
