@@ -183,23 +183,32 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 
 
 **** azerty
+#+BEGIN_EXAMPLE
  | A | Z | E | R | T | Y | U | I | O | P | ^ |
   | Q | S | D | F | G | H | J | K | L | M | ù |
     |   |   | C | V |   | N | ; |   |   |   |
+#+END_EXAMPLE
+
 **** américain steno
+#+BEGIN_EXAMPLE
  | S | T | P | H | * | * | F | P | L | T | D |
   | S | K | W | R | * | * | R | B | G | S | Z |
    |   |   | A | O |   |   | E | U |   |   |   |
+#+END_EXAMPLE
 
 **** french steno v1
+#+BEGIN_EXAMPLE
  | S | P | T | * | N |   | O | A | I | ᴎ | D |
   | K | M | F | R | L |   | E | U | Ł | $ | C |
    |   |   |   |   | L | Y | E |   |   |   |   |
+#+END_EXAMPLE
 
 **** french steno v2
+#+BEGIN_EXAMPLE
  | S | P | T | * | N |   | A | I | ᴎ | D | Z |
   | K | M | F | R | L |   | U | Ł | $ | C | Q |
    |   |   |   |   | L | Y | E |   |   |   |   |
+#+END_EXAMPLE
 
 
 * Renvois
