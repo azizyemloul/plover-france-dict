@@ -3,6 +3,8 @@ La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le 
 construction d'un dictionnaire sténotypique au format JSON requis par
 le projet [[http://plover.stenoknight.com/][Plover]].
 
+**** TODO Pourquoi Lexique
+
 Le fichier original contenant cette base de données est ~Lexique380.txt~.
 
 Les colonnes qui nous intéressent dans cette large base, qui se présente
@@ -50,9 +52,9 @@ mots par minute. Cette caractéristique a, toutefois, son revers. Les
 Aux homophones s'ajoutent les caractéristiques de la disposition du
 clavier français :
 
-- Ville  = F*Il
-- Vire   = F*Il
-- Vile   = F*Il
+- Ville  = F*Ił
+- Vire   = F*Ił
+- Vile   = F*Ił
 
 - bref   = P*RE$
 - braise = P*RE$
@@ -64,7 +66,7 @@ Grandjean, a choisi d'assigner à certaines touches plusieurs valeurs
 potentielles afin que la composition de tous les sons soit possible sur
 21 touches. Ainsi :
 
-- l peut désigner les sons "L" ou "R"
+- ł peut désigner les sons "L" ou "R"
 - $ peut désigner les sons "S", "Z", "F" ou "V"
 - D peut désigner les sons "T", "D", "P" ou "B"
 - C peut désigner les sons "K" ou "G"
@@ -84,7 +86,7 @@ le Traitement automatique du langage naturel (TalN).[fn:3]
 En appliquant une approche purement phonétique pour la construction
 d'un dictionnaire sténotypique, on est confronté à la réalité suivante :
 
-Sur les quelques 125 700 entrées du dictionnaire de base, *92 000*
+Sur les quelques *125 700* entrées du dictionnaire de base, *92 000*
 mots souffrent d'homophonie, qui représentent *31 000* entrées du
 dictionnaire sténotypique.
 
@@ -116,11 +118,11 @@ A-LE 	 allaient
 A-LE 	 allai
 #+END_EXAMPLE
 23 mots du dictionnaire se transcrivent phonétiquement de la même
-manière, avec un seul sténogramme.
+manière, avec un seul sténogramme, c'est le cas le plus extrême.
 
-Résoudre cette problématique s'avère donc incontournable afin de
-parvenir à un usage raisonnablement fiable de la sténotypie avec
-Plover.
+Résoudre cette problématique s'avère donc un préalable incontournable
+afin de parvenir à un usage raisonnablement fiable de la sténotypie
+avec Plover.
 
 Les écoles américaines de sténotypie tendent à introduire une part
 d'orthographe plus ou moins importante dans leurs méthodes.
@@ -129,12 +131,48 @@ Cette méthode a ses inconvénients : ajouts de frappes, dérives vers
 des compositions qui n'ont plus aucun trait à la phonétique,
 divergences des méthodes...
 
-
 Voici donc le parti pris pour la construction du dictionnaire français :
 
 - La méthode phonétique de base est le socle du dictionnaire.
 - La distinction entre les homophones se fait par le biais de frappes
-  supplémentaires suivant une convention qui sera détaillée au titre suivant.
+  supplémentaires suivant une convention détaillée au titre suivant.
+
+*** Les ajouts par rapport à la méthode traditionnelle
+- Le H muet en début de mot prend une étoile. Ainsi :
+  - *An-TRE pour HANTERAIT, qui nous permettra de le distinguer de An-TRE pour ENTRER
+- La terminaison des verbes est marquée. Ainsi :
+| Phonétique  | orthographe | Ortho-ergonomico-phonétique | Commentaires |
+|-------------+-------------+-----------------------------+--------------|
+| TROU-P*L    | trouble     | TROU-P*L                    |              |
+| TROU-P*L    | troubles    | TROU-P*L-$                  |              |
+| TROU-P*L    | troublent   | TROU-P*L-EnD                |              |
+| TROU-P*LAn  | troublant   | TROU-P*LAn                  |              |
+| TROU-P*LAn  | troublants  | TROU-P*LAn-$                |              |
+| TROU-P*LAnD | troublante  | TROU-P*LAnD                 |              |
+| TROU-P*LAnD | troublantes | TROU-P*LAnD-$               |              |
+| TROU-P*LE   | troubler    | TROU-P*LE                   |              |
+| TROU-P*LE   | troublez    | TROU-P*LE-$                 |              |
+| TROU-P*LE   | troublé     | TROU-P*LE-E                 |              |
+| TROU-P*LE   | troublés    | TROU-P*LE-E$                |              |
+| TROU-P*LE   | troublée    | TROU-P*LE-EU                |              |
+| TROU-P*LE   | troublées   | TROU-P*LE-EU$               |              |
+| TROU-P*LE   | troublais   | TROU-P*LE-AI$               |              |
+| TROU-P*LE   | troublait   | TROU-P*LE-AID               |              |
+| TROU-P*LE   | troublaient | TROU-P*LE-EnD               |              |
+| TROU-P*LE   | troublai    | TROU-P*LE-*                 |              |
+| TROU-P*LA   | troubla     | TROU-P*LA                   |              |
+| TROU-P*LA   | troublât    | TROU-P*LA-*                 |              |
+| TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$             |              |
+| TROU-P*L-RE | troublerait | TROU-P*L-RE-AID             |              |
+
+
+
+
+
+
+
+
+
 
 
 
