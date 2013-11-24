@@ -52,9 +52,9 @@ mots par minute. Cette caractéristique a, toutefois, son revers. Les
 Aux homophones s'ajoutent les caractéristiques de la disposition du
 clavier français :
 
-- Ville  = F*Ił
-- Vire   = F*Ił
-- Vile   = F*Ił
+- Ville  = F*IŁ
+- Vire   = F*IŁ
+- Vile   = F*IŁ
 
 - bref   = P*RE$
 - braise = P*RE$
@@ -66,7 +66,7 @@ Grandjean, a choisi d'assigner à certaines touches plusieurs valeurs
 potentielles afin que la composition de tous les sons soit possible sur
 21 touches. Ainsi :
 
-- ł peut désigner les sons "L" ou "R"
+- Ł peut désigner les sons "L" ou "R"
 - $ peut désigner les sons "S", "Z", "F" ou "V"
 - D peut désigner les sons "T", "D", "P" ou "B"
 - C peut désigner les sons "K" ou "G"
