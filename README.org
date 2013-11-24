@@ -3,15 +3,13 @@ La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le 
 construction d'un dictionnaire sténotypique au format JSON requis par
 le projet [[http://plover.stenoknight.com/][Plover]].
 
-**** TODO Pourquoi Lexique
-
 Le fichier original contenant cette base de données est ~Lexique380.txt~.
 
 Les colonnes qui nous intéressent dans cette large base, qui se présente
 sous forme d'un tableau texte géant, sont ~1_ortho~ et ~23_syll~.
 
-J'ai dû m'y reprendre à plusieurs reprises sur une période de quelques
-mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
+J'ai dû m'y reprendre à plusieurs reprises sur une période de
+plusieurs mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
 
 Le fichier ~dict-base-uniq.txt~ est une version expurgée de doublons.
 
@@ -24,8 +22,9 @@ française. Il sert de base à la définition des règles d'affixation
 contenus dans ~orthography.py~.
 
 *** À propos de la sténotypie
-La sténotypie tend à représenter le parole dans une langue donnée
-par les sons que celle-ci est en mesure de produire.
+La sténotypie est une méthode d'écriture et tend à représenter le
+parole dans une langue donnée par les sons que celle-ci est en mesure
+de produire.
 
 Elle tire en cela son héritage de la sténographie en lui apportant une
 importante amélioration : tracés à la main, les caractères
@@ -37,6 +36,82 @@ donc le moyen de produire des signes sténographiques "types"
 reconnaissables par n'importe quel lecture instruit des règles de
 base.
 
+Le clavier de la sténotype Grandjean en usage en France a été conçu
+par l'ingénieur [[http://fr.wikipedia.org/wiki/Marc_Grandjean][Marc Grandjean]] (1882-1949).
+
+#+BEGIN_EXAMPLE
+  ___                                           ___
+ | S |___                                   ___| D |
+ |___| P |___                           ___| ᴎ |___|
+ | K |___| T |___                   ___| I |___| C |
+ |___| M |___| * |___     _     ___| A |___| $ |___|
+     |___| F |___| N |   / \   | O |___| Ł |___|
+         |___| R |___|  /   \  |___| U |___|
+             |___| L | /  Y  \ | E |___|
+                 |___||       ||___|
+                       \_____/
+
+#+END_EXAMPLE
+
+Les cinq doigts de chaque main se positionnement d'un côté et de
+l'autre de la touche centrale ~Y~, sur la rangée du bas. C'est ce
+qu'on appelle la position de départ et de repos.
+
+La touche du milieu ~Y~ n'est actionnée que par le pouce de la main
+gauche qui reviendra immédiatement après sur sa touche de repos,
+c'est-à-dire le ~L~.
+
+Une prise sténotypique consiste à appuyer sur plusieures touches à la
+fois et produit un accord représentant une unité de son.
+
+
+La partie gauche du clavier, actionnée par les doigts de la main
+gauche, représente les ~sons de départ~ et est constituée de consonnes
+seulement ; les voyelles sont placées sur la partie droite du clavier,
+actionnée par les doigts de la main droite ~OEAUI~ ; les signes
+parfois étranges (~Łᴎ$DC~) à l'extrême droite représentent les ~sons
+finaux~.
+
+Un exemple pour bien comprendre :
+
+Affaire s'écrira A/FEŁ
+Rapide  s'écrira RA/PID
+
+Une explication :
+
+On appuie avec l'indexe de la main droite sur ~A~, on relâche puis on
+fait revenir son indexe à sa position de départ c'est-à-dire au dessus
+de la touche ~U~.
+
+On appuie de son majeur de la main gauche sur la touche ~F~ et, toute
+en maintenant ~F~ appuyé, de la main droite, on appuie avec son pouce
+sur la touche ~E~ et avec son majeur sur la touche ~Ł~.
+
+Les trois touches sont toutes appuyées comme pour un accord de
+piano. On relâche les touches toutes à la fois et on fait revenir ses
+doigts à leurs positions de repos, sur la rangée du bas. Il se trouve
+que pour cette exemple elles y sont déjà.
+
+Ce n'est pas le cas dans notre deuxième exemple, le mot ~RA/PID~ :
+
+Indexe gauche sur ~R~ ; indexe droit sur ~A~ ; on relâche les deux
+doigts et on ramène l'indexe droit à se position de départ au dessus
+de ~U~.
+
+Le signe ~/~ indique la fin d'un accord.
+
+Le deuxième accord ~PID~ vous l'auriez compris se joue avec
+l'annulaire de la main gauche sur ~P~, le majeur de la main droite sur
+~I~ et l'auriculaire sur ~D~. On relâche l'accord et on fait revenir
+tout ce petit monde à sa place, respectivement ~M~, ~Ł~ et ~C~.
+
+
+Il est important de veillez à ce mouvement de va et vient après chaque
+frappe à la position de départ, c'est une stratégie d'apprentissage
+visant à aller le plus rapidement possible, même s'il semble au départ
+contradictoire
+
+*** À propos du dictionnaire français pour Plover
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les 230
 mots par minute. Cette caractéristique a, toutefois, son revers. Les
@@ -49,8 +124,9 @@ mots par minute. Cette caractéristique a, toutefois, son revers. Les
 - abreuver = abreuvés = abreuvez
 - ...
 
-Aux homophones s'ajoutent les caractéristiques de la disposition du
-clavier français :
+
+Aux homophones s'ajoutent les caractéristiques de la disposition
+du clavier français :
 
 - Ville  = F*IŁ
 - Vire   = F*IŁ
@@ -82,7 +158,7 @@ sténotypie assistée par ordinateur.
 Le champs d'études le plus en lien avec ce type de problématiques est
 le Traitement automatique du langage naturel (TalN).[fn:3]
 
-*** À propos du dictionnaire français pour Plover
+*** Les limites de l'approche phonétique
 En appliquant une approche purement phonétique pour la construction
 d'un dictionnaire sténotypique, on est confronté à la réalité suivante :
 
@@ -174,45 +250,46 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 | TROU-P*L-RE | troublerait | TROU-P*L-RE-AID  | TROU-P*L-RE                 |
 #+TBLFM: "$4"="$1"
 *** La disposition des touches sur le clavier d'ordinateur
+La disposition
 **** AZERTY
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|A  |Z  |E  |R  |T  |Y  |U  |I  |O  |P  |^  |$  |     |
+|A  |Z  |E  |R  |T  |Y  |U  |I  |O  |P  |^  |$  |Enter|
 |___|___|___|___|___|___|___|___|___|___|___|___|     |
- |Q  |S  |D  |F  |G  |H  |J  |K  |L  |M  |%  |*  |    |
+ |Q  |S  |D  |F  |G  |H  |J  |K  |L  |M  |Ù  |*  |  ⏎ |
 _|___|___|___|___|___|___|___|___|___|___|___|___|____|
-   |W  |X  |C  |V  |B  |N  |,  |;  |:  |!  |⬁         |
+   |W  |X  |C  |V  |B  |N  |,  |;  |:  |!  |⇧         |
 ___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 **** Clavier sténotypique anglosaxon
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |$  |     |
-|___|___|___|___|___|___|___|___|___|___|___|___|     |
- |S  |K  |W  |R  |*  |*  |R  |B  |G  |S  |Z  |*  |    |
-_|___|___|___|___|___|___|___|___|___|___|___|___|____|
+|S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |   |     |
+|__a|__z|__e|__r|__t|__y|__u|__i|__o|__p|__^|___|     |
+ |S  |K  |W  |R  |*  |*  |R  |B  |G  |S  |Z  |   |    |
+_|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
    |   |   |A  |O  |   |E  |U  |   |   |   |          |
-___|___|___|___|___|___|___|___|___|___|___|__________|
+___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
 **** Disposition Grandjean sur un clavier d'ordinateur possibilité n° 1
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |S  |P  |T  |*  |N  |O  |A  |I  |ᴎ  |D  |Z  |   |     |
-|___|___|___|___|___|___|___|___|___|___|___|___|     |
+|__a|__z|__e|__r|__t|__y|__u|__i|__o|__p|__^|___|     |
  |K  |M  |F  |R  |L  |E  |U  |Ł  |$  |C  |Q  |   |    |
-_|___|___|___|___|___|___|___|___|___|___|___|___|____|
+_|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
    |   |   |   |L  |Y  |E  |   |   |   |   |          |
-___|___|___|___|___|___|___|___|___|___|___|__________|
+___|___|___|___|__v|__b|__n|___|___|___|___|__________|
 #+END_EXAMPLE
 **** Disposition Grandjean sur un clavier d'ordinateur possibilité n°2
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |     |
-|___|___|___|___|___|___|___|___|___|___|___|___|     |
+|__a|__z|__e|__r|__t|___|__u|__i|__o|__p|__^|___|     |
  |K  |M  |F  |R  |L  |   |E  |U  |Ł  |$  |C  |   |    |
-_|___|___|___|___|___|___|___|___|___|___|___|___|____|
+_|__q|__s|__d|__f|__g|___|__j|__k|__l|__m|__ù|___|
    |   |   |   |L  |Y  |E  |   |   |   |   |          |
-___|___|___|___|___|___|___|___|___|___|___|__________|
+___|___|___|___|__v|__b|__n|___|___|___|___|__________|
 #+END_EXAMPLE
 
 * Renvois
