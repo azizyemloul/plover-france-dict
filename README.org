@@ -150,12 +150,12 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 | TROU-P*L    | trouble     | TROU-P*L         | TROU-P*L                    |
 | TROU-P*L    | troubles    | TROU-P*L-$       | TROU-P*L$C                  |
 | TROU-P*L    | troublent   | TROU-P*L-EᴎD     | TROU-P*LEᴎD                 |
-|             |             |                  |                             |
+|-------------+-------------+------------------+-----------------------------|
 | TROU-P*LAn  | troublant   | TROU-P*LAᴎ       | TROU-P*LAᴎ                  |
 | TROU-P*LAn  | troublants  | TROU-P*LAᴎ-$     | TROU-P*LAᴎ$C                |
 | TROU-P*LAnD | troublante  | TROU-P*LAᴎD      | TROU-P*LAᴎD                 |
 | TROU-P*LAnD | troublantes | TROU-P*LAᴎD-$    | TROU-P*LAᴎD-$C              |
-|             |             |                  |                             |
+|-------------+-------------+------------------+-----------------------------|
 | TROU-P*LE   | troubler    | TROU-P*LE        | TROU-P*LE                   |
 | TROU-P*LE   | troublez    | TROU-P*LE-$      | TROU-P*LE$C                 |
 | TROU-P*LE   | troublé     | TROU-P*LE-E      | TROU-P*LE-E                 |
@@ -166,53 +166,54 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 | TROU-P*LE   | troublait   | TROU-P*LE-AID    | TROU-P*LEIᴎD                |
 | TROU-P*LE   | troublaient | TROU-P*LE-EᴎD    | TROU-P*LE-EᴎD               |
 | TROU-P*LE   | troublai    | TROU-P*LE-*      | TROU-P*LE                   |
-|             |             |                  |                             |
+|-------------+-------------+------------------+-----------------------------|
 | TROU-P*LA   | troubla     | TROU-P*LA        | TROU-P*LA                   |
 | TROU-P*LA   | troublât    | TROU-P*LA-*      | TROU-P*LA                   |
-|             |             |                  |                             |
+|-------------+-------------+------------------+-----------------------------|
 | TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$  | TROU-P*L-RE                 |
 | TROU-P*L-RE | troublerait | TROU-P*L-RE-AID  | TROU-P*L-RE                 |
 #+TBLFM: "$4"="$1"
-
-*** Les règles de bases de la sténotypie sur Plover
-
-
-| S | P | T | * | N |   | O | A | I | ᴎ | D |
-| K | M | F | R | L |   | E | U | Ł | $ | C |
-|   |   |   |   | L | Y | E |   |   |   |   |
-
-
-**** azerty
+*** La disposition des touches sur le clavier d'ordinateur
+**** AZERTY
 #+BEGIN_EXAMPLE
- | A | Z | E | R | T | Y | U | I | O | P | ^ |
-  | Q | S | D | F | G | H | J | K | L | M | ù |
-            | C | V | B | N | ; |             
+ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
+|A  |Z  |E  |R  |T  |Y  |U  |I  |O  |P  |^  |$  |     |
+|___|___|___|___|___|___|___|___|___|___|___|___|     |
+ |Q  |S  |D  |F  |G  |H  |J  |K  |L  |M  |%  |*  |    |
+_|___|___|___|___|___|___|___|___|___|___|___|___|____|
+   |W  |X  |C  |V  |B  |N  |,  |;  |:  |!  |⬁         |
+___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
-**** américain steno
+**** Clavier sténotypique anglosaxon
 #+BEGIN_EXAMPLE
- | S | T | P | H | * | * | F | P | L | T | D |
-  | S | K | W | R | * | * | R | B | G | S | Z |
-            | A | O |   | E | U |             
+ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
+|S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |$  |     |
+|___|___|___|___|___|___|___|___|___|___|___|___|     |
+ |S  |K  |W  |R  |*  |*  |R  |B  |G  |S  |Z  |*  |    |
+_|___|___|___|___|___|___|___|___|___|___|___|___|____|
+   |   |   |A  |O  |   |E  |U  |   |   |   |          |
+___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
-**** french steno v1
+**** Disposition Grandjean sur un clavier d'ordinateur possibilité n° 1
 #+BEGIN_EXAMPLE
- | S | P | T | * | N | O | A | I | ᴎ | D | Z |
-  | K | M | F | R | L | E | U | Ł | $ | C | Q |
-            |   | L | Y | E |   |             
-
-_____________________________________________
-_|_S_|_P_|_T_|_*_|_N_|_O_|_A_|_I_|_ᴎ_|_D_|_Z_|
-__|_K_|_M_|_F_|_R_|_L_|_E_|_U_|_Ł_|_$_|_C_|_Q_|
-____________|___|_L_|_Y_|_E_|___|_____________
-
+ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
+|S  |P  |T  |*  |N  |O  |A  |I  |ᴎ  |D  |Z  |   |     |
+|___|___|___|___|___|___|___|___|___|___|___|___|     |
+ |K  |M  |F  |R  |L  |E  |U  |Ł  |$  |C  |Q  |   |    |
+_|___|___|___|___|___|___|___|___|___|___|___|___|____|
+   |   |   |   |L  |Y  |E  |   |   |   |   |          |
+___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
-**** french steno v2
+**** Disposition Grandjean sur un clavier d'ordinateur possibilité n°2
 #+BEGIN_EXAMPLE
- | S | P | T | * | N |   | O | A | I | ᴎ | D |
-  | K | M | F | R | L |   | E | U | Ł | $ | C |
-            |   |   | Y |   |   |             
+ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
+|S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |     |
+|___|___|___|___|___|___|___|___|___|___|___|___|     |
+ |K  |M  |F  |R  |L  |   |E  |U  |Ł  |$  |C  |   |    |
+_|___|___|___|___|___|___|___|___|___|___|___|___|____|
+   |   |   |   |L  |Y  |E  |   |   |   |   |          |
+___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
-
 
 * Renvois
 [fn:1] Le fichier est une correspondance orthographe<-->sténogramme
