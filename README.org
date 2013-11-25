@@ -132,6 +132,7 @@ accords pour chacun, c'est-à-dire 2 mouvements. C'est cette différence
 qui explique la rapidité qu'acquièrent les sténotypistes professionnels.
 
 
+
 *** À propos du dictionnaire français pour Plover
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les 230
@@ -163,10 +164,10 @@ Grandjean, a choisi d'assigner à certaines touches plusieurs valeurs
 potentielles afin que la composition de tous les sons soit possible sur
 21 touches. Ainsi :
 
-- Ł peut désigner les sons "L" ou "R"
-- $ peut désigner les sons "S", "Z", "F" ou "V"
-- D peut désigner les sons "T", "D", "P" ou "B"
-- C peut désigner les sons "K" ou "G"
+- ~Ł~ peut désigner les sons ~L~ ou ~R~
+- ~$~ peut désigner les sons ~S~, ~Z~, ~F~ ou ~V~ dites consonnes fricatives
+- ~D~ peut désigner les sons ~T~, ~D~, ~P~ ou ~B~ dites consonnes occlusives
+- ~C~ peut désigner les sons ~K~ ou ~G~
 
 En dépit de tout cela, le lecteur peut déduire la correspondance
 correcte, souvent par un mécanisme inconscient de mise en contexte.
@@ -229,6 +230,7 @@ Ce procédé amène des inconvénients : ajouts de frappes ; dérives vers
 des compositions qui n'ont plus aucun trait à la phonétique ;
 divergences et cloisonnement des écoles et des méthodes... Rien qui ne
 va vers une standardisation de la transcription sténographique.
+
 
 
 Voici donc le parti pris pour la construction du dictionnaire français :
