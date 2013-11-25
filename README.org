@@ -16,7 +16,8 @@ plusieurs mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
 Le fichier ~dict-base-uniq.txt~ est une version expurgée de doublons.
 
 Le fichier ~france_french_words.txt~ servant à la vérification
-orthographique[fn:2] provient également de la base [[http://www.lexique.org/listes/liste_mots.txt][Lexique]].
+orthographique[fn:2] provient également des travaux des équipes
+[[http://www.lexique.org/listes/liste_mots.txt][Lexique]].
 
 Le fichier ~fr.aff~ fait partie de la distribution [[http://hunspell.sourceforge.net/][Hunspell]], un
 analyseur orthographique et morphologique prenant en charge la langue
@@ -117,28 +118,33 @@ Il est important de veillez respecter ce mouvement de va et vient vers
 la position de départ après chaque frappe.
 
 Il s'agit d'une stratégie d'apprentissage, l'objectif étant de créer
-des réactions réflexes sur le modèle d'un coureur au 100 mètres :
+des réactions réflexes sur le modèle d'un coureur aux 100 mètres :
 celui-ci doit s'entraîner à réduire son temps de réaction entre le top
 de départ et sa première impulsion musculaire de propulsion.
 
 Pour un sténotypiste ce temps de réaction est aussi important et pour
-ce faire il faut, comme pour un coureur au 100 mètres, se tenir sur
+ce faire il faut, comme pour un coureur aux 100 mètres, se tenir sur
 des starting-blocks matérialisés par la station de départ, les 10
 doigts placés sur la première rangée.
+
+On a composé deux mots, de 7 et 6 lettres respectivement, avec 2
+accords pour chacun, c'est-à-dire 2 mouvements. C'est cette différence
+qui explique la rapidité qu'acquièrent les sténotypistes professionnels.
+
 
 *** À propos du dictionnaire français pour Plover
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les 230
-mots par minute. Cette caractéristique a, toutefois, son revers. Les
+mots par minute. Cette caractéristique a, toutefois, ses revers. Les
 ~homophones~  :
 
 - vos = veau
 - eau = aux
 - ce = se
+- et = est = ait = aie ...
 - à faire = affaire
 - abreuver = abreuvés = abreuvez
 - ...
-
 
 Aux homophones s'ajoutent les caractéristiques de la disposition
 du clavier français :
@@ -171,15 +177,16 @@ toute relative dans les logiciels propriétaires payants de
 sténotypie assistée par ordinateur.
 
 Le champs d'études le plus en lien avec ce type de problématiques est
-le Traitement automatique du langage naturel (TalN).[fn:3]
+le Traitement automatique du langage naturel (TALN).[fn:3]
 
 *** Les limites de l'approche phonétique
 En appliquant une approche purement phonétique pour la construction
-d'un dictionnaire sténotypique, on est confronté à la réalité suivante :
+d'un dictionnaire sténotypique, on est très vite confronté à la
+réalité suivante :
 
-Sur les quelques *125 700* entrées du dictionnaire de base, *92 000*
-mots souffrent d'homophonie, qui représentent *31 000* entrées du
-dictionnaire sténotypique.
+Sur les quelques *125 700* entrées du dictionnaire, *92 000*
+mots souffrent d'homophonie. *31 000* entrées du
+dictionnaire sténotypique renvoie à des mots différents.
 
 Un exemple parmi beaucoup d'autres :
 
@@ -223,8 +230,6 @@ des compositions qui n'ont plus aucun trait à la phonétique ;
 divergences et cloisonnement des écoles et des méthodes... Rien qui ne
 va vers une standardisation de la transcription sténographique.
 
-La contrepartie de cette option aux yeux des sténographes participants
-au [[https://groups.google.com/forum/#!forum/ploversteno][groupe de discussion Plover]]
 
 Voici donc le parti pris pour la construction du dictionnaire français :
 
@@ -236,33 +241,29 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 - Le H muet en début de mot prend une étoile. Ainsi :
   - *An-TRE pour HANTERAIT, qui nous permettra de le distinguer de An-TRE pour ENTRER
 - La terminaison des verbes est marquée. Ainsi :
-| Phonétique  | orthographe | Ortho-phonétique | Ortho-ergonomico-phonétique |
-|-------------+-------------+------------------+-----------------------------|
-| TROU-P*L    | trouble     | TROU-P*L         | TROU-P*L                    |
-| TROU-P*L    | troubles    | TROU-P*L-$       | TROU-P*L$C                  |
-| TROU-P*L    | troublent   | TROU-P*L-EᴎD     | TROU-P*LEᴎD                 |
-|-------------+-------------+------------------+-----------------------------|
-| TROU-P*LAn  | troublant   | TROU-P*LAᴎ       | TROU-P*LAᴎ                  |
-| TROU-P*LAn  | troublants  | TROU-P*LAᴎ-$     | TROU-P*LAᴎ$C                |
-| TROU-P*LAnD | troublante  | TROU-P*LAᴎD      | TROU-P*LAᴎD                 |
-| TROU-P*LAnD | troublantes | TROU-P*LAᴎD-$    | TROU-P*LAᴎD-$C              |
-|-------------+-------------+------------------+-----------------------------|
-| TROU-P*LE   | troubler    | TROU-P*LE        | TROU-P*LE                   |
-| TROU-P*LE   | troublez    | TROU-P*LE-$      | TROU-P*LE$C                 |
-| TROU-P*LE   | troublé     | TROU-P*LE-E      | TROU-P*LE-E                 |
-| TROU-P*LE   | troublés    | TROU-P*LE-E$     | TROU-P*LE-E$C               |
-| TROU-P*LE   | troublée    | TROU-P*LE-EU     | TROU-P*LEU                  |
-| TROU-P*LE   | troublées   | TROU-P*LE-EU$    | TROU-P*LEU$C                |
-| TROU-P*LE   | troublais   | TROU-P*LE-AI$    | TROU-P*LEŁ$C                |
-| TROU-P*LE   | troublait   | TROU-P*LE-AID    | TROU-P*LEIᴎD                |
-| TROU-P*LE   | troublaient | TROU-P*LE-EᴎD    | TROU-P*LE-EᴎD               |
-| TROU-P*LE   | troublai    | TROU-P*LE-*      | TROU-P*LE                   |
-|-------------+-------------+------------------+-----------------------------|
-| TROU-P*LA   | troubla     | TROU-P*LA        | TROU-P*LA                   |
-| TROU-P*LA   | troublât    | TROU-P*LA-*      | TROU-P*LA                   |
-|-------------+-------------+------------------+-----------------------------|
-| TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$  | TROU-P*L-RE                 |
-| TROU-P*L-RE | troublerait | TROU-P*L-RE-AID  | TROU-P*L-RE                 |
+| Phonétique  | orthographe | Ortho-phonétique |
+|-------------+-------------+------------------|
+| TROU-P*L    | trouble     | TROU-P*L         |
+| TROU-P*L    | troubles    | TROU-P*L-$       |
+| TROU-P*L    | troublent   | TROU-P*L-EᴎD     |
+| TROU-P*LAn  | troublant   | TROU-P*LAᴎ       |
+| TROU-P*LAn  | troublants  | TROU-P*LAᴎ-$     |
+| TROU-P*LAnD | troublante  | TROU-P*LAᴎD      |
+| TROU-P*LAnD | troublantes | TROU-P*LAᴎD-$    |
+| TROU-P*LE   | troubler    | TROU-P*LE        |
+| TROU-P*LE   | troublez    | TROU-P*LE-$      |
+| TROU-P*LE   | troublé     | TROU-P*LE-E      |
+| TROU-P*LE   | troublés    | TROU-P*LE-E$     |
+| TROU-P*LE   | troublée    | TROU-P*LE-EU     |
+| TROU-P*LE   | troublées   | TROU-P*LE-EU$    |
+| TROU-P*LE   | troublais   | TROU-P*LE-AI$    |
+| TROU-P*LE   | troublait   | TROU-P*LE-AID    |
+| TROU-P*LE   | troublaient | TROU-P*LE-EᴎD    |
+| TROU-P*LE   | troublai    | TROU-P*LE-*      |
+| TROU-P*LA   | troubla     | TROU-P*LA        |
+| TROU-P*LA   | troublât    | TROU-P*LA-*      |
+| TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$  |
+| TROU-P*L-RE | troublerait | TROU-P*L-RE-AID  |
 #+TBLFM: "$4"="$1"
 *** La disposition des touches sur le clavier d'ordinateur
 La disposition
