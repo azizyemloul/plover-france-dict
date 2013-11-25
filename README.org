@@ -24,22 +24,23 @@ française. Il sert de base à la définition des règles d'affixation
 contenus dans ~orthography.py~.
 
 *** À propos de la sténotypie
-La sténotypie est une méthode d'écriture et tend à représenter le
+La sténotypie est une méthode de saisie qui tend à représenter le
 parole dans une langue donnée par les sons que celle-ci est en mesure
 de produire.
 
-Elle tire en cela son héritage de la sténographie en lui apportant une
+Elle tire son héritage de la sténographie en lui apportant une
 importante amélioration : tracés à la main, les caractères
 sténographiques sont propres au sténographe qui les a dessinés et
 peuvent difficilement être interprétés par un autre lecteur.
 
 La sténotype - ainsi est appelée la machine de sténotypie - apporte
 donc le moyen de produire des signes sténographiques "types"
-reconnaissables par n'importe quel lecture instruit des règles de
+reconnaissables par n'importe quel lecteur instruit des règles de
 base.
 
 Le clavier de la sténotype Grandjean en usage en France a été conçu
-par l'ingénieur [[http://fr.wikipedia.org/wiki/Marc_Grandjean][Marc Grandjean]] (1882-1949).
+par l'ingénieur [[http://fr.wikipedia.org/wiki/Marc_Grandjean][Marc Grandjean]]. La première sténotype Grandjean a été
+commercialisée en 1923.
 
 #+BEGIN_EXAMPLE
   ___                                           ___
@@ -56,7 +57,7 @@ par l'ingénieur [[http://fr.wikipedia.org/wiki/Marc_Grandjean][Marc Grandjean]]
 
 Les cinq doigts de chaque main se positionnement d'un côté et de
 l'autre de la touche centrale ~Y~, sur la rangée du bas. C'est ce
-qu'on appelle la ~position de départ~ et de repos.
+qu'on appelle la ~position de départ~ ou de repos.
 
 La touche du milieu ~Y~ n'est actionnée que par le pouce de la main
 gauche qui reviendra immédiatement après sur sa touche de repos,
@@ -82,20 +83,20 @@ Un exemple pour bien comprendre :
 Une explication. Pour écrire A/FEŁ :
 
 1) On appuie avec l'index de la main droite sur ~A~
-2) On relâche puis on fait revenir son index à sa position de départ
+2) On relâche, puis on fait revenir son index à sa position de départ
    c'est-à-dire au dessus de la touche ~U~.
 
 3) On appuie de son majeur de la main gauche sur la touche ~F~ ;
-4) Tout en maintenant ~F~ appuyé, vous appuyez du pouce de la main
-   droite sur la touche ~E~
-5) De son majeur droit, on enfonce la touche ~Ł~.
+4) Tout en maintenant ~F~ appuyé, on enfonce du pouce de la main
+   droite la touche ~E~
+5) Avec le majeur de la main droite, on enfonce la touche ~Ł~.
 6) Les trois touches sont toutes appuyées comme pour un accord de
    piano.
 7) On relâche les touches toutes à la fois
 8) On fait revenir ses doigts à leurs positions de repos, sur la rangée
    du bas. Il se trouve que pour cette exemple ils y sont déjà.
 
-Ce n'est pas le cas dans notre deuxième exemple, le mot ~RA/PID~ :
+Ce n'est pas le cas dans le deuxième exemple, le mot ~RA/PID~ :
 
 1) Index gauche sur la touche ~R~
 2) Index droit sur ~A~
@@ -103,7 +104,7 @@ Ce n'est pas le cas dans notre deuxième exemple, le mot ~RA/PID~ :
    de départ au dessus de ~U~.
 4) Le signe ~/~ indique la fin d'un accord.
 
-Le deuxième accord ~PID~ vous l'auriez compris se joue avec :
+Le deuxième accord ~PID~ vous l'aurez compris se joue avec :
 
 5) L'annulaire de la main gauche sur ~P~
 6) Le majeur de la main droite sur ~I~
