@@ -3,10 +3,12 @@ La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le 
 construction d'un dictionnaire sténotypique au format JSON requis par
 le projet [[http://plover.stenoknight.com/][Plover]].
 
-Le fichier original contenant cette base de données est ~Lexique380.txt~.
+Le fichier original contenant cette base de données est
+~Lexique380.txt~.
 
-Les colonnes qui nous intéressent dans cette large base, qui se présente
-sous forme d'un tableau texte géant, sont ~1_ortho~ et ~23_syll~.
+Les colonnes qui nous intéressent dans cette large base, qui se
+présente sous forme d'un tableau texte géant, sont ~1_ortho~ et
+~23_syll~.
 
 J'ai dû m'y reprendre à plusieurs reprises sur une période de
 plusieurs mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
@@ -50,66 +52,78 @@ par l'ingénieur [[http://fr.wikipedia.org/wiki/Marc_Grandjean][Marc Grandjean]]
              |___| L | /  Y  \ | E |___|
                  |___||       ||___|
                        \_____/
-
 #+END_EXAMPLE
 
 Les cinq doigts de chaque main se positionnement d'un côté et de
 l'autre de la touche centrale ~Y~, sur la rangée du bas. C'est ce
-qu'on appelle la position de départ et de repos.
+qu'on appelle la ~position de départ~ et de repos.
 
 La touche du milieu ~Y~ n'est actionnée que par le pouce de la main
 gauche qui reviendra immédiatement après sur sa touche de repos,
 c'est-à-dire le ~L~.
 
-Une prise sténotypique consiste à appuyer sur plusieures touches à la
+Une prise sténotypique consiste à appuyer sur plusieurs touches à la
 fois et produit un accord représentant une unité de son.
 
 
-La partie gauche du clavier, actionnée par les doigts de la main
-gauche, représente les ~sons de départ~ et est constituée de consonnes
-seulement ; les voyelles sont placées sur la partie droite du clavier,
-actionnée par les doigts de la main droite ~OEAUI~ ; les signes
-parfois étranges (~Łᴎ$DC~) à l'extrême droite représentent les ~sons
-finaux~.
+- La partie gauche du clavier, actionnée par les doigts de la main
+  gauche, représente les ~sons de initiaux~ et est constituée de
+  consonnes seulement ;
+- Les voyelles (~OEAUI~) sont placées sur la partie droite du clavier,
+  actionnée par les doigts de la main droite ;
+- Les signes parfois étranges (~Łᴎ$DC~) à l'extrême droite
+  représentent les ~sons finaux~.
 
 Un exemple pour bien comprendre :
 
-Affaire s'écrira A/FEŁ
-Rapide  s'écrira RA/PID
+- Affaire s'écrira A/FEŁ
+- Rapide  s'écrira RA/PID
 
-Une explication :
+Une explication. Pour écrire A/FEŁ :
 
-On appuie avec l'indexe de la main droite sur ~A~, on relâche puis on
-fait revenir son indexe à sa position de départ c'est-à-dire au dessus
-de la touche ~U~.
+1) On appuie avec l'index de la main droite sur ~A~
+2) On relâche puis on fait revenir son index à sa position de départ
+   c'est-à-dire au dessus de la touche ~U~.
 
-On appuie de son majeur de la main gauche sur la touche ~F~ et, toute
-en maintenant ~F~ appuyé, de la main droite, on appuie avec son pouce
-sur la touche ~E~ et avec son majeur sur la touche ~Ł~.
-
-Les trois touches sont toutes appuyées comme pour un accord de
-piano. On relâche les touches toutes à la fois et on fait revenir ses
-doigts à leurs positions de repos, sur la rangée du bas. Il se trouve
-que pour cette exemple elles y sont déjà.
+3) On appuie de son majeur de la main gauche sur la touche ~F~ ;
+4) Tout en maintenant ~F~ appuyé, vous appuyez du pouce de la main
+   droite sur la touche ~E~
+5) De son majeur droit, on enfonce la touche ~Ł~.
+6) Les trois touches sont toutes appuyées comme pour un accord de
+   piano.
+7) On relâche les touches toutes à la fois
+8) On fait revenir ses doigts à leurs positions de repos, sur la rangée
+   du bas. Il se trouve que pour cette exemple ils y sont déjà.
 
 Ce n'est pas le cas dans notre deuxième exemple, le mot ~RA/PID~ :
 
-Indexe gauche sur ~R~ ; indexe droit sur ~A~ ; on relâche les deux
-doigts et on ramène l'indexe droit à se position de départ au dessus
-de ~U~.
+1) Index gauche sur la touche ~R~
+2) Index droit sur ~A~
+3) On relâche les deux doigts et on ramène l'index droit à se position
+   de départ au dessus de ~U~.
+4) Le signe ~/~ indique la fin d'un accord.
 
-Le signe ~/~ indique la fin d'un accord.
+Le deuxième accord ~PID~ vous l'auriez compris se joue avec :
 
-Le deuxième accord ~PID~ vous l'auriez compris se joue avec
-l'annulaire de la main gauche sur ~P~, le majeur de la main droite sur
-~I~ et l'auriculaire sur ~D~. On relâche l'accord et on fait revenir
-tout ce petit monde à sa place, respectivement ~M~, ~Ł~ et ~C~.
+5) L'annulaire de la main gauche sur ~P~
+6) Le majeur de la main droite sur ~I~
+7) L'auriculaire droit sur ~D~
+8) On relâche l'accord
+9) On fait revenir tout ce petit monde à sa place, respectivement ~M~,
+   ~Ł~ et ~C~.
 
+Il est important de veillez respecter ce mouvement de va et vient vers
+la position de départ après chaque frappe.
 
-Il est important de veillez à ce mouvement de va et vient après chaque
-frappe à la position de départ, c'est une stratégie d'apprentissage
-visant à aller le plus rapidement possible, même s'il semble au départ
-contradictoire
+Il s'agit d'une stratégie d'apprentissage, l'objectif étant de créer
+des réactions réflexes sur le modèle d'un coureur au 100 mètres :
+celui-ci doit s'entraîner à réduire son temps de réaction entre le top
+de départ et sa première impulsion musculaire de propulsion.
+
+Pour un sténotypiste ce temps de réaction est aussi important et pour
+ce faire il faut, comme pour un coureur au 100 mètres, se tenir sur
+des starting-blocks matérialisés par la station de départ, les 10
+doigts placés sur la première rangée.
 
 *** À propos du dictionnaire français pour Plover
 Représenter une langue par ses sons permet aux sténotypistes
@@ -261,7 +275,7 @@ _|___|___|___|___|___|___|___|___|___|___|___|___|____|
    |W  |X  |C  |V  |B  |N  |,  |;  |:  |!  |⇧         |
 ___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
-**** Clavier sténotypique anglosaxon
+**** Clavier sténotypique anglosaxon en usage dans Plover
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |   |     |
@@ -271,7 +285,7 @@ _|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
    |   |   |A  |O  |   |E  |U  |   |   |   |          |
 ___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
-**** Disposition Grandjean sur un clavier d'ordinateur possibilité n° 1
+**** Disposition Grandjean sur un clavier d'ordinateur possibilité n°1
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |S  |P  |T  |*  |N  |O  |A  |I  |ᴎ  |D  |Z  |   |     |
