@@ -1,3 +1,4 @@
+
 *** Construction d'un dictionnaire français pour Plover
 La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
 construction d'un dictionnaire sténotypique au format JSON requis par
@@ -173,9 +174,9 @@ connaître le phénomène de la "[[http://en.wikipedia.org/wiki/Path_dependence]
 
 La disposition des claviers de nos ordinateurs est un héritage de la
 disposition des machines à écrire dont la production à grande échelle
-a commencé à la fin du XIX^e siècle.
+a commencé à la fin du XIX^{e} siècle.
 
-Aux débuts du XX^e siècle, la disposition QWERTY s'impose par sa
+Aux débuts du XX^{e} siècle, la disposition QWERTY s'impose par sa
 fiabilité.
 
 #+BEGIN_EXAMPLE
@@ -211,9 +212,9 @@ En appliquant une approche purement phonétique pour la construction
 d'un dictionnaire sténotypique, on est très vite confronté à la
 réalité suivante :
 
-Sur les quelques *125 700* entrées du dictionnaire, *92 000*
-mots souffrent d'homophonie. *31 000* entrées du
-dictionnaire sténotypique renvoie à des mots différents.
+Sur les quelques *125 700* entrées du dictionnaire, *92 000* mots
+souffrent d'homophonie. *31 000* entrées du dictionnaire sténotypique
+renvoient pour chacune à plusieurs entrée du dictionnaire français.
 
 Un exemple parmi beaucoup d'autres :
 
@@ -242,8 +243,8 @@ A-LE 	 allais
 A-LE 	 allaient
 A-LE 	 allai
 #+END_EXAMPLE
-23 mots du dictionnaire se transcrivent phonétiquement de la même
-manière, avec un seul sténogramme, c'est le cas le plus extrême.
+23 mots du dictionnaire se transcrivant phonétiquement de la même
+manière, avec un seul sténogramme. C'est le cas le plus extrême.
 
 Résoudre cette problématique s'avère donc un préalable incontournable
 afin de parvenir à un usage raisonnablement fiable de la sténotypie
@@ -265,36 +266,7 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 - La distinction entre les homophones se fait par le biais de frappes
   supplémentaires suivant une convention détaillée au titre suivant.
 
-*** Les ajouts par rapport à la méthode traditionnelle		   :noexport:
-- Le H muet en début de mot prend une étoile. Ainsi :
-  - *An-TRE pour HANTERAIT, qui nous permettra de le distinguer de An-TRE pour ENTRER
-- La terminaison des verbes est marquée. Ainsi :
-| Phonétique  | orthographe | Ortho-phonétique |
-|-------------+-------------+------------------|
-| TROU-P*L    | trouble     | TROU-P*L         |
-| TROU-P*L    | troubles    | TROU-P*L-$       |
-| TROU-P*L    | troublent   | TROU-P*L-EᴎD     |
-| TROU-P*LAn  | troublant   | TROU-P*LAᴎ       |
-| TROU-P*LAn  | troublants  | TROU-P*LAᴎ-$     |
-| TROU-P*LAnD | troublante  | TROU-P*LAᴎD      |
-| TROU-P*LAnD | troublantes | TROU-P*LAᴎD-$    |
-| TROU-P*LE   | troubler    | TROU-P*LE        |
-| TROU-P*LE   | troublez    | TROU-P*LE-*$     |
-| TROU-P*LE   | troublé     | TROU-P*LE-*E     |
-| TROU-P*LE   | troublés    | TROU-P*LE-*E$    |
-| TROU-P*LE   | troublée    | TROU-P*LE-*EU    |
-| TROU-P*LE   | troublées   | TROU-P*LE-*EU$   |
-| TROU-P*LE   | troublais   | TROU-P*LE-*E$C   |
-| TROU-P*LE   | troublait   | TROU-P*LE-*ID    |
-| TROU-P*LE   | troublaient | TROU-P*LE-*EᴎD   |
-| TROU-P*LE   | troublai    | TROU-P*LE-*      |
-| TROU-P*LA   | troubla     | TROU-P*LA        |
-| TROU-P*LA   | troublât    | TROU-P*LA-*      |
-| TROU-P*L-RE | troublerais | TROU-P*L-RE-AI$  |
-| TROU-P*L-RE | troublerait | TROU-P*L-RE-AID  |
-#+TBLFM: "$4"="$1"
 *** La disposition des touches sur le clavier d'ordinateur
-La disposition
 **** AZERTY
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
@@ -304,16 +276,6 @@ La disposition
 _|___|___|___|___|___|___|___|___|___|___|___|___|____|
    |W  |X  |C  |V  |B  |N  |,  |;  |:  |!  |⇧         |
 ___|___|___|___|___|___|___|___|___|___|___|__________|
-#+END_EXAMPLE
-**** Clavier sténotypique anglosaxon en usage dans Plover
-#+BEGIN_EXAMPLE
- ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |   |Enter|
-|__a|__z|__e|__r|__t|__y|__u|__i|__o|__p|__^|___|     |
- |S  |K  |W  |R  |*  |*  |R  |B  |G  |S  |Z  |   |  ⏎ |
-_|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
-   |   |   |A  |O  |   |E  |U  |   |   |   |⇧         |
-___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
 **** Disposition Grandjean sur un clavier d'ordinateur
 #+BEGIN_EXAMPLE
@@ -326,6 +288,16 @@ _|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
 ___|___|___|___|__v|__b|__n|___|___|___|___|__________|
 #+END_EXAMPLE
 
+**** Clavier sténotypique anglosaxon en usage dans Plover
+#+BEGIN_EXAMPLE
+ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
+|S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |   |Enter|
+|__a|__z|__e|__r|__t|__y|__u|__i|__o|__p|__^|___|     |
+ |S  |K  |W  |R  |*  |*  |R  |B  |G  |S  |Z  |   |  ⏎ |
+_|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
+   |   |   |A  |O  |   |E  |U  |   |   |   |⇧         |
+___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
+#+END_EXAMPLE
 * Renvois
 [fn:1] Le fichier est une correspondance orthographe<-->sténogramme
 selon la disposition de clavier sténotypique français. Se rapporter à
