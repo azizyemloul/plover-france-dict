@@ -12,15 +12,16 @@
 #+END_EXAMPLE
 
 #+BEGIN_EXAMPLE
- ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |Enter|
-|___|___|___|___|___|___|___|___|___|___|___|___|     |
- |K  |M  |F  |R  |L  |Y  |E  |U  |Ł  |$  |C  |   |  ⏎ |
-_|___|___|___|___|___|___|___|___|___|___|___|___|____|
-   |   |   |   |L  |Y  |E  |   |   |   |   |⇧         |
-___|___|___|___|___|___|___|___|___|___|___|__________|
+ _____ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
+|TAB  |S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |Enter|
+|_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
+|MAJ   |K  |M  |F  |R  |L  |Y  |E  |U  |Ł  |$  |C  |   |  ⏎ |
+|______|___|___|___|___|___|___|___|___|___|___|___|___|____|
+| ⇧  |   |   |   |   |  L|  Y|  E|   |   |   |   |⇧         |
+|____|___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 
+*** Si vous voulez essayer plover :
 
 *** Construction d'un dictionnaire français pour Plover
 La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
@@ -215,11 +216,13 @@ l’informatique.
 #+END_EXAMPLE
 source: fr.wikipedia.org/wiki/QWERTY
 
-À compléter.
+*À compléter.*
 **** TODO Les élisions :
+*À documenter.*
 **** TODO L'usage et la perspective :
-En dépit de tout cela, le lecteur peut déduire la correspondance
-correcte, souvent par un mécanisme inconscient de mise en contexte.
+En dépit de toutes ces caractéristiques, le lecteur humain peut
+déduire la correspondance correcte, souvent par un mécanisme
+inconscient de mise en contexte.
 
 Cette opération mentale, plus complexe qu'il n'y paraît, n'est pas
 implémentée dans Plover et l'est d'une manière dont l'efficacité est
