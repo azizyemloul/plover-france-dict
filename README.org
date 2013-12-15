@@ -13,7 +13,7 @@
 
 #+BEGIN_EXAMPLE
  _____ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|TAB  |S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |Enter|
+|TAB  | S | P | T | * | L |   | O | A | I | ᴎ | D |   |Enter|
 |_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
 |MAJ   |K  |M  |F  |R  |L  |Y  |E  |U  |Ł  |$  |C  |   |  ⏎ |
 |______|___|___|___|___|___|___|___|___|___|___|___|___|____|
@@ -21,7 +21,8 @@
 |____|___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 
-*** Si vous voulez essayer plover :
+*** Si vous voulez essayer Plover avec ce clavier :
+https://github.com/azizyemloul/plover-france
 
 *** Construction d'un dictionnaire français pour Plover
 La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
