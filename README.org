@@ -23,7 +23,6 @@ Le fichier ~fr.aff~ fait partie de la distribution [[http://hunspell.sourceforge
 analyseur orthographique et morphologique prenant en charge la langue
 française. Il sert de base à la définition des règles d'affixation
 contenus dans ~orthography.py~.
-
 *** À propos de la sténotypie
 La sténotypie est une méthode de saisie qui tend à représenter le
 parole dans une langue donnée par les sons que celle-ci est en mesure
@@ -130,19 +129,18 @@ doigts placés sur la première rangée.
 On a composé deux mots, de 7 et 6 lettres respectivement, avec 2
 accords pour chacun, c'est-à-dire 2 mouvements. C'est cette différence
 qui explique la rapidité qu'acquièrent les sténotypistes professionnels.
-
-
-
 *** À propos du dictionnaire français pour Plover
 Représenter une langue par ses sons permet aux sténotypistes
-professionnels d'atteindre des vitesses de prises dépassant les 230
-mots par minute. Cette caractéristique a, toutefois, ses revers. Les
-~homophones~  :
+professionnels d'atteindre des vitesses de prises dépassant les
+230 mots par minute. Cette caractéristique a, toutefois, ses revers
+quand il s'agit de la traiter informatiquement.
+
+**** Les ~homophones~  :
 
 - vos = veau
 - eau = aux
-- ce = se
-- et = est = ait = aie ...
+- ce  = se
+- et  = est = ait = aie ...
 - à faire = affaire
 - abreuver = abreuvés = abreuvez
 - ...
@@ -158,27 +156,55 @@ du clavier français :
 - braise = P*RE$
 - ...
 
-Plusieurs mots s'écrivent en utilisant les mêmes accords. Une des
-raisons est que le concepteur de la disposition du clavier, Marc
-Grandjean, a choisi d'assigner à certaines touches plusieurs valeurs
-potentielles afin que la composition de tous les sons soit possible sur
-21 touches. Ainsi :
+Plusieurs mots s'écrivent en utilisant les mêmes accords. Le
+concepteur de la disposition du clavier, Marc Grandjean, a choisi
+d'assigner à certaines touches plusieurs valeurs potentielles afin que
+la composition de tous les sons soit possible sur 21 touches. Ainsi :
 
-- ~Ł~ peut désigner les sons ~L~ ou ~R~
-- ~$~ peut désigner les sons ~S~, ~Z~, ~F~ ou ~V~ dites consonnes fricatives
-- ~D~ peut désigner les sons ~T~, ~D~, ~P~ ou ~B~ dites consonnes occlusives
-- ~C~ peut désigner les sons ~K~ ou ~G~
+- ~Ł~ peut désigner les sons ~L~ ou ~R~ finaux
+- ~$~ peut désigner les sons ~S~, ~Z~, ~F~ ou ~V~ finaux ( consonnes fricatives )
+- ~D~ peut désigner les sons ~T~, ~D~, ~P~ ou ~B~ finaux ( consonnes occlusives )
+- ~C~ peut désigner les sons ~K~ ou ~G~ finaux
 
+**** TODO L'héritage de la contrainte mécanique :
+
+Comme pour nos claviers d'ordinateur, le clavier du sténotype semble
+connaître le phénomène de la "[[http://en.wikipedia.org/wiki/Path_dependence][dépendance au sentier]]".
+
+La disposition des claviers de nos ordinateurs est un héritage de la
+disposition des machines à écrire dont la production à grande échelle
+a commencé à la fin du XIX^e siècle.
+
+Aux débuts du XX^e siècle, la disposition QWERTY s'impose par sa
+fiabilité.
+
+#+BEGIN_EXAMPLE
+La configuration des claviers d’ordinateurs en QWERTY a été copiée sur
+le modèle des claviers des machines à écrire, elle-même créée pour
+répondre aux contraintes mécaniques de la première machine à écrire de
+Sholes. Les touches correspondant aux paires de lettres les plus
+usitées dans la langue anglaise sont réparties de manière à éloigner
+le plus possible les marteaux qui lui correspondent, ce qui limite les
+risques de blocage des tiges. En raison des usages établis, le choix a
+été fait de dupliquer le clavier de la machine à écrire dans
+l’informatique.
+#+END_EXAMPLE
+source: fr.wikipedia.org/wiki/QWERTY
+
+À compléter.
+**** TODO Les élisions :
+**** TODO L'usage et la perspective :
 En dépit de tout cela, le lecteur peut déduire la correspondance
 correcte, souvent par un mécanisme inconscient de mise en contexte.
 
 Cette opération mentale, plus complexe qu'il n'y paraît, n'est pas
 implémentée dans Plover et l'est d'une manière dont l'efficacité est
-toute relative dans les logiciels propriétaires payants de
+toute relative dans les logiciels propriétaires et payants de
 sténotypie assistée par ordinateur.
 
-Le champs d'études le plus en lien avec ce type de problématiques est
-le Traitement automatique du langage naturel (TALN).[fn:3]
+Le champs d'études le plus en lien avec la résolution de ce type de
+problématiques est le Traitement automatique du langage naturel
+(TALN).[fn:3]
 
 *** Les limites de l'approche phonétique
 En appliquant une approche purement phonétique pour la construction
@@ -239,7 +265,7 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 - La distinction entre les homophones se fait par le biais de frappes
   supplémentaires suivant une convention détaillée au titre suivant.
 
-*** Les ajouts par rapport à la méthode traditionnelle
+*** Les ajouts par rapport à la méthode traditionnelle		   :noexport:
 - Le H muet en début de mot prend une étoile. Ainsi :
   - *An-TRE pour HANTERAIT, qui nous permettra de le distinguer de An-TRE pour ENTRER
 - La terminaison des verbes est marquée. Ainsi :
@@ -253,14 +279,14 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 | TROU-P*LAnD | troublante  | TROU-P*LAᴎD      |
 | TROU-P*LAnD | troublantes | TROU-P*LAᴎD-$    |
 | TROU-P*LE   | troubler    | TROU-P*LE        |
-| TROU-P*LE   | troublez    | TROU-P*LE-$      |
-| TROU-P*LE   | troublé     | TROU-P*LE-E      |
-| TROU-P*LE   | troublés    | TROU-P*LE-E$     |
-| TROU-P*LE   | troublée    | TROU-P*LE-EU     |
-| TROU-P*LE   | troublées   | TROU-P*LE-EU$    |
-| TROU-P*LE   | troublais   | TROU-P*LE-AI$    |
-| TROU-P*LE   | troublait   | TROU-P*LE-AID    |
-| TROU-P*LE   | troublaient | TROU-P*LE-EᴎD    |
+| TROU-P*LE   | troublez    | TROU-P*LE-*$     |
+| TROU-P*LE   | troublé     | TROU-P*LE-*E     |
+| TROU-P*LE   | troublés    | TROU-P*LE-*E$    |
+| TROU-P*LE   | troublée    | TROU-P*LE-*EU    |
+| TROU-P*LE   | troublées   | TROU-P*LE-*EU$   |
+| TROU-P*LE   | troublais   | TROU-P*LE-*E$C   |
+| TROU-P*LE   | troublait   | TROU-P*LE-*ID    |
+| TROU-P*LE   | troublaient | TROU-P*LE-*EᴎD   |
 | TROU-P*LE   | troublai    | TROU-P*LE-*      |
 | TROU-P*LA   | troubla     | TROU-P*LA        |
 | TROU-P*LA   | troublât    | TROU-P*LA-*      |
@@ -282,31 +308,21 @@ ___|___|___|___|___|___|___|___|___|___|___|__________|
 **** Clavier sténotypique anglosaxon en usage dans Plover
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |   |     |
+|S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |   |Enter|
 |__a|__z|__e|__r|__t|__y|__u|__i|__o|__p|__^|___|     |
- |S  |K  |W  |R  |*  |*  |R  |B  |G  |S  |Z  |   |    |
+ |S  |K  |W  |R  |*  |*  |R  |B  |G  |S  |Z  |   |  ⏎ |
 _|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
-   |   |   |A  |O  |   |E  |U  |   |   |   |          |
+   |   |   |A  |O  |   |E  |U  |   |   |   |⇧         |
 ___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
-**** Disposition Grandjean sur un clavier d'ordinateur possibilité n°1
+**** Disposition Grandjean sur un clavier d'ordinateur
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|S  |P  |T  |*  |N  |O  |A  |I  |ᴎ  |D  |Z  |   |     |
-|__a|__z|__e|__r|__t|__y|__u|__i|__o|__p|__^|___|     |
- |K  |M  |F  |R  |L  |E  |U  |Ł  |$  |C  |Q  |   |    |
-_|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
-   |   |   |   |L  |Y  |E  |   |   |   |   |          |
-___|___|___|___|__v|__b|__n|___|___|___|___|__________|
-#+END_EXAMPLE
-**** Disposition Grandjean sur un clavier d'ordinateur possibilité n°2
-#+BEGIN_EXAMPLE
- ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |     |
+|S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |Enter|
 |__a|__z|__e|__r|__t|___|__u|__i|__o|__p|__^|___|     |
- |K  |M  |F  |R  |L  |   |E  |U  |Ł  |$  |C  |   |    |
-_|__q|__s|__d|__f|__g|___|__j|__k|__l|__m|__ù|___|
-   |   |   |   |L  |Y  |E  |   |   |   |   |          |
+ |K  |M  |F  |R  |L  |Y  |E  |U  |Ł  |$  |C  |   |  ⏎ |
+_|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
+   |   |   |   |L  |Y  |E  |   |   |   |   |⇧         |
 ___|___|___|___|__v|__b|__n|___|___|___|___|__________|
 #+END_EXAMPLE
 
