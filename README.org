@@ -109,8 +109,11 @@ Un exemple pour bien comprendre :
 Une explication. Pour écrire A/FEŁ :
 
 1) On appuie avec l'index de la main droite sur ~A~
-2) On relâche, puis on fait revenir son index à sa position de départ
-   c'est-à-dire au dessus de la touche ~U~.
+2) On relâche et on fait revenir son index à sa position de départ, au dessus de la touche ~U~.
+
+Ceci pour la premier accord qui n'aura au final été constitué que d'une seule note.
+Continuons sur le deuxième accord qui compose ce mot :
+
 
 3) On appuie de son majeur de la main gauche sur la touche ~F~ ;
 4) Tout en maintenant ~F~ appuyé, on enfonce du pouce de la main
@@ -160,8 +163,7 @@ Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les
 230 mots par minute. Cette caractéristique a, toutefois, ses revers
 quand il s'agit de la traiter informatiquement.
-
-**** Les ~homophones~  :
+**** TODO Les ~homophones~  :
 
 - vos = veau
 - eau = aux
@@ -193,9 +195,8 @@ la composition de tous les sons soit possible sur 21 touches. Ainsi :
 - ~C~ peut désigner les sons ~K~ ou ~G~ finaux
 
 **** TODO L'héritage de la contrainte mécanique :
-
 Comme pour nos claviers d'ordinateur, le clavier du sténotype semble
-connaître le phénomène de la "[[http://en.wikipedia.org/wiki/Path_dependence][dépendance au sentier]]".
+sujet au phénomène de la "[[http://en.wikipedia.org/wiki/Path_dependence][dépendance au sentier]]".
 
 La disposition des claviers de nos ordinateurs est un héritage de la
 disposition des machines à écrire dont la production à grande échelle
@@ -214,16 +215,72 @@ le plus possible les marteaux qui lui correspondent, ce qui limite les
 risques de blocage des tiges. En raison des usages établis, le choix a
 été fait de dupliquer le clavier de la machine à écrire dans
 l’informatique.
-#+END_EXAMPLE
-source: fr.wikipedia.org/wiki/QWERTY
 
-*À compléter.*
-**** TODO Les élisions :
-*À documenter.*
+Source: fr.wikipedia.org/wiki/QWERTY
+#+END_EXAMPLE
+
+Bien que des dispositions plus ergonomiques aient été mises au point,
+DVORAK aux État-Unis, BEPO en France, la disposition QWERTY et son
+héritière française AZERTY sont restés endémiques des bureaux.
+
+En quoi la disposition Grandjean serait-elle concernée par la
+dépendance au sentier ?
+
+La disposition Grandjean est restée inchangée depuis sa mise au point
+en 1923. À l'époque, et comme pour les machines à écrire, les
+impératifs mécaniques ont grandement conditionné la disposition du
+clavier et, fatalement, la méthode sténotypique qui en a découlé.
+
+#+BEGIN_EXAMPLE
+	|                     |		traduction :
+	|         L   A       |	->	La
+	|    T *        I  $  |	->	dis
+	|  P        O         |	->	po
+	|S     *        I    C|	->	sition
+	| K    *R     A   n   |	->	grand
+	|          Y  A   n   |	->	jean
+	|             E       |	->	est
+	|       R    E     $  |	->	res
+	|    T       E        |	->	tée
+	|               I n   |	->	in
+	|SK           A   n   |	->	chan
+	|          Y E        |		gée
+	|    T *              |		de
+	|  P           UI     |		puis
+	|S            A       |		sa
+	|   M           I  $  |		mise
+	|           O         |		au
+	|  P        O   I n   |		point
+	|             A   n   |		en
+	|   M           Il    |		mille
+	|        N   E U   $  |		neuf
+	|S            A   n   |		cent
+	|     F*        I n D |		vingt
+	|    T  R   O   I     |		trois
+	|                     |
+#+END_EXAMPLE
+#+CAPTION: Figure représentant le placement physique des lettres sur un ruban d'une machine mécanique et la traduction correspondante
+
+La réminiscence mécanique la plus patente dans la sténotypie moderne
+est l'ordre et la non permutabilité des touches.
+
+Ainsi le mot "psaume" devra s'écrire en deux frappes ~P/SOnC~ car si
+l'on observe la disposition du clavier, la touche ~S~ est placé devant
+le ~P~. Jouer ~SPOnC~ donnerait le son ~SPOME~ dans la théorie établie.
+
+Cette caractéristique a été remise en question par la [[http://fr.wikipedia.org/wiki/V%25C3%25A9lotypie][vélotypie]], une
+autre méthode de saisie rapide *orthographique* qui n'atteint certes pas
+les performances de la sténotypie en termes de vitesse.
+
+Il n'est pas dit qu'une réflexion autour de la disposition des lettres
+ou qu'une une remise en question des caractéristiques de la méthode
+héritées de l'influence de contingences mécaniques n'ayant plus court
+donnent lieu à une amélioration indiscutable de la sténotypie telle
+qu'elle continue à être pratiquée ou enseignée.
+
 **** TODO L'usage et la perspective :
-En dépit de toutes ces caractéristiques, le lecteur humain peut
-déduire la correspondance correcte, souvent par un mécanisme
-inconscient de mise en contexte.
+Le lecteur humain peut déduire la correspondance correcte, souvent par
+un mécanisme inconscient de mise en contexte.
 
 Cette opération mentale, plus complexe qu'il n'y paraît, n'est pas
 implémentée dans Plover et l'est d'une manière dont l'efficacité est
@@ -332,7 +389,7 @@ selon la disposition de clavier sténotypique français. Se rapporter à
 
 [fn:2] https://groups.google.com/forum/#!topic/ploversteno/pO6WVs9MzK8
 
-[fn:3] Ceci est une piste de travail que je souhaiterai éprouver
+[fn:3] Ceci est une piste de travail que je souhaiterais éprouver
 notamment dans le cadre de ce projet Plover mais dont la technicité
 requière une implication exceptionnelle.
 
