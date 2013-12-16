@@ -348,7 +348,7 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 
 - La méthode phonétique de base est le socle du dictionnaire.
 - La distinction entre les homophones se fait par le biais de frappes
-  supplémentaires suivant une convention détaillée au titre suivant.
+  supplémentaires suivant une convention détaillée dans un chapitre à venir.
 
 *** La disposition des touches sur le clavier d'ordinateur
 **** AZERTY
