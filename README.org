@@ -237,7 +237,7 @@ clavier et, fatalement, la méthode sténotypique qui en a découlé.
 	|S     *        I    C|-------> sition
 	| K    *R     A   ᴎ   |-------> grand
 	|          Y  A   ᴎ   |-------> jean
-	| K M F R L  E U Ł $ C|-------> un "souligné" (convention sténotypique pour indiquer les noms propres et mots spéciaux)
+	| K M F R L  E U Ł $ C|-------> (*)
 	|            E        |-------> est
 	|       R    E     $  |-------> res
 	|    T       E        |-------> tée
@@ -259,8 +259,13 @@ clavier et, fatalement, la méthode sténotypique qui en a découlé.
 	|  P   *             C|------->	.
 	|                     |
 
+Figure représentant le placement physique des lettres sur un ruban d'une machine
+mécanique et la traduction correspondante de chaque accord (ou frappe).
+[17 mots, 102 caractères en 25 frappes]
+
+(*) Un "souligné" (convention sténotypique pour indiquer les noms propres et mots spéciaux)
 #+END_EXAMPLE
-#+CAPTION: Figure représentant le placement physique des lettres sur un ruban d'une machine mécanique et la traduction correspondante de chaque accord (ou frappe). [17 mots, 102 caractères en 25 frappes]
+
 
 La réminiscence mécanique la plus patente dans la sténotypie moderne
 est l'ordre et la non permutabilité des touches.
