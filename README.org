@@ -1,24 +1,24 @@
 #+BEGIN_EXAMPLE
-  ___                                           ___
- | S |___                                   ___| D |
- |___| P |___                           ___| ᴎ |___|
- | K |___| T |___                   ___| I |___| C |
- |___| M |___| * |___     _     ___| A |___| $ |___|
-     |___| F |___| N |   / \   | O |___| Ł |___|
-         |___| R |___|  /   \  |___| U |___|
-             |___| L | /  Y  \ | E |___|
-                 |___||       ||___|
-                       \_____/
+       ___                                           ___
+      | S |___                                   ___| D |
+      |___| P |___                           ___| ᴎ |___|
+      | K |___| T |___                   ___| I |___| C |
+      |___| M |___| * |___     _     ___| A |___| $ |___|
+          |___| F |___| N |   / \   | O |___| Ł |___|
+              |___| R |___|  /   \  |___| U |___|
+                  |___| L | /  Y  \ | E |___|
+                      |___||       ||___|
+                            \_____/
 #+END_EXAMPLE
 
 #+BEGIN_EXAMPLE
- _____ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
-|TAB  | S | P | T | * | L |   | O | A | I | ᴎ | D |   |Enter|
-|_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
-|MAJ   |K  |M  |F  |R  |L  |Y  |E  |U  |Ł  |$  |C  |   |  ⏎ |
-|______|___|___|___|___|___|___|___|___|___|___|___|___|____|
-| ⇧  |   |   |   |   |  L|  Y|  E|   |   |   |   |⇧         |
-|____|___|___|___|___|___|___|___|___|___|___|___|__________|
+    ___________________________________________________________
+   |TAB  |  S|  P|  T|  *|  N|   |  O|  A|  I|  ᴎ|  D|   |Enter|
+   |_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
+   |MAJ   | K | M | F | R | L | Y | E | U | Ł | $ | C |   |  ⏎ |
+   |______|___|___|___|___|___|___|___|___|___|___|___|___|____|
+   | ⇧  |   |   |   |   |  L|  Y|  E|   |   |   |   |⇧         |
+   |____|___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 
 *** Si vous voulez essayer Plover avec ce clavier :
@@ -146,19 +146,19 @@ Il est important de veillez respecter ce mouvement de va et vient depuis et vers
 la position de départ après chaque frappe.
 
 Il s'agit d'une stratégie d'apprentissage, l'objectif étant de créer
-des réactions réflexes sur le modèle d'un coureur aux 100 mètres :
-celui-ci doit s'entraîner à réduire son temps de réaction entre le top
-de départ et sa première impulsion musculaire de propulsion.
+des réflexes sur le modèle d'un coureur aux 100 mètres :
+ce sportif doit s'entraîner à réduire son temps de réaction entre le top
+de départ et sa première impulsion musculaire.
 
 Pour un sténotypiste ce temps de réaction est aussi important et pour
 ce faire il faut, comme pour un coureur aux 100 mètres, se tenir sur
-des starting-blocks matérialisés par la station de départ, les 10
+ses starting-blocks, matérialisés par la position de départ, les 10
 doigts placés sur la première rangée.
 
 On a composé deux mots, de 7 et 6 lettres respectivement, avec 2
 accords pour chacun, c'est-à-dire 2 mouvements. C'est cette différence
 qui explique la rapidité qu'acquièrent les sténotypistes professionnels.
-*** À propos du dictionnaire français pour Plover
+*** À propos du dictionnaire français et de Plover
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les
 230 mots par minute. Cette caractéristique a, toutefois, ses revers
@@ -278,18 +278,19 @@ héritées de contingences mécaniques n'ayant plus cours donnent lieu à
 une amélioration indiscutable de la sténotypie telle qu'elle est
 pratiques et enseignée aujourd'hui.
 
-**** TODO L'usage et la perspective :
+**** TODO Du dictionnaire français dans Plover
 Le lecteur humain peut déduire la correspondance correcte, souvent par
 un mécanisme inconscient de mise en contexte.
 
-Cette opération mentale, plus complexe qu'il n'y paraît, n'est pas
-implémentée dans Plover et l'est d'une manière dont l'efficacité est
-toute relative dans les logiciels propriétaires et payants de
+Cette opération mentale, bien plus complexe qu'il n'y paraît, n'est
+pas implémentée dans Plover et l'est d'une manière dont l'efficacité
+est toute relative dans les logiciels propriétaires et payants de
 sténotypie assistée par ordinateur.
 
 Le champs d'études le plus en lien avec la résolution de ce type de
 problématiques est le Traitement automatique du langage naturel
 (TALN).[fn:3]
+
 
 *** Les limites de l'approche phonétique
 En appliquant une approche purement phonétique pour la construction
@@ -301,7 +302,6 @@ souffrent d'homophonie. *31 000* entrées du dictionnaire sténotypique
 renvoient pour chacune à plusieurs entrée du dictionnaire français.
 
 Un exemple parmi beaucoup d'autres :
-
 #+BEGIN_EXAMPLE
 A-LE 	 halez
 A-LE 	 hâlés
@@ -341,8 +341,6 @@ Ce procédé amène des inconvénients : ajouts de frappes ; dérives vers
 des compositions qui n'ont plus aucun trait à la phonétique ;
 divergences et cloisonnement des écoles et des méthodes... Rien qui ne
 va vers une standardisation de la transcription sténographique.
-
-
 
 Voici donc le parti pris pour la construction du dictionnaire français :
 
