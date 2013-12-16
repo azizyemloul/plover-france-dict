@@ -111,8 +111,8 @@ Une explication. Pour écrire A/FEŁ :
 1) On appuie avec l'index de la main droite sur ~A~
 2) On relâche et on fait revenir son index à sa position de départ, au dessus de la touche ~U~.
 
-Ceci pour la premier accord qui n'aura au final été constitué que d'une seule note.
-Continuons sur le deuxième accord qui compose ce mot :
+Ceci pour la premier accord qui n'aura au final été constitué que d'une seule touche.
+Continuons sur le deuxième accord ~FEŁ~ qui compose ce mot :
 
 
 3) On appuie de son majeur de la main gauche sur la touche ~F~ ;
@@ -142,7 +142,7 @@ Le deuxième accord ~PID~ vous l'aurez compris se joue avec :
 9) On fait revenir tout ce petit monde à sa place, respectivement ~M~,
    ~Ł~ et ~C~.
 
-Il est important de veillez respecter ce mouvement de va et vient vers
+Il est important de veillez respecter ce mouvement de va et vient depuis et vers
 la position de départ après chaque frappe.
 
 Il s'agit d'une stratégie d'apprentissage, l'objectif étant de créer
@@ -274,9 +274,9 @@ les performances de la sténotypie en termes de vitesse.
 
 Il n'est pas dit qu'une réflexion autour de la disposition des lettres
 ou qu'une une remise en question des caractéristiques de la méthode
-héritées de l'influence de contingences mécaniques n'ayant plus court
-donnent lieu à une amélioration indiscutable de la sténotypie telle
-qu'elle continue à être pratiquée ou enseignée.
+héritées de contingences mécaniques n'ayant plus cours donnent lieu à
+une amélioration indiscutable de la sténotypie telle qu'elle est
+pratiques et enseignée aujourd'hui.
 
 **** TODO L'usage et la perspective :
 Le lecteur humain peut déduire la correspondance correcte, souvent par
