@@ -1,30 +1,30 @@
 #+BEGIN_EXAMPLE
-       ___                                           ___
-      | S |___                                   ___| D |
-      |___| P |___                           ___| ᴎ |___|
-      | K |___| T |___                   ___| I |___| C |
-      |___| M |___| * |___     _     ___| A |___| $ |___|
-          |___| F |___| N |   / \   | O |___| Ł |___|
-              |___| R |___|  /   \  |___| U |___|
-                  |___| L | /  Y  \ | E |___|
-                      |___||       ||___|
-                            \_____/
+                     ___                                           ___
+                    | S |___                                   ___| D |
+                    |___| P |___                           ___| ᴎ |___|
+                    | K |___| T |___                   ___| I |___| C |
+                    |___| M |___| * |___     _     ___| A |___| $ |___|
+                        |___| F |___| N |   / \   | O |___| Ł |___|
+                            |___| R |___|  /   \  |___| U |___|
+                                |___| L | /  Y  \ | E |___|
+                                    |___||       ||___|
+                                           \_____/
 
-    ___________________________________________________________
-   |TAB  |  S|  P|  T|  *|  N|   |  O|  A|  I|  ᴎ|  D|   |Enter|
-   |_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
-   |MAJ   | K | M | F | R | L | Y | E | U | Ł | $ | C |   |  ⏎ |
-   |______|___|___|___|___|___|___|___|___|___|___|___|___|____|
-   | ⇧  |   |   |   |   |  L|  Y|Y  |E  |   |   |   |⇧         |
-   |____|___|___|___|___|___|___|___|___|___|___|___|__________|
+                  ___________________________________________________________
+                 |TAB  |  S|  P|  T|  *|  N|   |  O|  A|  I|  ᴎ|  D|   |Enter|
+                 |_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
+                 |MAJ   | K | M | F | R | L | Y | E | U | Ł | $ | C |   |  ⏎ |
+                 |______|___|___|___|___|___|___|___|___|___|___|___|___|____|
+                 | ⇧  |   |   |   |   |  L|  Y|Y  |E  |   |   |   |⇧         |
+                 |____|___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 
 *** Si vous voulez essayer Plover avec ce clavier :
 https://github.com/azizyemloul/plover-france
 
 *** Construction d'un dictionnaire français pour Plover
-La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
-construction d'un dictionnaire sténotypique au format JSON requis par
+La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la construction d'un dictionnaire sténotypique
+au format JSON requis par
 le projet [[http://plover.stenoknight.com/][Plover]].
 
 Le fichier original contenant cette base de données est
