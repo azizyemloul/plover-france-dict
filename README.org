@@ -9,9 +9,7 @@
                   |___| L | /  Y  \ | E |___|
                       |___||       ||___|
                             \_____/
-#+END_EXAMPLE
 
-#+BEGIN_EXAMPLE
     ___________________________________________________________
    |TAB  |  S|  P|  T|  *|  N|   |  O|  A|  I|  ᴎ|  D|   |Enter|
    |_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
@@ -233,54 +231,62 @@ clavier et, fatalement, la méthode sténotypique qui en a découlé.
 
 #+BEGIN_EXAMPLE
 	|                     |		traduction :
-	|         L   A       |	->	La
-	|    T *        I  $  |	->	dis
-	|  P        O         |	->	po
-	|S     *        I    C|	->	sition
-	| K    *R     A   n   |	->	grand
-	|          Y  A   n   |	->	jean
-	|             E       |	->	est
-	|       R    E     $  |	->	res
-	|    T       E        |	->	tée
-	|               I n   |	->	in
-	|SK           A   n   |	->	chan
-	|          Y E        |		gée
-	|    T *              |		de
-	|  P           UI     |		puis
-	|S            A       |		sa
-	|   M           I  $  |		mise
-	|           O         |		au
-	|  P        O   I n   |		point
-	|             A   n   |		en
-	|   M           Il    |		mille
-	|        N   E U   $  |		neuf
-	|S            A   n   |		cent
-	|     F*        I n D |		vingt
-	|    T  R   O   I     |		trois
+	|         L   A       |-------> La
+	|    T *        I  $  |-------> dis
+	|  P        O         |-------> po
+	|S     *        I    C|-------> sition
+	| K    *R     A   ᴎ   |-------> grand
+	|          Y  A   ᴎ   |-------> jean
+	| K M F R L  E U Ł $ C|-------> un "souligné" (convention sténotypique pour indiquer les noms propres et mots spéciaux)
+	|            E        |-------> est
+	|       R    E     $  |-------> res
+	|    T       E        |-------> tée
+	|               I ᴎ   |-------> in
+	|SK           A   ᴎ   |------->	chan
+	|          Y E        |-------> gée
+	|    T *              |-------> de
+	|  P           UI     |-------> puis
+	|S            A       |-------> sa
+	|   M           I  $  |-------> mise
+	|           O         |-------> au
+	|  P        O   I ᴎ   |-------> point
+	|             A   ᴎ   |-------> en
+	|   M           Il    |-------> mille
+	|        N   E U   $  |-------> neuf
+	|S            A   ᴎ   |-------> cents
+	|     F*        I ᴎ D |-------> vingt
+	|    T  R   O   I     |-------> trois
+	|  P   *             C|------->	.
 	|                     |
+
 #+END_EXAMPLE
-#+CAPTION: Figure représentant le placement physique des lettres sur un ruban d'une machine mécanique et la traduction correspondante
+#+CAPTION: Figure représentant le placement physique des lettres sur un ruban d'une machine mécanique et la traduction correspondante de chaque accord (ou frappe). [17 mots, 102 caractères en 25 frappes]
 
 La réminiscence mécanique la plus patente dans la sténotypie moderne
 est l'ordre et la non permutabilité des touches.
 
 Ainsi le mot "psaume" devra s'écrire en deux frappes ~P/SOnC~ car si
 l'on observe la disposition du clavier, la touche ~S~ est placé devant
-le ~P~. Jouer ~SPOnC~ donnerait le son ~SPOME~ dans la théorie établie.
+le ~P~.
 
-Cette caractéristique a été remise en question par la [[http://fr.wikipedia.org/wiki/V%25C3%25A9lotypie][vélotypie]], une
-autre méthode de saisie rapide *orthographique* qui n'atteint certes pas
-les performances de la sténotypie en termes de vitesse.
+Jouer ~SPOnC~ donnerait le son ~SPOME~ dans la théorie établie et
+pourrait correspondre à "se paume", conjugaison de la forme
+pronominale du verbe "paumer" à la 3e personne du singulier.
 
-Il n'est pas dit qu'une réflexion autour de la disposition des lettres
-ou qu'une une remise en question des caractéristiques de la méthode
-héritées de contingences mécaniques n'ayant plus cours donnent lieu à
-une amélioration indiscutable de la sténotypie telle qu'elle est
-pratiques et enseignée aujourd'hui.
+La caractéristique la non permutabilité des touches a été remise en
+question dans la [[http://fr.wikipedia.org/wiki/V%25C3%25A9lotypie][vélotypie]], une autre procédé de saisie rapide
+*orthographique* qui n'atteint certes pas les performances de la
+sténotypie en termes de vitesse.
+
+Il n'est pas dit qu'une une remise en question des caractéristiques de
+la méthode héritées de contingences mécaniques donnent lieu à une
+amélioration indiscutable de la sténotypie telle qu'elle est pratiquée
+et enseignée aujourd'hui.
 
 **** TODO Du dictionnaire français dans Plover
-Le lecteur humain peut déduire la correspondance correcte, souvent par
-un mécanisme inconscient de mise en contexte.
+Le lecteur humain peut déduire la correspondance correcte des
+sténogrammes, souvent par un mécanisme inconscient de mise en
+contexte.
 
 Cette opération mentale, bien plus complexe qu'il n'y paraît, n'est
 pas implémentée dans Plover et l'est d'une manière dont l'efficacité
