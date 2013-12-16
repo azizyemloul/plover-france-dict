@@ -1,22 +1,22 @@
 #+BEGIN_EXAMPLE
-       ___                                           ___
-      | S |___                                   ___| D |
-      |___| P |___                           ___| ᴎ |___|
-      | K |___| T |___                   ___| I |___| C |
-      |___| M |___| * |___     _     ___| A |___| $ |___|
-          |___| F |___| N |   / \   | O |___| Ł |___|
-              |___| R |___|  /   \  |___| U |___|
-                  |___| L | /  Y  \ | E |___|
-                      |___||       ||___|
-                            \_____/
+       ___                                           ___
+      | S |___                                   ___| D |
+      |___| P |___                           ___| ᴎ |___|
+      | K |___| T |___                   ___| I |___| C |
+      |___| M |___| * |___     _     ___| A |___| $ |___|
+          |___| F |___| N |   / \   | O |___| Ł |___|
+              |___| R |___|  /   \  |___| U |___|
+                  |___| L | /  Y  \ | E |___|
+                      |___||       ||___|
+                            \_____/
 
-    ___________________________________________________________
-   |TAB  |  S|  P|  T|  *|  N|   |  O|  A|  I|  ᴎ|  D|   |Enter|
-   |_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
-   |MAJ   | K | M | F | R | L | Y | E | U | Ł | $ | C |   |  ⏎ |
-   |______|___|___|___|___|___|___|___|___|___|___|___|___|____|
-   | ⇧  |   |   |   |   |  L|  Y|Y  |E  |   |   |   |⇧         |
-   |____|___|___|___|___|___|___|___|___|___|___|___|__________|
+    ___________________________________________________________
+   |TAB  |  S|  P|  T|  *|  N|   |  O|  A|  I|  ᴎ|  D|   |Enter|
+   |_____|___|___|___|___|___|___|___|___|___|___|___|___|     |
+   |MAJ   | K | M | F | R | L | Y | E | U | Ł | $ | C |   |  ⏎ |
+   |______|___|___|___|___|___|___|___|___|___|___|___|___|____|
+   | ⇧  |   |   |   |   |  L|  Y|Y  |E  |   |   |   |⇧         |
+   |____|___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 
 *** Si vous voulez essayer Plover avec ce clavier :
@@ -34,7 +34,7 @@ Les colonnes qui nous intéressent dans cette large base, qui se
 présente sous forme d'un tableau texte géant, sont ~1_ortho~ et
 ~23_syll~.
 
-J'ai dû m'y reprendre à plusieurs reprises sur une période de
+Il a fallu s'y reprendre à plusieurs reprises sur une période de
 plusieurs mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
 
 Le fichier ~dict-base-uniq.txt~ est une version expurgée de doublons.
