@@ -35,12 +35,12 @@ présente sous forme d'un tableau texte géant, sont ~1_ortho~ et
 ~23_syll~.
 
 Il a fallu s'y reprendre à plusieurs reprises sur une période de
-plusieurs mois pour aboutir au fichier ~dict-base.txt~.[fn:1]
+plusieurs mois pour aboutir au fichier ~dict-base.txt~.
 
 Le fichier ~dict-base-uniq.txt~ est une version expurgée de doublons.
 
 Le fichier ~france_french_words.txt~ servant à la vérification
-orthographique[fn:2] provient également des travaux des équipes
+orthographique provient également des travaux des équipes
 [[http://www.lexique.org/listes/liste_mots.txt][Lexique]].
 
 Le fichier ~fr.aff~ fait partie de la distribution [[http://hunspell.sourceforge.net/][Hunspell]], un
@@ -282,7 +282,7 @@ La caractéristique de la non permutabilité des touches a été remise en
 question dans la [[http://fr.wikipedia.org/wiki/V%25C3%25A9lotypie][vélotypie]], un autre procédé de saisie rapide
 *orthographique* qui n'atteint certes pas les performances de la
 sténotypie en termes de vitesse mais qui la challenge en termes de
-précision et d'intégration technique[fn:4].
+précision et d'intégration technique[1].
 
 Il n'est pas dit qu'une une remise en question des caractéristiques de
 la méthode héritées de contingences mécaniques donne lieu à une
@@ -301,7 +301,7 @@ sténotypie assistée par ordinateur.
 
 Le champs d'études le plus en lien avec la résolution de ce type de
 problématiques est le Traitement automatique du langage naturel
-(TALN).[fn:3]
+(TALN).
 
 *** Les limites de l'approche phonétique
 En appliquant une approche purement phonétique pour la construction
@@ -391,22 +391,10 @@ _|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
    |   |   |A  |O  |   |E  |U  |   |   |   |⇧         |
 ___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
+
 * Footnotes
-[fn:1] Le fichier est une correspondance orthographe<-->sténogramme
-selon la disposition de clavier sténotypique français. Se rapporter à
-[[https://github.com/azizyemloul/plover-france][Plover-france]] pour plus d'informations.
 
-[fn:2] https://groups.google.com/forum/#!topic/ploversteno/pO6WVs9MzK8
-
-[fn:3] Ceci est une piste de travail que je souhaiterais éprouver
-notamment dans le cadre de ce projet Plover mais dont la technicité
-requière une implication exceptionnelle.
-
-[fn:4] Les performances vélotypiques en termes de vitesse avoisinent
+[1] Les performances vélotypiques en termes de vitesse avoisinent
 les 150 mots/minute, loin derrière la sténotypie à 210 mots
 /minute. Toutefois, la vélotypie a réussi son accès au sous-titrage
 des programmes audiovisuels en direct.
-
-
-#  LocalWords:  Plover sténotypique texte JSON LocalWords Grandjean
-#  LocalWords:  Hunspell orthography.py
