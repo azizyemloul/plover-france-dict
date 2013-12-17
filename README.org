@@ -79,6 +79,24 @@ commercialisée en 1923.
                        \_____/
 #+END_EXAMPLE
 
+#+BEGIN_EXAMPLE
+ _______                                                                               _______
+|       |_______                                                               _______|       |
+|   S   |       |_______                                               _______|       |   D   |
+|_______|   P   |       |_______                               _______|       |   ᴎ   |_______|
+|       |_______|   T   |       |_______               _______|       |   I   |_______|       |
+|   K   |       |_______|   *   |       |     ---     |       |   A   |_______|       |   C   |
+|_______|   M   |       |_______|   N   |    /   \    |   O   |_______|       |   $   |_______|
+	|_______|   F   |       |_______|   /     \   |_______|       |   Ł   |_______|
+		|_______|   R   |       |  /       \  |       |   U   |_______|
+			|_______|   L   | /    Y    \ |   E   |_______|
+				|_______||           ||_______|
+                                          \_________/
+#+END_EXAMPLE
+
+
+
+
 Les cinq doigts de chaque main se positionnement d'un côté et de
 l'autre de la touche centrale ~Y~, sur la rangée du bas. C'est ce
 qu'on appelle la ~position de départ~ ou de repos.
