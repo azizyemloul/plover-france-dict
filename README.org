@@ -81,15 +81,12 @@ commercialisée en 1923.
                                      \_________/
 #+END_EXAMPLE
 
-
-
-
 Les cinq doigts de chaque main se positionnement d'un côté et de
 l'autre de la touche centrale ~Y~, sur la rangée du bas. C'est ce
 qu'on appelle la ~position de départ~ ou de repos.
 
 La touche du milieu ~Y~ n'est actionnée que par le pouce de la main
-gauche qui reviendra immédiatement après sur sa touche de repos,
+gauche qui reviendra immédiatement sur sa touche de repos,
 c'est-à-dire le ~L~.
 
 Une prise sténotypique consiste à appuyer sur plusieurs touches à la
@@ -159,8 +156,125 @@ ses starting-blocks, matérialisés par la position de départ, les 10
 doigts placés sur la première rangée.
 
 On a composé deux mots, de 7 et 6 lettres respectivement, avec 2
-accords pour chacun, c'est-à-dire 2 mouvements. C'est cette différence
-qui explique la rapidité qu'acquièrent les sténotypistes professionnels.
+accords pour chacun, c'est-à-dire 2 mouvements. C'est cette économie
+de frappe qui explique la rapidité qu'acquièrent les sténotypistes
+professionnels.
+
+**** Les sons du clavier
+***** Les sons initiaux
+Toutes les consonnes sont représentées à la main gauche.
+
+Certaines sont immédiatement représentées, comme pour les sons Seu,
+Peu, Teu, Neu, Keu, Meu, Feu, Reu, Leu.
+
+Il faut comprendre que les caractères représentés sur le clavier ne
+désignent pas plus la lettre dans son acception alphabétique que le
+son qu'elle produit.
+
+Ainsi, le son Keu correspondant à la touche K servira aussi bien pour
+représenter les mots quiétude, que cabaret ou bien karaté. (~KYE/TUD~
+~KA/P*A/RE~ ~KA/RA/TE~)
+
+Les sons non-représentés par leurs équivalents orthographiques sont
+obtenus par l'adjonction de l'étoile. Ainsi :
+
+- le son Zeu s'obtient par les touches ~S*~
+- le son Beu s'obtient par les touches ~P*~
+- le son Deu s'obtient par les touches ~T*~
+- le son Gueu s'obtient par les touches ~K*~
+- le son Veu s'obtient par les touches ~F*~
+
+Dernier élément de cette liste, le son Cheu s'obtient avec les touches
+~SK~ pressées ensemble.
+
+#+BEGIN_EXAMPLE
+           ______ ______ ______ ______ ______
+          |      |      |      |      |      |
+          |  S   |  P   |  T   |  *   |  N   |
+          |__/\__|______|______|______|______|
+          |  \/  |      |      |      |      |
+          |  K   |  M   |  F   |  R   |  L   |
+          |______|______|______|______|______|
+
+#+END_EXAMPLE
+Pour actionner deux touches qui se trouvent sur la même colonne, il
+faut appuyer entre les deux touches, ainsi les deux seront actionnée.
+
+L'exception à cette règle de doigté concerne les pouces.
+
+En théorie, les pouces ne vont jamais sur les rangées du haut (les
+touches ~N~ pour la main gauche et ~O~ pour la main droite).
+
+Pour réaliser les accords ~NL~ et ~OE~ on fait ce qu'on appelle un
+croisement :
+
+*à compléter*
+
+
+
+
+***** Les voyelles (à compléter)
+La touche ~E~ désigne le son É (e accent aigu) correspondant au sons
+produits par la conjonction "et" et l'auxiliaire être conjugué à la
+première personne du singulier au présent de l'indicatif "est".
+
+Pour obtenir le son "e" il faudra appuyer sur les deux touches
+~EU~. On ne tapera donc pas ~LE~ pour l'article défini singulier dans
+"*le* fourneau" mais seulement la touche ~L~ ce qui donnera
+~L/FOUŁ/NO~. Les touches ~LE~ pressées ensemble désigneront
+l'article pluriel dans "*les* biscuits".
+
+Les autres voyelles prises séparément conservent leur valeurs
+absolues. Il faut se rappeler, toutefois, que la sténotypie transcrit
+le son. Ainsi :
+
+- Le son O dans des mots comme eau, haut, pot, saut, s'écrira quelque soit
+  sa graphie avec la même touche ~O~.
+
+- le son OE (diphtongue, ouvert et fermé) comme dans noël, poète... s'obtient par les touches ~OE~
+- le son OI comme dans quoi, poids... s'obtient par les touches ~OI~
+- le son OU comme dans sous, coup... s'obtient par les touches ~OU~
+- le son ON comme dans bonbon, bougeons... s'obtient par les touches ~Oᴎ~
+- le son OIN comme dans soin, point... s'obtient par les touches ~OIᴎ~
+
+
+- le son AU (diphtongue) comme dans bahut, ahurissant... s'obtient par les touches ~AU~
+- le son AÏ comme dans ail, taille, gouvernail... s'obtient par les touches ~AI~
+- le son AN comme dans argent, enfant... s'obtient par les touches ~Aᴎ~
+
+- le son EU comme dans peur, neuneu... s'obtient par les touches ~EU~
+- le son ÉA comme dans réalisateur, béatitude... s'obtient par les touches ~EA~
+- le son ÉI comme dans réveil, émerveille... s'obtient par les touches ~EI~
+- le son EUIL comme dans écureuil, oeil... s'obtient par les touches ~EU~
+
+- le son I comme dans sténotypie, manie... s'obtient par les touches ~I~
+- le son IN comme dans intégral, pingre... s'obtient par les touches ~In~
+
+*Attention :*
+
+- le son ILLE comme dans quille, fille, aiguille, brille, s'obtient par les touches ~YI~
+***** Les sons finaux (à compléter)
+
+- la touche ~Ł~ (L barré) désigne les consonnes de fin de syllabe
+  ~Leu~ et ~Reu~ comme dans parmi et libéral ~PAŁ/MI~ ~LI/P*E/RAŁ~
+
+- la touche ~$~ désigne les consonnes fricatives de fin de syllabe et
+  regroupe les valeurs potentielles suivante : les sons Seu, Zeu, Feu, Veu
+
+  - le sons finaux INS, INZ, INV, INF comme dans prince,
+    quinze... s'écrivent d'une seule manière ~In$~. (~PRIn$~, ~KIn$~).
+
+  - le sons finaux OS, OZ, OV, OF comme dans costale, pause, mauve, étoffe
+     s'écrivent ~O$~  (~KO$/TAŁ~, ~PO$~, ~MO$~, ~E/TO$~).
+
+- le son final IME comme dans prime s'écrira ~InC~ et donnera donc
+  ~PRInC~. l'adjonction du ~C~ final à ~In~ en change la nature. Il ne
+  désignera plus le son ~In~
+
+**** Le doigté technique (à compléter)
+
+
+
 *** À propos du dictionnaire français et de Plover
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les
