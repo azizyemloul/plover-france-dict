@@ -1,10 +1,10 @@
 #!/usr/bin/awk -f
-#brute();
-verbes();
+brute();
+#verbes();
 #noms();
 #adjectifs();
 ## * BEGIN
-#BEGIN{FS="\t"}
+BEGIN{FS="\t";OFS="\t"}
 # BEGIN{
 #     FS="\t";
 #     # ### Les contractions CV1/CV2 = CCV2 quand V2 = V1 pour les mots de	       > 2 syll
@@ -95,9 +95,13 @@ verbes();
 # }
 
 ## * BRUTE()
+# function brute(){
+#     gsub(/-/, "/", $2);
+#     print "\"" $2 "\": \"" $1 "\",";}
 function brute(){
     gsub(/-/, "/", $2);
-    print "\"" $2 "\": \"" $1 "\",";}
+    print $0;}
+
 ## * VERBES()
 function verbes(){
     gsub(/-/, "/", $2);
