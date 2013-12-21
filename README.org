@@ -20,7 +20,44 @@
 #+END_EXAMPLE
 
 *** Si vous voulez essayer Plover avec ce clavier :
+Vous pouvez soit télécharger
+
 https://github.com/azizyemloul/plover-france
+*** Le dictionnaire
+Le dictionnaire que j'utilise actuellement est une collection de
+fichiers au format json qui se trouve dans le dossier [[./dic][dic/]]
+
+Vous pouvez télécharger se dossier et configurer plover afin qu'il
+prenne en compte cette collection ou bien modifier directement le
+fichier de configuration de Plover, ~plover.cfg~ comme suit :
+
+#+BEGIN_SRC
+[Dictionary Configuration]
+dictionary_file1 = CHEMIN_VERS/dic/Chiffres.json
+dictionary_file2 = CHEMIN_VERS/dic/SION.json
+dictionary_file3 = CHEMIN_VERS/dic/Adjectifs.json
+dictionary_file4 = CHEMIN_VERS/dic/Adverbes.json
+dictionary_file5 = CHEMIN_VERS/dic/Noms.json
+dictionary_file6 = CHEMIN_VERS/dic/Verbes.json
+dictionary_file7 = CHEMIN_VERS/dic/Personnel.json
+#+END_SRC
+Remplacer l'expression ~CHEMIN_VERS/~ dans le listing précédent par le
+chemin absolu vers le dossier ~dic~ que vous avez téléchargé.
+
+Sous Windows, cela peut prendre la forme suivante :
+#+BEGIN_SRC
+[Dictionary Configuration]
+dictionary_file1 = C:\Users\foo\Desktop\dic\Chiffres.json
+dictionary_file2 = C:\Users\foo\Desktop\dic\SION.json
+dictionary_file3 = C:\Users\foo\Desktop\dic\Adjectifs.json
+dictionary_file4 = C:\Users\foo\Desktop\dic\Adverbes.json
+dictionary_file5 = C:\Users\foo\Desktop\dic\Noms.json
+dictionary_file6 = C:\Users\foo\Desktop\dic\Verbes.json
+dictionary_file7 = C:\Users\foo\Desktop\dic\Personnel.json
+#+END_SRC
+L'ordre des fichiers n'est pas arbitraire : Plover renvoie la dernière
+traduction du sténogramme après avoir passer tous ces
+fichiers dans l'ordre.
 
 *** Construction d'un dictionnaire français pour Plover
 La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la construction d'un dictionnaire sténotypique
@@ -274,7 +311,6 @@ le son. Ainsi :
 **** Le doigté technique (à compléter)
 
 
-
 *** À propos du dictionnaire français et de Plover
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les
@@ -512,7 +548,6 @@ ___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
 
 * Footnotes
-
 [1] Les performances vélotypiques en termes de vitesse avoisinent
 les 150 mots/minute, loin derrière la sténotypie à 210 mots
 /minute. Toutefois, la vélotypie a réussi son accès au sous-titrage
