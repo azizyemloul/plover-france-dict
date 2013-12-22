@@ -33,13 +33,13 @@ fichier de configuration de Plover, ~plover.cfg~ comme suit :
 
 #+BEGIN_SRC
 [Dictionary Configuration]
-dictionary_file1 = CHEMIN_VERS/dic/Chiffres.json
-dictionary_file2 = CHEMIN_VERS/dic/SION.json
-dictionary_file3 = CHEMIN_VERS/dic/Adjectifs.json
-dictionary_file4 = CHEMIN_VERS/dic/Adverbes.json
-dictionary_file5 = CHEMIN_VERS/dic/Noms.json
-dictionary_file6 = CHEMIN_VERS/dic/Verbes.json
-dictionary_file7 = CHEMIN_VERS/dic/Personnel.json
+dictionary_file1 = CHEMIN_VERS/dic/French_SION.json
+dictionary_file2 = CHEMIN_VERS/dic/French_Chiffres.json
+dictionary_file3 = CHEMIN_VERS/dic/French_Adverbes.json
+dictionary_file4 = CHEMIN_VERS/dic/French_Adjectifs.json
+dictionary_file5 = CHEMIN_VERS/dic/French_Noms.json
+dictionary_file6 = CHEMIN_VERS/dic/French_Verbes.json
+dictionary_file7 = CHEMIN_VERS/dic/French_User.json
 #+END_SRC
 Remplacer l'expression ~CHEMIN_VERS/~ dans le listing précédent par le
 chemin absolu vers le dossier ~dic~ que vous avez téléchargé.
@@ -47,57 +47,45 @@ chemin absolu vers le dossier ~dic~ que vous avez téléchargé.
 Sous Windows, cela peut prendre la forme suivante :
 #+BEGIN_SRC
 [Dictionary Configuration]
-dictionary_file1 = C:\Users\foo\Desktop\dic\Chiffres.json
-dictionary_file2 = C:\Users\foo\Desktop\dic\SION.json
-dictionary_file3 = C:\Users\foo\Desktop\dic\Adjectifs.json
-dictionary_file4 = C:\Users\foo\Desktop\dic\Adverbes.json
-dictionary_file5 = C:\Users\foo\Desktop\dic\Noms.json
-dictionary_file6 = C:\Users\foo\Desktop\dic\Verbes.json
-dictionary_file7 = C:\Users\foo\Desktop\dic\Personnel.json
+dictionary_file1 = C:\Users\foo\Desktop\dic\French_SION.json
+dictionary_file2 = C:\Users\foo\Desktop\dic\French_Chiffres.json
+dictionary_file3 = C:\Users\foo\Desktop\dic\French_Adverbes.json
+dictionary_file4 = C:\Users\foo\Desktop\dic\French_Adjectifs.json
+dictionary_file5 = C:\Users\foo\Desktop\dic\French_Noms.json
+dictionary_file6 = C:\Users\foo\Desktop\dic\French_Verbes.json
+dictionary_file7 = C:\Users\foo\Desktop\dic\French_User.json
 #+END_SRC
 L'ordre des fichiers n'est pas arbitraire : Plover renvoie la dernière
 traduction du sténogramme après avoir passer tous ces
 fichiers dans l'ordre.
 
 *** Construction d'un dictionnaire français pour Plover
-La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la construction d'un dictionnaire sténotypique
-au format JSON requis par
+La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
+construction d'un dictionnaire sténotypique au format JSON requis par
 le projet [[http://plover.stenoknight.com/][Plover]].
 
 Le fichier original contenant cette base de données est
 ~Lexique380.txt~.
 
-Les colonnes qui nous intéressent dans cette large base, qui se
-présente sous forme d'un tableau texte géant, sont ~1_ortho~ et
-~23_syll~.
-
-Il a fallu s'y reprendre à plusieurs reprises sur une période de
-plusieurs mois pour aboutir au fichier ~dict-base.txt~.
-
-Le fichier ~dict-base-uniq.txt~ est une version expurgée de doublons.
-
-Le fichier ~france_french_words.txt~ servant à la vérification
+Le fichier ~Plover-files/france_french_words.txt~ servant à la vérification
 orthographique provient également des travaux des équipes
 [[http://www.lexique.org/listes/liste_mots.txt][Lexique]].
 
 Le fichier ~fr.aff~ fait partie de la distribution [[http://hunspell.sourceforge.net/][Hunspell]], un
 analyseur orthographique et morphologique prenant en charge la langue
-française. Il sert de base à la définition des règles d'affixation
-contenus dans ~orthography.py~.
+française. Il sert de base d'inspiration à la définition des règles
+d'affixation que dois contenir ~orthography.py~.
 *** À propos de la sténotypie
-La sténotypie est une méthode de saisie qui tend à représenter le
-parole dans une langue donnée par les sons que celle-ci est en mesure
-de produire.
+La sténotypie est une méthode d'écriture rapide de la parole.
 
 Elle tire son héritage de la sténographie en lui apportant une
 importante amélioration : tracés à la main, les caractères
 sténographiques sont propres au sténographe qui les a dessinés et
 peuvent difficilement être interprétés par un autre lecteur.
 
-La sténotype - ainsi est appelée la machine de sténotypie - apporte
-donc le moyen de produire des signes sténographiques "types"
-reconnaissables par n'importe quel lecteur instruit des règles de
-base.
+La sténotype - ainsi est appelée la machine de sténotypie - produit
+des signes sténographiques "types" reconnaissables par n'importe quel
+lecteur instruit des règles de base.
 
 Le clavier de la sténotype Grandjean en usage en France a été conçu
 par l'ingénieur [[http://fr.wikipedia.org/wiki/Marc_Grandjean][Marc Grandjean]]. La première sténotype Grandjean a été
