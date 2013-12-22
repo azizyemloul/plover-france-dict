@@ -20,45 +20,37 @@
 #+END_EXAMPLE
 
 *** Si vous voulez essayer Plover avec ce clavier :
-Si vous êtes sous windows téléchargez le contenu de ce dépôt et lancez
-Plover.exe, après avoir dézippé l'archive.
+Sous Windows, téléchargez le contenu de ce dépôt et lancez
+plover.exe, après avoir dézippé l'archive.
 
- https://github.com/azizyemloul/plover-france
-*** Le dictionnaire
-Le dictionnaire que j'utilise actuellement est une collection de
-fichiers au format json qui se trouve dans le dossier [[./dic][dic/]]
+Il est très probable que vous receviez un message d'alerte au
+démarrage que vous pouvez ignorer.
 
-Vous pouvez télécharger se dossier et configurer plover afin qu'il
-prenne en compte cette collection ou bien modifier directement le
-fichier de configuration de Plover, ~plover.cfg~ comme suit :
+Appuyez sur ~configure~, puis sur l'onglet ~dictionary~ et, après
+avoir supprimé le dictionnaire anglais par défaut, ajoutez les
+dictionnaires français en respectant l'ordre numérique.
 
-#+BEGIN_SRC
-[Dictionary Configuration]
-dictionary_file1 = CHEMIN_VERS/dic/01_French_SION.json
-dictionary_file2 = CHEMIN_VERS/dic/02_French_Chiffres.json
-dictionary_file3 = CHEMIN_VERS/dic/03_French_Adverbes.json
-dictionary_file4 = CHEMIN_VERS/dic/04_French_Adjectifs.json
-dictionary_file5 = CHEMIN_VERS/dic/05_French_Noms.json
-dictionary_file6 = CHEMIN_VERS/dic/06_French_Verbes.json
-dictionary_file7 = CHEMIN_VERS/dic/07_French_User.json
-#+END_SRC
-Remplacer l'expression ~CHEMIN_VERS/~ dans le listing précédent par le
-chemin absolu vers le dossier ~dic~ que vous avez téléchargé.
-
-Sous Windows, cela peut prendre la forme suivante :
-#+BEGIN_SRC
-[Dictionary Configuration]
-dictionary_file1 = C:\Users\foo\Desktop\dic\01_French_SION.json
-dictionary_file2 = C:\Users\foo\Desktop\dic\02_French_Chiffres.json
-dictionary_file3 = C:\Users\foo\Desktop\dic\03_French_Adverbes.json
-dictionary_file4 = C:\Users\foo\Desktop\dic\04_French_Adjectifs.json
-dictionary_file5 = C:\Users\foo\Desktop\dic\05_French_Noms.json
-dictionary_file6 = C:\Users\foo\Desktop\dic\06_French_Verbes.json
-dictionary_file7 = C:\Users\foo\Desktop\dic\07_French_User.json
-#+END_SRC
-L'ordre des fichiers n'est pas arbitraire : Plover renvoie la dernière
+L'ordre des fichiers a sa raison : Plover renvoie la dernière
 traduction du sténogramme après avoir passer tous ces
 fichiers dans l'ordre.
+
+Utilisez le fichier ~07_French_User.json~ pour ajouter vos entrées
+personnelles. Celles-ci annuleront toutes les autres
+entrées sur les autres dictionnaires.
+
+Le dictionnaire est au format JSON. Ce format désigne un fichier texte
+dont le tout premier caractère est une accolade ouvrante ~{~.
+
+Chaque ligne de ce fichier contient une "instruction" de la forme
+suivante :
+#+BEGIN_SRC json
+"STE/NO/K*RAnC": "sténogramme",
+#+END_SRC
+La dernière entrée du dictionnaire ne doit pas finir avec une virgule
+mais avec une accolade fermante. Comme ceci :
+#+BEGIN_SRC json
+"T*El/NYE/MO":"dernier mot"}
+#+END_SRC
 
 *** Construction d'un dictionnaire français pour Plover
 La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
@@ -68,14 +60,14 @@ le projet [[http://plover.stenoknight.com/][Plover]].
 Le fichier original contenant cette base de données est
 ~Lexique380.txt~.
 
-Le fichier ~Plover-files/france_french_words.txt~ servant à la vérification
-orthographique provient également des travaux des équipes
+Le fichier ~Atelier/Plover-files/france_french_words.txt~ sert à la
+vérification orthographique et provient également des travaux des équipes
 [[http://www.lexique.org/listes/liste_mots.txt][Lexique]].
 
-Le fichier ~fr.aff~ fait partie de la distribution [[http://hunspell.sourceforge.net/][Hunspell]], un
-analyseur orthographique et morphologique prenant en charge la langue
-française. Il sert de base d'inspiration à la définition des règles
-d'affixation que dois contenir ~orthography.py~.
+Le fichier ~Hunspell-aff/fr.aff~ fait partie de la distribution
+[[http://hunspell.sourceforge.net/][Hunspell]], un analyseur orthographique et morphologique prenant en
+charge la langue française. Il sert de base d'inspiration à la
+définition des règles d'affixation que dois contenir ~orthography.py~.
 *** À propos de la sténotypie
 La sténotypie est une méthode d'écriture rapide de la parole.
 
