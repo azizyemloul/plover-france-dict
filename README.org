@@ -127,10 +127,12 @@ Un exemple pour bien comprendre :
 Une explication pour écrire A/FEŁ :
 
 1) On appuie avec l'index de la main droite sur ~A~
-2) On relâche et on fait revenir son index à sa position de départ, au dessus de la touche ~U~.
+2) On relâche et on fait revenir son index à sa position de départ, au
+   dessus de la touche ~U~.
 
-Ceci pour la premier accord qui n'aura au final été constitué que d'une seule touche.
-Continuons sur le deuxième accord ~FEŁ~ qui compose ce mot :
+Ceci pour la premier accord qui n'aura au final été constitué que
+d'une seule touche. Continuons sur le deuxième accord ~FEŁ~ qui
+compose ce mot :
 
 
 3) On appuie de son majeur de la main gauche sur la touche ~F~ ;
@@ -140,8 +142,8 @@ Continuons sur le deuxième accord ~FEŁ~ qui compose ce mot :
 6) Les trois touches sont toutes appuyées comme pour un accord de
    piano.
 7) On relâche les touches toutes à la fois
-8) On fait revenir ses doigts à leurs positions de repos, sur la rangée
-   du bas. Il se trouve que pour cette exemple ils y sont déjà.
+8) On fait revenir ses doigts à leurs positions de repos, sur la
+   rangée du bas. Il se trouve que pour cette exemple ils y sont déjà.
 
 Ce n'est pas le cas dans le deuxième exemple, le mot ~RA/PID~ :
 
@@ -160,13 +162,13 @@ Le deuxième accord ~PID~ vous l'aurez compris se joue avec :
 9) On fait revenir tout ce petit monde à sa place, respectivement ~M~,
    ~Ł~ et ~C~.
 
-Il est important de veillez respecter ce mouvement de va et vient depuis et vers
-la position de départ après chaque frappe.
+Il est important de veillez respecter ce mouvement de va et vient
+depuis et vers la position de départ après chaque frappe.
 
 Il s'agit d'une stratégie d'apprentissage, l'objectif étant de créer
-des réflexes sur le modèle d'un coureur aux 100 mètres :
-ce sportif doit s'entraîner à réduire son temps de réaction entre le top
-de départ et sa première impulsion musculaire.
+des réflexes sur le modèle d'un coureur aux 100 mètres : ce sportif
+doit s'entraîner à réduire son temps de réaction entre le top de
+départ et sa première impulsion musculaire.
 
 Pour un sténotypiste ce temps de réaction est aussi important et pour
 ce faire il faut, comme pour un coureur aux 100 mètres, se tenir sur
@@ -177,7 +179,6 @@ On a composé deux mots, de 7 et 6 lettres respectivement, avec 2
 accords pour chacun, c'est-à-dire 2 mouvements. C'est cette économie
 de frappe qui explique la rapidité qu'acquièrent les sténotypistes
 professionnels.
-
 **** Les sons du clavier
 ***** Les sons initiaux
 Toutes les consonnes sont représentées à la main gauche.
