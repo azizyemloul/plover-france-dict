@@ -31,7 +31,7 @@ avoir supprimé le dictionnaire anglais par défaut, ajoutez les
 dictionnaires français en respectant l'ordre numérique.
 
 L'ordre des fichiers a sa raison : Plover renvoie la dernière
-traduction du sténogramme après avoir passer tous ces
+traduction du sténogramme après avoir passé tous ces
 fichiers dans l'ordre.
 
 Utilisez le fichier ~07_French_User.json~ pour ajouter vos entrées
@@ -124,7 +124,7 @@ Un exemple pour bien comprendre :
 - Affaire s'écrira A/FEŁ
 - Rapide  s'écrira RA/PID
 
-Une explication. Pour écrire A/FEŁ :
+Une explication pour écrire A/FEŁ :
 
 1) On appuie avec l'index de la main droite sur ~A~
 2) On relâche et on fait revenir son index à sa position de départ, au dessus de la touche ~U~.
@@ -215,21 +215,28 @@ Dernier élément de cette liste, le son Cheu s'obtient avec les touches
           |______|______|______|______|______|
 
 #+END_EXAMPLE
+
+***** Quelques éléments sur le doigté
+
 Pour actionner deux touches qui se trouvent sur la même colonne, il
-faut appuyer entre les deux touches, ainsi les deux seront actionnée.
+faut appuyer entre les deux touches, ainsi les deux seront actionnées.
 
 L'exception à cette règle de doigté concerne les pouces.
 
 En théorie, les pouces ne vont jamais sur les rangées du haut (les
 touches ~N~ pour la main gauche et ~O~ pour la main droite).
 
-Pour réaliser les accords ~NL~ et ~OE~ on fait ce qu'on appelle un
-croisement :
+Pour réaliser les accords ~NL~, ~RN~, ~OE~ et ~OU~ on fait ce qu'on
+appelle un croisement :
 
-*à compléter*
+- Pour réaliser le son ~RN~ l'index gauche grimpe d'une rangée, se
+  décale vers la droite pour appuyer sur la touche ~N~, pendant que le
+  pouce glisse vers la gauche pour appuyer sur la touche ~R~
 
-
-
+- Pour réaliser le son ~OU~ l'index droit grimpe d'une rangée, se
+  décale vers la gauche pour appuyer sur la touche ~O~. Le pouce
+  glisse vers la droite (intérieur de la main) pour appuyer sur la
+  touche ~U~
 
 ***** Les voyelles (à compléter)
 La touche ~E~ désigne le son É (e accent aigu) correspondant au sons
@@ -288,9 +295,6 @@ le son. Ainsi :
 - le son final IME comme dans prime s'écrira ~InC~ et donnera donc
   ~PRInC~. l'adjonction du ~C~ final à ~In~ en change la nature. Il ne
   désignera plus le son ~In~
-
-**** Le doigté technique (à compléter)
-
 
 *** À propos du dictionnaire français et de Plover
 Représenter une langue par ses sons permet aux sténotypistes
@@ -395,13 +399,13 @@ clavier et, fatalement, la méthode sténotypique qui en a découlé.
 	|  P   *             C|------->	.
 	|                     |
 
-Figure représentant le placement physique des lettres sur un ruban d'une machine
-mécanique et la traduction correspondante de chaque accord (ou frappe).
-[17 mots, 102 caractères en 25 frappes]
+Figure représentant le placement physique des lettres sur le ruban en
+papier d'une machine mécanique et la traduction correspondante de
+chaque accord (ou frappe). [17 mots, 102 caractères en 25 frappes]
 
-(*) Un "souligné" (convention sténotypique pour indiquer les noms propres et mots spéciaux)
+(*) Un "souligné" (convention sténotypique pour indiquer les noms
+propres et mots spéciaux)
 #+END_EXAMPLE
-
 
 La réminiscence mécanique la plus patente dans la sténotypie moderne
 est l'ordre et la non permutabilité des touches.
