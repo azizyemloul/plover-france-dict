@@ -51,7 +51,12 @@ mais avec une accolade fermante. Comme ceci :
 #+BEGIN_SRC json
 "T*El/NYE/MO":"dernier mot"}
 #+END_SRC
-
+**** Observation importante :
+Les caractères ~£~ (L orné) et ~ᴎ~ (N inversé) sont remplacés dans les
+fichiers JSON respectivement par les caractère ~l~ (L minuscule) et
+~n~ (N minscule) en raison de l'exotisme des premiers. L'introduction
+de l'encodage UTF8 étant récent dans Plover, il vallait mieux opter
+pour des caractères plus communs.
 *** Construction d'un dictionnaire français pour Plover
 La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
 construction d'un dictionnaire sténotypique au format JSON requis par
