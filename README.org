@@ -19,14 +19,14 @@
               |____|___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 
-*** Si vous voulez essayer Plover avec ce clavier :
+* Vous voulez essayer Plover en français
 Sous Windows, téléchargez le contenu de ce dépôt et lancez
 plover.exe, après avoir dézippé l'archive.
 
 Il est très probable que vous receviez un message d'alerte au
 démarrage que vous pouvez ignorer.
 
-Appuyez sur ~configure~, puis sur l'onglet ~dictionary~ et, après
+Appuyez sur ~Configure~, puis sur l'onglet ~Dictionary~ et, après
 avoir supprimé le dictionnaire anglais par défaut, ajoutez les
 dictionnaires français en respectant l'ordre numérique.
 
@@ -46,34 +46,39 @@ suivante :
 #+BEGIN_SRC json
 "STE/NO/K*RAnC": "sténogramme",
 #+END_SRC
-La dernière entrée du dictionnaire ne doit pas finir avec une virgule
-mais avec une accolade fermante. Comme ceci :
+La dernière entrée du dictionnaire ne doit pas s'achever avec une
+virgule comme les précédentes mais avec une accolade fermante. Comme
+ceci :
 #+BEGIN_SRC json
 "T*El/NYE/MO":"dernier mot"}
 #+END_SRC
-**** Observation importante :
+** Observation importante :
 Les caractères ~£~ (L orné) et ~ᴎ~ (N inversé) sont remplacés dans les
 fichiers JSON respectivement par les caractère ~l~ (L minuscule) et
 ~n~ (N minscule) en raison de l'exotisme des premiers. L'introduction
 de l'encodage UTF8 étant récent dans Plover, il vallait mieux opter
 pour des caractères plus communs.
-*** Construction d'un dictionnaire français pour Plover
+* Les matériaux de construction
 La base de données lexicales libre [[http://www.lexique.org/][Lexique]] est le fondement de la
 construction d'un dictionnaire sténotypique au format JSON requis par
 le projet [[http://plover.stenoknight.com/][Plover]].
 
 Le fichier original contenant cette base de données est
-~Lexique380.txt~.
+~Atelier/Lexique380/Lexique380.txt~.
 
 Le fichier ~Atelier/Plover-files/france_french_words.txt~ sert à la
 vérification orthographique et provient également des travaux des équipes
 [[http://www.lexique.org/listes/liste_mots.txt][Lexique]].
 
-Le fichier ~Hunspell-aff/fr.aff~ fait partie de la distribution
-[[http://hunspell.sourceforge.net/][Hunspell]], un analyseur orthographique et morphologique prenant en
-charge la langue française. Il sert de base d'inspiration à la
-définition des règles d'affixation que dois contenir ~orthography.py~.
-*** À propos de la sténotypie
+Le fichier ~Atelier/Hunspell-aff/fr.aff~ fait partie de la
+distribution [[http://hunspell.sourceforge.net/][Hunspell]], un analyseur orthographique et morphologique
+prenant en charge la langue française. Il sert de base d'inspiration à
+la définition des règles d'affixation que dois contenir le fichier
+~orthography.py~.
+
+La construction des dictionnaires JSON se fait grâce au script awk
+~Atelier/dic-generator.awk~.
+* À propos de la sténotypie
 La sténotypie est une méthode d'écriture rapide de la parole.
 
 Elle tire son héritage de la sténographie en lui apportant une
@@ -126,10 +131,10 @@ fois et produit un accord représentant une unité de son.
 
 Un exemple pour bien comprendre :
 
-- Affaire s'écrira A/FE£
-- Rapide  s'écrira RA/PID
+- Affaire s'écrira ~A/FE£~
+- Rapide  s'écrira ~RA/PID~
 
-Une explication pour écrire A/FE£ :
+Une explication pour écrire ~A/FE£~  :
 
 1) On appuie avec l'index de la main droite sur ~A~
 2) On relâche et on fait revenir son index à sa position de départ, au
@@ -137,7 +142,7 @@ Une explication pour écrire A/FE£ :
 
 Ceci pour la premier accord qui n'aura au final été constitué que
 d'une seule touche. Continuons sur le deuxième accord ~FE£~ qui
-compose ce mot :
+compose ce mot :
 
 
 3) On appuie de son majeur de la main gauche sur la touche ~F~ ;
@@ -184,8 +189,7 @@ On a composé deux mots, de 7 et 6 lettres respectivement, avec 2
 accords pour chacun, c'est-à-dire 2 mouvements. C'est cette économie
 de frappe qui explique la rapidité qu'acquièrent les sténotypistes
 professionnels.
-**** Les sons du clavier
-***** Les sons initiaux
+** Les sons initiaux ou attaques
 Toutes les consonnes sont représentées à la main gauche.
 
 Certaines sont immédiatement représentées, comme pour les sons Seu,
@@ -208,8 +212,13 @@ obtenus par l'adjonction de l'étoile. Ainsi :
 - le son Gueu s'obtient par les touches ~K*~
 - le son Veu s'obtient par les touches ~F*~
 
-Dernier élément de cette liste, le son Cheu s'obtient avec les touches
-~SK~ pressées ensemble.
+Dernier élément de cette liste, le son Cheu qui s'obtient avec les
+touches ~SK~ pressées ensemble.
+
+*** Quelques éléments sur les règles de doigté
+
+Pour actionner deux touches se trouvant sur la même colonne, il
+faut appuyer entre les deux touches, ainsi les deux seront actionnées.
 
 #+BEGIN_EXAMPLE
            ______ ______ ______ ______ ______
@@ -222,12 +231,7 @@ Dernier élément de cette liste, le son Cheu s'obtient avec les touches
 
 #+END_EXAMPLE
 
-***** Quelques éléments sur le doigté
-
-Pour actionner deux touches qui se trouvent sur la même colonne, il
-faut appuyer entre les deux touches, ainsi les deux seront actionnées.
-
-L'exception à cette règle de doigté concerne les pouces.
+L'exception à cette règle du doigté concerne les pouces.
 
 En théorie, les pouces ne vont jamais sur les rangées du haut (les
 touches ~N~ pour la main gauche et ~O~ pour la main droite).
@@ -237,54 +241,88 @@ appelle un croisement :
 
 - Pour réaliser le son ~RN~ l'index gauche grimpe d'une rangée, se
   décale vers la droite pour appuyer sur la touche ~N~, pendant que le
-  pouce glisse vers la gauche pour appuyer sur la touche ~R~
+  pouce glisse vers la gauche pour appuyer sur la touche ~R~.
 
 - Pour réaliser le son ~OU~ l'index droit grimpe d'une rangée, se
   décale vers la gauche pour appuyer sur la touche ~O~. Le pouce
   glisse vers la droite (intérieur de la main) pour appuyer sur la
-  touche ~U~
+  touche ~U~.
 
-***** Les voyelles (à compléter)
-La touche ~E~ désigne le son É (e accent aigu) correspondant au sons
-produits par la conjonction "et" et l'auxiliaire être conjugué à la
-première personne du singulier au présent de l'indicatif "est".
+Réalisation du son ~NL~
+#+BEGIN_EXAMPLE
+           ______ ______ ______ ______ ______
+          |      |      |      |      |index |
+          |  S   |  P   |  T   |  *   |  N   |
+          |______|______|______|______|______|
+          |      |      |      |      |pouce |
+          |  K   |  M   |  F   |  R   |  L   |
+          |______|______|______|______|______|
 
-Pour obtenir le son "e" il faudra appuyer sur les deux touches
-~EU~. On ne tapera donc pas ~LE~ pour l'article défini singulier dans
-"*le* fourneau" mais seulement la touche ~L~ ce qui donnera
-~L/FOU£/NO~. Les touches ~LE~ pressées ensemble désigneront
-l'article pluriel dans "*les* biscuits".
+#+END_EXAMPLE
+
+Réalisation du son ~RN~
+#+BEGIN_EXAMPLE
+           ______ ______ ______ ______ ______
+          |      |      |      |      |index |
+          |  S   |  P   |  T   |  *   |  N   |
+          |______|______|______|______|______|
+          |      |      |      |pouce |      |
+          |  K   |  M   |  F   |  R   |  L   |
+          |______|______|______|______|______|
+
+#+END_EXAMPLE
+
+** Les voyelles ou noyau (à compléter)
+La touche ~E~ désigne les son É et È (e fermé et ouvert)
+correspondant au sons produits par la conjonction "et" et l'auxiliaire
+être conjugué à la première personne du singulier au présent de
+l'indicatif "est".
+
+Pour obtenir le son ~eu~ comme dans ~oeuf~ et ~beurre~ il faudra
+appuyer sur les deux touches ~EU~. On ne tapera donc pas ~LE~ pour
+l'article défini singulier dans "*le* fourneau" mais seulement la
+touche ~L~ ce qui donnera ~L/FOU£/NO~. Les touches ~LE~ pressées
+ensemble désigneront l'article pluriel dans "*les* biscuits".
 
 Les autres voyelles prises séparément conservent leur valeurs
 absolues. Il faut se rappeler, toutefois, que la sténotypie transcrit
 le son. Ainsi :
 
-- Le son O dans des mots comme eau, haut, pot, saut, s'écrira quelque soit
-  sa graphie avec la même touche ~O~.
+- Le son O dans des mots comme eau, haut, pot, saut, s'écrira quelque
+  soit sa graphie avec la même touche ~O~.
 
-- le son OE (diphtongue, ouvert et fermé) comme dans noël, poète... s'obtient par les touches ~OE~
+- le son OE (diphtongue, ouvert et fermé) comme dans noël,
+  poète... s'obtient par les touches ~OE~
 - le son OI comme dans quoi, poids... s'obtient par les touches ~OI~
 - le son OU comme dans sous, coup... s'obtient par les touches ~OU~
-- le son ON comme dans bonbon, bougeons... s'obtient par les touches ~Oᴎ~
+- le son ON comme dans bonbon, bougeons... s'obtient par les touches
+  ~Oᴎ~
 - le son OIN comme dans soin, point... s'obtient par les touches ~OIᴎ~
 
 
-- le son AU (diphtongue) comme dans bahut, ahurissant... s'obtient par les touches ~AU~
-- le son AÏ comme dans ail, taille, gouvernail... s'obtient par les touches ~AI~
-- le son AN comme dans argent, enfant... s'obtient par les touches ~Aᴎ~
+- le son AU (diphtongue) comme dans bahut, ahurissant... s'obtient par
+  les touches ~AU~
+- le son AÏ comme dans ail, taille, gouvernail... s'obtient par les
+  touches ~AI~
+- le son AN comme dans argent, enfant... s'obtient par les touches
+  ~Aᴎ~
 
 - le son EU comme dans peur, neuneu... s'obtient par les touches ~EU~
-- le son ÉA comme dans réalisateur, béatitude... s'obtient par les touches ~EA~
-- le son ÉI comme dans réveil, émerveille... s'obtient par les touches ~EI~
-- le son EUIL comme dans écureuil, oeil... s'obtient par les touches ~EU~
-
-- le son I comme dans sténotypie, manie... s'obtient par les touches ~I~
-- le son IN comme dans intégral, pingre... s'obtient par les touches ~In~
+- le son ÉA comme dans réalisateur, béatitude... s'obtient par les
+  touches ~EA~
+- le son ÉI comme dans réveil, émerveille... s'obtient par les touches
+  ~EI~
+- le son EUIL comme dans écureuil, oeil... s'obtient par les touches
+  ~EU~
+- le son I comme dans sténotypie, manie... s'obtient par les touches
+  ~I~
+- le son IN comme dans intégral, pingre... s'obtient par les touches
+  ~In~
 
 *Attention :*
 
 - le son ILLE comme dans quille, fille, aiguille, brille, s'obtient par les touches ~YI~
-***** Les sons finaux (à compléter)
+** Les sons finaux ou coda (à compléter)
 
 - la touche ~£~ (L barré) désigne les consonnes de fin de syllabe
   ~Leu~ et ~Reu~ comme dans parmi et libéral ~PA£/MI~ ~LI/P*E/RA£~
@@ -302,43 +340,103 @@ le son. Ainsi :
   ~PRInC~. l'adjonction du ~C~ final à ~In~ en change la nature. Il ne
   désignera plus le son ~In~
 
-*** À propos du dictionnaire français et de Plover
+* À propos du dictionnaire français et de Plover
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les
 230 mots par minute. Cette caractéristique a, toutefois, ses revers
 quand il s'agit de la traiter informatiquement.
-**** TODO Les ~homophones~  :
+** Les ~homophones~  :
 
-- vos = veau
-- eau = aux
-- ce  = se
-- et  = est = ait = aie ...
-- à faire = affaire
-- abreuver = abreuvés = abreuvez
+- vos      = veau
+- eau      = aux
+- ce       = se
+- et       = est = ait = aie ...
+- à faire  = affaire
+- abreuver = abreuvés = abreuvez
 - ...
 
 Aux homophones s'ajoutent les caractéristiques de la disposition
 du clavier français :
 
-- Ville  = F*I£
-- Vire   = F*I£
-- Vile   = F*I£
+- Ville  = F*I£
+- Vire   = F*I£
+- Vile   = F*I£
 
-- bref   = P*RE$
-- braise = P*RE$
+- bref   = P*RE$
+- brève  = P*RE$
+- braise = P*RE$
 - ...
 
 Plusieurs mots s'écrivent en utilisant les mêmes accords. Le
 concepteur de la disposition du clavier, Marc Grandjean, a choisi
-d'assigner à certaines touches plusieurs valeurs potentielles afin que
-la composition de tous les sons soit possible sur 21 touches. Ainsi :
+d'assigner à certaines touches plusieurs valeurs potentielles de même
+catégorie phonétique afin que la composition de tous les sons soit
+possible sur les 21 touches. Ainsi :
 
 - ~£~ peut désigner les sons ~L~ ou ~R~ finaux (les liquides)
 - ~$~ peut désigner les sons ~S~, ~Z~, ~F~ ou ~V~ finaux (les fricatives)
-- ~D~ peut désigner les sons ~T~, ~D~, ~P~ ou ~B~ finaux (les occlusives)
-- ~C~ peut désigner les sons ~K~ ou ~G~ finaux
+- ~D~ peut désigner les sons ~T~, ~D~, ~P~ ou ~B~ finaux (les
+  occlusives alvéolaires et bilabiales)
+- ~C~ peut désigner les sons ~K~ ou ~G~ finaux (les occlusives vélaires)
+** Les limites de l'approche phonétique
+En appliquant une approche purement phonétique pour la construction
+d'un dictionnaire sténotypique, on est très vite confronté à la
+réalité suivante :
 
-**** TODO L'héritage de la contrainte mécanique :
+Sur les quelques *125 700* entrées du dictionnaire, *92 000* mots
+souffrent d'homophonie. *31 000* entrées du dictionnaire sténotypique
+renvoient pour chacune à plusieurs entrée du dictionnaire français.
+
+Un exemple parmi beaucoup d'autres :
+#+BEGIN_EXAMPLE
+A-LE 	 halez
+A-LE 	 hâlés
+A-LE 	 halés
+A-LE 	 haler
+A-LE 	 hâlées
+A-LE 	 hâlée
+A-LE 	 halée
+A-LE 	 hâlé
+A-LE 	 halé
+A-LE 	 hâlait
+A-LE 	 halait
+A-LE 	 halaient
+A-LE 	 allez
+A-LE 	 allés
+A-LE 	 allers
+A-LE 	 aller
+A-LE 	 allées
+A-LE 	 allée
+A-LE 	 allé
+A-LE 	 allait
+A-LE 	 allais
+A-LE 	 allaient
+A-LE 	 allai
+#+END_EXAMPLE
+23 mots du dictionnaire se transcrivant phonétiquement de la même
+manière, avec un seul sténogramme. C'est, il faut le reconnaître, le
+cas le plus extrême.
+
+Résoudre cette problématique s'avère donc un préalable incontournable
+afin de parvenir à un usage raisonnablement fiable de la sténotypie
+avec Plover.
+
+Les écoles américaines de sténotypie tendent à introduire une part
+d'orthographe plus ou moins importante dans leurs méthodes.
+
+Ce procédé amène des inconvénients : ajouts de frappes ; dérives vers
+des compositions qui n'ont plus aucun trait à la phonétique ;
+divergences et cloisonnement des écoles et des méthodes... Rien qui ne
+va vers une standardisation de la transcription sténographique.
+
+Voici donc le parti pris pour la construction du dictionnaire français :
+
+- La méthode phonétique de base est le socle du dictionnaire.
+- La distinction entre les homophones se fait par le biais de frappes
+  supplémentaires suivant une convention détaillée dans un chapitre à
+  venir.
+
+** L'héritage de la contrainte mécanique :
 Comme pour nos claviers d'ordinateur, le clavier du sténotype semble
 sujet au phénomène de la "[[http://en.wikipedia.org/wiki/Path_dependence][dépendance au sentier]]".
 
@@ -346,7 +444,7 @@ La disposition des claviers de nos ordinateurs est un héritage de la
 disposition des machines à écrire dont la production à grande échelle
 a commencé à la fin du XIX^{e} siècle.
 
-Aux débuts du XX^{e} siècle, la disposition QWERTY s'impose par sa
+Au début du XX^{e} siècle, la disposition QWERTY s'impose par sa
 fiabilité.
 
 #+BEGIN_EXAMPLE
@@ -364,8 +462,8 @@ Source: fr.wikipedia.org/wiki/QWERTY
 #+END_EXAMPLE
 
 Bien que des dispositions plus ergonomiques aient été mises au point,
-DVORAK aux État-Unis, BEPO en France, la disposition QWERTY et son
-héritière française AZERTY sont restés endémiques des bureaux.
+DVORAK aux État-Unis et BEPO en France, la disposition QWERTY et sa
+délinaison française AZERTY sont restées endémiques des bureaux.
 
 En quoi la disposition Grandjean serait-elle concernée par la
 dépendance au sentier ?
@@ -430,12 +528,12 @@ question dans la [[http://fr.wikipedia.org/wiki/V%25C3%25A9lotypie][vélotypie]]
 sténotypie en termes de vitesse mais qui la challenge en termes de
 précision et d'intégration technique[1].
 
-Il n'est pas dit qu'une une remise en question des caractéristiques de
-la méthode héritées de contingences mécaniques donne lieu à une
-amélioration indiscutable de la sténotypie telle qu'elle est pratiquée
-et enseignée aujourd'hui.
+Cependant, il n'est pas dit qu'une une remise en question des
+caractéristiques de la méthode héritées de contingences mécaniques
+donne lieu à une amélioration indiscutable de la sténotypie telle
+qu'elle est pratiquée et enseignée aujourd'hui.
 
-**** TODO Du dictionnaire français dans Plover
+** Du dictionnaire français dans Plover
 Le lecteur humain peut déduire la correspondance correcte des
 sténogrammes, souvent par un mécanisme inconscient de mise en
 contexte.
@@ -449,64 +547,8 @@ Le champs d'études le plus en lien avec la résolution de ce type de
 problématiques est le Traitement automatique du langage naturel
 (TALN).
 
-*** Les limites de l'approche phonétique
-En appliquant une approche purement phonétique pour la construction
-d'un dictionnaire sténotypique, on est très vite confronté à la
-réalité suivante :
-
-Sur les quelques *125 700* entrées du dictionnaire, *92 000* mots
-souffrent d'homophonie. *31 000* entrées du dictionnaire sténotypique
-renvoient pour chacune à plusieurs entrée du dictionnaire français.
-
-Un exemple parmi beaucoup d'autres :
-#+BEGIN_EXAMPLE
-A-LE 	 halez
-A-LE 	 hâlés
-A-LE 	 halés
-A-LE 	 haler
-A-LE 	 hâlées
-A-LE 	 hâlée
-A-LE 	 halée
-A-LE 	 hâlé
-A-LE 	 halé
-A-LE 	 hâlait
-A-LE 	 halait
-A-LE 	 halaient
-A-LE 	 allez
-A-LE 	 allés
-A-LE 	 allers
-A-LE 	 aller
-A-LE 	 allées
-A-LE 	 allée
-A-LE 	 allé
-A-LE 	 allait
-A-LE 	 allais
-A-LE 	 allaient
-A-LE 	 allai
-#+END_EXAMPLE
-23 mots du dictionnaire se transcrivant phonétiquement de la même
-manière, avec un seul sténogramme. C'est le cas le plus extrême.
-
-Résoudre cette problématique s'avère donc un préalable incontournable
-afin de parvenir à un usage raisonnablement fiable de la sténotypie
-avec Plover.
-
-Les écoles américaines de sténotypie tendent à introduire une part
-d'orthographe plus ou moins importante dans leurs méthodes.
-
-Ce procédé amène des inconvénients : ajouts de frappes ; dérives vers
-des compositions qui n'ont plus aucun trait à la phonétique ;
-divergences et cloisonnement des écoles et des méthodes... Rien qui ne
-va vers une standardisation de la transcription sténographique.
-
-Voici donc le parti pris pour la construction du dictionnaire français :
-
-- La méthode phonétique de base est le socle du dictionnaire.
-- La distinction entre les homophones se fait par le biais de frappes
-  supplémentaires suivant une convention détaillée dans un chapitre à venir.
-
-*** La disposition des touches sur le clavier d'ordinateur
-**** AZERTY
+* La disposition des touches sur le clavier d'ordinateur
+** AZERTY
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |A  |Z  |E  |R  |T  |Y  |U  |I  |O  |P  |^  |$  |Enter|
@@ -516,7 +558,7 @@ _|___|___|___|___|___|___|___|___|___|___|___|___|____|
    |W  |X  |C  |V  |B  |N  |,  |;  |:  |!  |⇧         |
 ___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
-**** Disposition Grandjean sur un clavier d'ordinateur
+** Disposition Grandjean sur un clavier d'ordinateur
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |S  |P  |T  |*  |N  |   |O  |A  |I  |ᴎ  |D  |   |Enter|
@@ -524,10 +566,9 @@ ___|___|___|___|___|___|___|___|___|___|___|__________|
  |K  |M  |F  |R  |L  |Y  |E  |U  |£  |$  |C  |   |  ⏎ |
 _|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
    |   |   |   |L  |Y  |Y  |E  |   |   |   |⇧         |
-___|___|___|___|__v|__b|__n|___|___|___|___|__________|
+___|___|___|___|__v|__b|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
-
-**** Clavier sténotypique anglosaxon en usage dans Plover
+** Clavier sténotypique anglosaxon en usage dans Plover
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |S  |T  |P  |H  |*  |*  |F  |P  |L  |T  |D  |   |Enter|
@@ -537,7 +578,6 @@ _|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
    |   |   |A  |O  |   |E  |U  |   |   |   |⇧         |
 ___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
-
 * Footnotes
 [1] Les performances vélotypiques en termes de vitesse avoisinent
 les 150 mots/minute, loin derrière la sténotypie à 210 mots
