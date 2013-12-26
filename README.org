@@ -19,7 +19,7 @@
               |____|___|___|___|___|___|___|___|___|___|___|___|__________|
 #+END_EXAMPLE
 
-* Vous voulez essayer Plover en français
+* Vous voulez utiliser Plover avec le clavier Grandjean
 Sous Windows, téléchargez le contenu de ce dépôt et lancez
 plover.exe, après avoir dézippé l'archive.
 
@@ -54,7 +54,7 @@ ceci :
 #+END_SRC
 ** Observation importante :
 Les caractères ~£~ (L orné) et ~ᴎ~ (N inversé) sont remplacés dans les
-fichiers JSON respectivement par les caractère ~l~ (L minuscule) et
+fichiers JSON respectivement par les caractères ~l~ (L minuscule) et
 ~n~ (N minscule) en raison de l'exotisme des premiers. L'introduction
 de l'encodage UTF8 étant récent dans Plover, il vallait mieux opter
 pour des caractères plus communs.
@@ -79,12 +79,31 @@ la définition des règles d'affixation que dois contenir le fichier
 La construction des dictionnaires JSON se fait grâce au script awk
 ~Atelier/dic-generator.awk~.
 * À propos de la sténotypie
-La sténotypie est une méthode d'écriture rapide de la parole.
+La sténotypie est une méthode d'écriture rapide de la parole se basant
+sur la phonétique.
 
 Elle tire son héritage de la sténographie en lui apportant une
 importante amélioration : tracés à la main, les caractères
 sténographiques sont propres au sténographe qui les a dessinés et
 peuvent difficilement être interprétés par un autre lecteur.
+
+L'unité de base en sténographie est la syllabe, elle même composée en
+trois parties : l'attaque, le noyau et la coda.
+
+#+BEGIN_EXAMPLE
+			syllabe
+			  /\
+			 /  \
+			/    \
+		       /     /\
+		      /     /  \
+		     /	   /    \
+		    /     /      \
+             attaque    noyau     coda
+            (consonne) (voyelle)  (consonne)
+
+exemple :       l         a          k
+#+END_EXAMPLE
 
 La sténotype - ainsi est appelée la machine de sténotypie - produit
 des signes sténographiques "types" reconnaissables par n'importe quel
@@ -340,16 +359,19 @@ le son. Ainsi :
   ~PRInC~. l'adjonction du ~C~ final à ~In~ en change la nature. Il ne
   désignera plus le son ~In~
 
-* À propos du dictionnaire français et de Plover
+* Les contraintes du dictionnaire français
 Représenter une langue par ses sons permet aux sténotypistes
 professionnels d'atteindre des vitesses de prises dépassant les
 230 mots par minute. Cette caractéristique a, toutefois, ses revers
 quand il s'agit de la traiter informatiquement.
-** Les ~homophones~  :
+** Les homophones
+Un homophone désigne en linguistique un mot ayant la même
+prononciation qu'un ou plusieurs autres mots :
 
 - vos      = veau
 - eau      = aux
 - ce       = se
+- c'est    = s'est = sait = ces = ses...
 - et       = est = ait = aie ...
 - à faire  = affaire
 - abreuver = abreuvés = abreuvez
@@ -434,7 +456,8 @@ Voici donc le parti pris pour la construction du dictionnaire français :
 - La méthode phonétique de base est le socle du dictionnaire.
 - La distinction entre les homophones se fait par le biais de frappes
   supplémentaires suivant une convention détaillée dans un chapitre à
-  venir.
+  venir. Ce chapitre sera publié lorsque toutes les contraintes auront
+  été répertoriées, et une stratégie définie.
 
 ** L'héritage de la contrainte mécanique :
 Comme pour nos claviers d'ordinateur, le clavier du sténotype semble
@@ -463,7 +486,7 @@ Source: fr.wikipedia.org/wiki/QWERTY
 
 Bien que des dispositions plus ergonomiques aient été mises au point,
 DVORAK aux État-Unis et BEPO en France, la disposition QWERTY et sa
-délinaison française AZERTY sont restées endémiques des bureaux.
+déclinaison française AZERTY sont restées endémiques des bureaux.
 
 En quoi la disposition Grandjean serait-elle concernée par la
 dépendance au sentier ?
@@ -512,7 +535,7 @@ propres et mots spéciaux)
 #+END_EXAMPLE
 
 La réminiscence mécanique la plus patente dans la sténotypie moderne
-est l'ordre et la non permutabilité des touches.
+est l'ordre "dur" des touches.
 
 Ainsi le mot "psaume" devra s'écrire en deux frappes ~P/SOnC~ car si
 l'on observe la disposition du clavier, la touche ~S~ est placé devant
@@ -520,13 +543,12 @@ le ~P~.
 
 Jouer ~SPOnC~ donnerait le son ~SPOME~ dans la théorie établie et
 pourrait correspondre à "se paume", conjugaison de la forme
-pronominale du verbe "paumer" à la 3e personne du singulier.
+pronominale du verbe "paumer" à la 3^{e} personne du singulier.
 
-La caractéristique de la non permutabilité des touches a été remise en
-question dans la [[http://fr.wikipedia.org/wiki/V%25C3%25A9lotypie][vélotypie]], un autre procédé de saisie rapide
-*orthographique* qui n'atteint certes pas les performances de la
-sténotypie en termes de vitesse mais qui la challenge en termes de
-précision et d'intégration technique[1].
+Cette caractéristique a été remise en question dans la [[http://fr.wikipedia.org/wiki/V%25C3%25A9lotypie][vélotypie]], un
+autre procédé de saisie rapide *orthographique* qui n'atteint certes
+pas les performances de la sténotypie en termes de vitesse mais qui la
+challenge en termes de précision et d'intégration technique[1].
 
 Cependant, il n'est pas dit qu'une une remise en question des
 caractéristiques de la méthode héritées de contingences mécaniques
@@ -543,7 +565,7 @@ pas implémentée dans Plover et l'est d'une manière dont l'efficacité
 est toute relative dans les logiciels propriétaires et payants de
 sténotypie assistée par ordinateur.
 
-Le champs d'études le plus en lien avec la résolution de ce type de
+Le champ d'études le plus en lien avec la résolution de ce type de
 problématiques est le Traitement automatique du langage naturel
 (TALN).
 
