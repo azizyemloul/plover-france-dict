@@ -391,127 +391,132 @@ function verbes(){
 }
 ## * NOMS()
 function noms(){
-    if ($3 ~ /NOM/)
+    if ($3 ~ /^NOM$/ && $7 ~ /^NOM$/)
     {
-	# if ($5 ~ /s/){							# Si singulier
-	#     if ($1 !~ /[^i][^t]é$/ ){					# Si se termine avec é mais n'est pas ité
-	# 	print "\"" $2 "\": \"" $1 "\",";			# le sortir sans article
-	#     }
-	# }
-## ** Premier moulinage
+## ** 1e moulinage
 ## *** Pluriel
 	if ($5 ~ /p/){
-	    print "\"LE/" $2 "\": \"les " $1 "\",";
-	    print "\"T*E/" $2 "\": \"des " $1 "\",";
-	    print "\"SE/" $2 "\": \"ses " $1 "\",";
-	    print "\"SE/" $2 "/*\": \"ces " $1 "\",";
-	    print "\"KElC/" $2 "\": \"quelques " $1 "\",";
-	    # print "\"K/LE/" $2 "\": \"que les " $1 "\",";
-	    print "\"KLE/" $2 "\": \"que les " $1 "\",";
-	    # print "\"K/T*E/" $2 "\": \"que des " $1 "\",";
-	    print "\"KT*E/" $2 "\": \"que des " $1 "\",";
+	    print "\"" $2 "/$\": \"" $1 "\",";
+	    # print "\"LE/" $2 "\": \"les " $1 "\",";
+	    # print "\"T*E/" $2 "\": \"des " $1 "\",";
+	    print "\"SE/" $2 "\": \"ces " $1 "\",";
+	    print "\"SE/" $2 "/*\": \"ses " $1 "\",";
+	    print "\"ME/" $2 "\": \"mes " $1 "\",";
+	    # print "\"TE/" $2 "\": \"tes " $1 "\",";
+	    # print "\"NO/" $2 "\": \"nos " $1 "\",";
+	    # print "\"F*O/" $2 "\": \"vos " $1 "\",";
+	    print "\"LEUl/" $2 "/$\": \"leurs " $1 "\",";
 
+	    # print "\"KElC/" $2 "\": \"quelques " $1 "\",";
+	    # print "\"KLE/" $2 "\": \"que les " $1 "\",";
+	    # print "\"KT*E/" $2 "\": \"que des " $1 "\",";
+	    # print "\"KME/" $2 "\": \"que mes " $1 "\",";
+	    # print "\"KTE/" $2 "\": \"que tes " $1 "\",";
+	    # print "\"KNO/" $2 "\": \"que nos " $1 "\",";
+	    # print "\"KF*O/" $2 "\": \"que vos " $1 "\",";
+	    print "\"KLEUl/" $2 "/$\": \"que leurs " $1 "\",";
+
+	    if ($4 ~ /m/){
+		print "\"KEl/" $2 "/$\": \"quels " $1 "\",";
+		print "\"TEl/" $2 "/$\": \"tels " $1 "\",";
+		print "\"NUl/" $2 "/$\": \"nuls " $1 "\",";
+		print "\"TOU/" $2 "/$\": \"tous " $1 "\",";
+		print "\"KTOU/" $2 "/$\": \"que tous " $1 "\",";
+	    }
+
+	    if ($4 ~ /f/){
+		print "\"KEl/" $2 "/$\": \"quelles " $1 "\",";
+		print "\"TEl/" $2 "/$\": \"telles " $1 "\",";
+		print "\"NUl/" $2 "/$\": \"nulles " $1 "\",";
+		print "\"TOUD/" $2 "/$\": \"toutes " $1 "\",";
+		print "\"KTOUD/" $2 "/$\": \"que toutes " $1 "\",";
+
+	    }
 	}
-## *** Masculin singulier ^C
-	if ($1  ~ /^[^aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /m/){
+## *** Masculin singulier
+	if ($4 ~ /m/ && $5 ~ /s/){
 	    print "\"" $2 "\": \"" $1 "\",";
-	    print "\"Un/" $2 "\": \"un " $1 "\",";
-	    print "\"L/" $2 "\": \"le " $1 "\",";
-	    print "\"S/" $2 "\": \"ce " $1 "\",";
-	    print "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # print "\"T*U/" $2 "\": \"du " $1 "\",";
 	    # print "\"Un/" $2 "\": \"un " $1 "\",";
-	    # print "\"T*Un/" $2 "\": \"d'un " $1 "\",";
-	    # print "\"KT*Un/" $2 "\": \"que d'un " $1 "\",";
+	    # print "\"SOn/" $2 "\": \"son " $1 "\",";
+	    # print "\"MOn/" $2 "\": \"mon " $1 "\",";
+	    # print "\"TOn/" $2 "\": \"ton " $1 "\",";
+	    # print "\"NO/TR/" $2 "\": \"notre " $1 "\",";
+	    # print "\"F*O/TR/" $2 "\": \"votre " $1 "\",";
+	    # print "\"LEUl/" $2 "\": \"leur " $1 "\",";
+	    # print "\"KEl/" $2 "\": \"quel " $1 "\",";
+	    # print "\"TEl/" $2 "\": \"tel " $1 "\",";
+	    # print "\"NUl/" $2 "\": \"nul " $1 "\",";
+	    # print "\"TOU/" $2 "\": \"tout " $1 "\",";
+								# que
+	    # print "\"KTOU/" $2 "\": \"que tout " $1 "\",";
 	    # print "\"KUn/" $2 "\": \"qu'un " $1 "\",";
-	    # if ($1 !~ /[^i][^t]é$/ ){					# si le mot se termine avec é mais pas "ité"
-	    # 	print "\"L/" $2 "\": \"le " $1 "\",";
-	    # 	print "\"T*/" $2 "\": \"de " $1 "\",";
-	    # 	print "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print "\"K/" $2 "\": \"que " $1 "\",";
-	    # 	print "\"S/" $2 "\": \"ce " $1 "\",";
-	    # 	print "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # }								# S'il y a moyen de faire élision avec CE QUE DE
-	    if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
-	    # if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-	    # if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]é$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	    # if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]é$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	}
+	    # print "\"KMOn/" $2 "\": \"que mon " $1 "\",";
+	    # print "\"KTOn/" $2 "\": \"que ton " $1 "\",";
+	    # print "\"KNO/TR/" $2 "\": \"que notre " $1 "\",";
+	    # print "\"KF*O/TR/" $2 "\": \"que votre " $1 "\",";
+	    # print "\"KLEUl/" $2 "\": \"que leur " $1 "\",";
 
-## *** Féminin  singulier ^C
-	if ($1  ~ /^[^aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /f/){
-	    print "\"" $2 "\": \"" $1 "\",;"
-	    print "\"LA/" $2 "\": \"la " $1 "\",";
-	    print "\"UnC/" $2 "\": \"une " $1 "\",";
-	    print "\"SA/" $2 "\": \"sa " $1 "\",";
-	    print "\"ST/" $2 "\": \"cette " $1 "\",";
-	    # print "\"T*LA/" $2 "\": \"de la " $1 "\",";
-	    # print "\"T*/LA/" $2 "\": \"de la " $1 "\",";
-	    # print "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-	    # print "\"T*UnC/" $2 "\": \"d'une " $1 "\",";
-	    # print "\"KT*UnC/" $2 "\": \"que d'une " $1 "\",";
-	    # if ($1 !~ /[^i][^t]ée$/ ){
-	    # 	print "\"T*/" $2 "\": \"de " $1 "\",";
-	    # 	print "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print "\"K/" $2 "\": \"que " $1 "\",";
-	    # 	print "\"SA/" $2 "\": \"sa " $1 "\",";
-	    # }
-	    if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-	    # if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]ée$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	    # if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]ée$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	    if ($2 ~ /^[LR]/)					{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	    if ($2 ~ /^[FN]/)					{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	    if ($2 ~ /^[FN]/)					{ssone = gensub(/([KPMTFNLR])/, "ST\\1", 1,$2); print "\"" ssone "\": \"cette " $1 "\",";}
-	}
-## *** Masculin singulier ^V
-	if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /m/ ){
-	    print          "\"" $2 "\": \"" $1 "\",;"
-	    print       "\"Un/" $2 "\": \"un " $1 "\",";
-	    print        "\"L" $2 "\": \"l'" $1 "\",";
-	    print        "\"ST" $2 "\": \"cet " $1 "\",";
-	    print       "\"ST/" $2 "\": \"cet " $1 "\",";
-	    # print     "\"T*Un/" $2 "\": \"d'un " $1 "\",";
-	    # print    "\"KT*Un/" $2 "\": \"que d'un " $1 "\",";
-	    # print      "\"KUn/" $2 "\": \"qu'un " $1 "\",";
-	    # if ($1 !~ /[^i][^t]é$/ ){
-	    # 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-	    # 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print         "\"L" $2 "\": \"l'" $1 "\",";
-	    # 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-	    # 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-	    # 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-	    # 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-	    # 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
-	}
+	    if ($1  ~ /^[^aeiouéàâêïîô]/){
+		# print "\"L/" $2 "\": \"le " $1 "\",";
+		# print "\"KL/" $2 "\": \"que le " $1 "\",";
+		print "\"S/" $2 "\": \"ce " $1 "\",";
+		if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
+	    }
 
-## *** Féminin  singulier ^V
-	if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /f/ ){
-	    print "\"" $2 "\": \"" $1 "\",;"
-	    print "\"L" $2 "\": \"l'" $1 "\",";
-	    print "\"UnC/" $2 "\": \"une " $1 "\",";
-	    print "\"ST" $2 "\": \"cette " $1 "\",";
+	    if ($1 ~ /^[aeiouéàâêïîô]/){
+		print "\"L" $2 "\": \"l'" $1 "\",";
+		print "\"KL" $2 "\": \"que l'" $1 "\",";
+		print "\"ST" $2 "\": \"cet " $1 "\",";
+		print "\"ST/" $2 "\": \"cet " $1 "\",";
+		# print "\"NO/TR" $2 "\": \"notre " $1 "\",";
+		# print "\"F*O/TR" $2 "\": \"votre " $1 "\",";
+	    }
+
+	}
+## *** Féminin  singulier
+	if ($4 ~ /f/ && $5 ~ /s/){
+	    print "\"" $2 "\": \"" $1 "\",";
+	    # print "\"UnC/" $2 "\": \"une " $1 "\",";
 	    print "\"ST/" $2 "\": \"cette " $1 "\",";
-	    print  "\"SOn/" $2 "\": \"son " $1 "\",";
+	    # print "\"NO/TR/" $2 "\": \"notre " $1 "\",";
+	    # print "\"F*O/TR/" $2 "\": \"votre " $1 "\",";
+	    # print "\"LEUl/" $2 "\": \"leur " $1 "\",";
+	    print "\"KEl/" $2 "\": \"quelle " $1 "\",";
+	    print "\"TEl/" $2 "\": \"telle " $1 "\",";
+	    print "\"NUl/" $2 "\": \"nulle " $1 "\",";
+	    # print "\"TOUD/" $2 "\": \"toute " $1 "\",";
+	    # print "\"KTOUD/" $2 "\": \"que toute " $1 "\",";
 	    # print "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-	    # print "\"T*UnC/" $2 "\": \"d'une " $1 "\",";
-	    # print "\"KT*UnC/" $2 "\": \"que d'une " $1 "\",";
-	    # print      "\"UnC/" $2 "\": \"une " $1 "\",";
-	    # print      "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-	    # if ($1 !~ /[^i][^t]ée$/ ){
-	    # 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-	    # 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print         "\"L" $2 "\": \"l'" $1 "\",";
-	    # 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-	    # 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-	    # 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-	    # 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-	    # 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
+	    # print "\"KNO/TR/" $2 "\": \"que notre " $1 "\",";
+	    # print "\"KF*O/TR/" $2 "\": \"que votre " $1 "\",";
+	    # print "\"KLEUl/" $2 "\": \"que leur " $1 "\",";
+
+	    if ($1  ~ /^[^aeiouéàâêïîô]/){
+		# print "\"LA/" $2 "\": \"la " $1 "\",";
+		print "\"ST/" $2 "\": \"cette " $1 "\",";
+		# print "\"MA/" $2 "\": \"ma " $1 "\",";
+		# print "\"TA/" $2 "\": \"ta " $1 "\",";
+		# print "\"SA/" $2 "\": \"sa " $1 "\",";
+		# print "\"KLA/" $2 "\": \"que la " $1 "\",";
+		# print "\"KMA/" $2 "\": \"que ma " $1 "\",";
+		# print "\"KTA/" $2 "\": \"que ta " $1 "\",";
+		if ($2 ~ /^[FRNL]/)					{ssone = gensub(/([KPMTFNLR])/, "ST\\1", 1,$2); print "\"" ssone "\": \"cette " $1 "\",";}
+	    }
+
+	    if ($1 ~ /^[aeiouéàâêïîô]/){
+		print "\"L" $2 "\": \"l'" $1 "\",";
+		print "\"ST" $2 "\": \"cette " $1 "\",";
+ 		# print "\"SOn/" $2 "\": \"son " $1 "\",";
+		# print "\"MOn/" $2 "\": \"mon " $1 "\",";
+		# print "\"TOn/" $2 "\": \"ton " $1 "\",";
+		print "\"NO/TR" $2 "\": \"notre " $1 "\",";
+		print "\"F*O/TR" $2 "\": \"votre " $1 "\",";
+		print "\"KL" $2 "\": \"que l'" $1 "\",";
+		# print "\"KMOn/" $2 "\": \"que mon " $1 "\",";
+		print "\"KTOn/" $2 "\": \"que ton " $1 "\",";
+		print "\"KNO/TR" $2 "\": \"que notre " $1 "\",";
+		print "\"KF*O/TR" $2 "\": \"que votre " $1 "\",";
+	    }
 	}
 
 ## ** Les contraction de base : D ID C KM
@@ -538,315 +543,133 @@ function noms(){
 	    }
 	}
 
-## ** Deuxième moulinage
+## ** 1e moulinage
 ## *** Pluriel
 	if ($5 ~ /p/){
-	    print "\"LE/" $2 "\": \"les " $1 "\",";
-	    print "\"T*E/" $2 "\": \"des " $1 "\",";
-	    print "\"SE/" $2 "\": \"ses " $1 "\",";
-	    print "\"SE/" $2 "/*\": \"ces " $1 "\",";
-	    print "\"KElC/" $2 "\": \"quelques " $1 "\",";
-	    # print "\"K/LE/" $2 "\": \"que les " $1 "\",";
-	    print "\"KLE/" $2 "\": \"que les " $1 "\",";
-	    # print "\"K/T*E/" $2 "\": \"que des " $1 "\",";
-	    print "\"KT*E/" $2 "\": \"que des " $1 "\",";
+	    print "\"" $2 "/$\": \"" $1 "\",";
+	    # print "\"LE/" $2 "\": \"les " $1 "\",";
+	    # print "\"T*E/" $2 "\": \"des " $1 "\",";
+	    print "\"SE/" $2 "\": \"ces " $1 "\",";
+	    print "\"SE/" $2 "/*\": \"ses " $1 "\",";
+	    print "\"ME/" $2 "\": \"mes " $1 "\",";
+	    # print "\"TE/" $2 "\": \"tes " $1 "\",";
+	    # print "\"NO/" $2 "\": \"nos " $1 "\",";
+	    # print "\"F*O/" $2 "\": \"vos " $1 "\",";
+	    print "\"LEUl/" $2 "/$\": \"leurs " $1 "\",";
 
+	    # print "\"KElC/" $2 "\": \"quelques " $1 "\",";
+	    # print "\"KLE/" $2 "\": \"que les " $1 "\",";
+	    # print "\"KT*E/" $2 "\": \"que des " $1 "\",";
+	    # print "\"KME/" $2 "\": \"que mes " $1 "\",";
+	    # print "\"KTE/" $2 "\": \"que tes " $1 "\",";
+	    # print "\"KNO/" $2 "\": \"que nos " $1 "\",";
+	    # print "\"KF*O/" $2 "\": \"que vos " $1 "\",";
+	    print "\"KLEUl/" $2 "/$\": \"que leurs " $1 "\",";
+
+	    if ($4 ~ /m/){
+		print "\"KEl/" $2 "/$\": \"quels " $1 "\",";
+		print "\"TEl/" $2 "/$\": \"tels " $1 "\",";
+		print "\"NUl/" $2 "/$\": \"nuls " $1 "\",";
+		print "\"TOU/" $2 "/$\": \"tous " $1 "\",";
+		print "\"KTOU/" $2 "/$\": \"que tous " $1 "\",";
+	    }
+
+	    if ($4 ~ /f/){
+		print "\"KEl/" $2 "/$\": \"quelles " $1 "\",";
+		print "\"TEl/" $2 "/$\": \"telles " $1 "\",";
+		print "\"NUl/" $2 "/$\": \"nulles " $1 "\",";
+		print "\"TOUD/" $2 "/$\": \"toutes " $1 "\",";
+		print "\"KTOUD/" $2 "/$\": \"que toutes " $1 "\",";
+
+	    }
 	}
-## *** Masculin singulier ^C
-	if ($1  ~ /^[^aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /m/){
+## *** Masculin singulier
+	if ($4 ~ /m/ && $5 ~ /s/){
 	    print "\"" $2 "\": \"" $1 "\",";
-	    print "\"Un/" $2 "\": \"un " $1 "\",";
-	    print "\"L/" $2 "\": \"le " $1 "\",";
-	    print "\"S/" $2 "\": \"ce " $1 "\",";
-	    print "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # print "\"T*U/" $2 "\": \"du " $1 "\",";
 	    # print "\"Un/" $2 "\": \"un " $1 "\",";
-	    # print "\"T*Un/" $2 "\": \"d'un " $1 "\",";
-	    # print "\"KT*Un/" $2 "\": \"que d'un " $1 "\",";
+	    # print "\"SOn/" $2 "\": \"son " $1 "\",";
+	    # print "\"MOn/" $2 "\": \"mon " $1 "\",";
+	    # print "\"TOn/" $2 "\": \"ton " $1 "\",";
+	    # print "\"NO/TR/" $2 "\": \"notre " $1 "\",";
+	    # print "\"F*O/TR/" $2 "\": \"votre " $1 "\",";
+	    # print "\"LEUl/" $2 "\": \"leur " $1 "\",";
+	    # print "\"KEl/" $2 "\": \"quel " $1 "\",";
+	    # print "\"TEl/" $2 "\": \"tel " $1 "\",";
+	    # print "\"NUl/" $2 "\": \"nul " $1 "\",";
+	    # print "\"TOU/" $2 "\": \"tout " $1 "\",";
+								# que
+	    # print "\"KTOU/" $2 "\": \"que tout " $1 "\",";
 	    # print "\"KUn/" $2 "\": \"qu'un " $1 "\",";
-	    # if ($1 !~ /[^i][^t]é$/ ){					# si le mot se termine avec é mais pas "ité"
-	    # 	print "\"L/" $2 "\": \"le " $1 "\",";
-	    # 	print "\"T*/" $2 "\": \"de " $1 "\",";
-	    # 	print "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print "\"K/" $2 "\": \"que " $1 "\",";
-	    # 	print "\"S/" $2 "\": \"ce " $1 "\",";
-	    # 	print "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # }								# S'il y a moyen de faire élision avec CE QUE DE
-	    if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
-	    # if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-	    # if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]é$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	    # if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]é$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	}
+	    # print "\"KMOn/" $2 "\": \"que mon " $1 "\",";
+	    # print "\"KTOn/" $2 "\": \"que ton " $1 "\",";
+	    # print "\"KNO/TR/" $2 "\": \"que notre " $1 "\",";
+	    # print "\"KF*O/TR/" $2 "\": \"que votre " $1 "\",";
+	    # print "\"KLEUl/" $2 "\": \"que leur " $1 "\",";
 
-## *** Féminin  singulier ^C
-	if ($1  ~ /^[^aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /f/){
-	    print "\"" $2 "\": \"" $1 "\",;"
-	    print "\"LA/" $2 "\": \"la " $1 "\",";
-	    print "\"UnC/" $2 "\": \"une " $1 "\",";
-	    print "\"SA/" $2 "\": \"sa " $1 "\",";
+	    if ($1  ~ /^[^aeiouéàâêïîô]/){
+		# print "\"L/" $2 "\": \"le " $1 "\",";
+		# print "\"KL/" $2 "\": \"que le " $1 "\",";
+		print "\"S/" $2 "\": \"ce " $1 "\",";
+		if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
+	    }
+
+	    if ($1 ~ /^[aeiouéàâêïîô]/){
+		print "\"L" $2 "\": \"l'" $1 "\",";
+		print "\"KL" $2 "\": \"que l'" $1 "\",";
+		print "\"ST" $2 "\": \"cet " $1 "\",";
+		print "\"ST/" $2 "\": \"cet " $1 "\",";
+		# print "\"NO/TR" $2 "\": \"notre " $1 "\",";
+		# print "\"F*O/TR" $2 "\": \"votre " $1 "\",";
+	    }
+
+	}
+## *** Féminin  singulier
+	if ($4 ~ /f/ && $5 ~ /s/){
+	    print "\"" $2 "\": \"" $1 "\",";
+	    # print "\"UnC/" $2 "\": \"une " $1 "\",";
 	    print "\"ST/" $2 "\": \"cette " $1 "\",";
-	    # print "\"T*LA/" $2 "\": \"de la " $1 "\",";
-	    # print "\"T*/LA/" $2 "\": \"de la " $1 "\",";
+	    # print "\"NO/TR/" $2 "\": \"notre " $1 "\",";
+	    # print "\"F*O/TR/" $2 "\": \"votre " $1 "\",";
+	    # print "\"LEUl/" $2 "\": \"leur " $1 "\",";
+	    print "\"KEl/" $2 "\": \"quelle " $1 "\",";
+	    print "\"TEl/" $2 "\": \"telle " $1 "\",";
+	    print "\"NUl/" $2 "\": \"nulle " $1 "\",";
+	    # print "\"TOUD/" $2 "\": \"toute " $1 "\",";
+	    # print "\"KTOUD/" $2 "\": \"que toute " $1 "\",";
 	    # print "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-	    # print "\"T*UnC/" $2 "\": \"d'une " $1 "\",";
-	    # print "\"KT*UnC/" $2 "\": \"que d'une " $1 "\",";
-	    # if ($1 !~ /[^i][^t]ée$/ ){
-	    # 	print "\"T*/" $2 "\": \"de " $1 "\",";
-	    # 	print "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print "\"K/" $2 "\": \"que " $1 "\",";
-	    # 	print "\"SA/" $2 "\": \"sa " $1 "\",";
-	    # }
-	    if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-	    # if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]ée$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	    # if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]ée$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	    if ($2 ~ /^[LR]/)					{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	    if ($2 ~ /^[FN]/)					{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	    if ($2 ~ /^[FN]/)					{ssone = gensub(/([KPMTFNLR])/, "ST\\1", 1,$2); print "\"" ssone "\": \"cette " $1 "\",";}
-	}
-## *** Masculin singulier ^V
-	if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /m/ ){
-	    print          "\"" $2 "\": \"" $1 "\",;"
-	    print       "\"Un/" $2 "\": \"un " $1 "\",";
-	    print        "\"L" $2 "\": \"l'" $1 "\",";
-	    print        "\"ST" $2 "\": \"cet " $1 "\",";
-	    print       "\"ST/" $2 "\": \"cet " $1 "\",";
-	    # print     "\"T*Un/" $2 "\": \"d'un " $1 "\",";
-	    # print    "\"KT*Un/" $2 "\": \"que d'un " $1 "\",";
-	    # print      "\"KUn/" $2 "\": \"qu'un " $1 "\",";
-	    # if ($1 !~ /[^i][^t]é$/ ){
-	    # 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-	    # 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print         "\"L" $2 "\": \"l'" $1 "\",";
-	    # 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-	    # 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-	    # 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-	    # 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-	    # 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
+	    # print "\"KNO/TR/" $2 "\": \"que notre " $1 "\",";
+	    # print "\"KF*O/TR/" $2 "\": \"que votre " $1 "\",";
+	    # print "\"KLEUl/" $2 "\": \"que leur " $1 "\",";
+
+	    if ($1  ~ /^[^aeiouéàâêïîô]/){
+		# print "\"LA/" $2 "\": \"la " $1 "\",";
+		print "\"ST/" $2 "\": \"cette " $1 "\",";
+		# print "\"MA/" $2 "\": \"ma " $1 "\",";
+		# print "\"TA/" $2 "\": \"ta " $1 "\",";
+		# print "\"SA/" $2 "\": \"sa " $1 "\",";
+		# print "\"KLA/" $2 "\": \"que la " $1 "\",";
+		# print "\"KMA/" $2 "\": \"que ma " $1 "\",";
+		# print "\"KTA/" $2 "\": \"que ta " $1 "\",";
+		if ($2 ~ /^[FRNL]/)					{ssone = gensub(/([KPMTFNLR])/, "ST\\1", 1,$2); print "\"" ssone "\": \"cette " $1 "\",";}
+	    }
+
+	    if ($1 ~ /^[aeiouéàâêïîô]/){
+		print "\"L" $2 "\": \"l'" $1 "\",";
+		print "\"ST" $2 "\": \"cette " $1 "\",";
+ 		# print "\"SOn/" $2 "\": \"son " $1 "\",";
+		# print "\"MOn/" $2 "\": \"mon " $1 "\",";
+		# print "\"TOn/" $2 "\": \"ton " $1 "\",";
+		print "\"NO/TR" $2 "\": \"notre " $1 "\",";
+		print "\"F*O/TR" $2 "\": \"votre " $1 "\",";
+		print "\"KL" $2 "\": \"que l'" $1 "\",";
+		# print "\"KMOn/" $2 "\": \"que mon " $1 "\",";
+		print "\"KTOn/" $2 "\": \"que ton " $1 "\",";
+		print "\"KNO/TR" $2 "\": \"que notre " $1 "\",";
+		print "\"KF*O/TR" $2 "\": \"que votre " $1 "\",";
+	    }
 	}
 
-## *** Féminin  singulier ^V
-	if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /f/ ){
-	    print "\"" $2 "\": \"" $1 "\",;"
-	    print "\"L" $2 "\": \"l'" $1 "\",";
-	    print "\"UnC/" $2 "\": \"une " $1 "\",";
-	    print "\"ST" $2 "\": \"cette " $1 "\",";
-	    print "\"ST/" $2 "\": \"cette " $1 "\",";
-	    print  "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # print "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-	    # print "\"T*UnC/" $2 "\": \"d'une " $1 "\",";
-	    # print "\"KT*UnC/" $2 "\": \"que d'une " $1 "\",";
-	    # print      "\"UnC/" $2 "\": \"une " $1 "\",";
-	    # print      "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-	    # if ($1 !~ /[^i][^t]ée$/ ){
-	    # 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-	    # 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-	    # 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-	    # 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	    # 	print         "\"L" $2 "\": \"l'" $1 "\",";
-	    # 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-	    # 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-	    # 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-	    # 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-	    # 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
-	}
-
-## ** Deuxième moulinage anciene
-## *** Pluriel
-# 	if ($5 ~ /p/){
-# 	    print "\"LE/" $2 "\": \"les " $1 "\",";
-# 	    print "\"T*E/" $2 "\": \"des " $1 "\",";
-# 	    print "\"SE/" $2 "\": \"ses " $1 "\",";
-# 	    print "\"SE/" $2 "/*\": \"ces " $1 "\",";
-# 	    print "\"KElC/" $2 "\": \"quelques " $1 "\",";
-# 	    # print "\"K/LE/" $2 "\": \"que les " $1 "\",";
-# 	    # print "\"KLE/" $2 "\": \"que les " $1 "\",";
-# 	    # print "\"K/T*E/" $2 "\": \"que des " $1 "\",";
-# 	    # print "\"KT*E/" $2 "\": \"que des " $1 "\",";
-
-# 	}
-# ## *** Masculin singulier ^C
-# 	if ($1  ~ /^[^aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /m/){
-# 	    print "\"Un/" $2 "\": \"un " $1 "\",";
-# 	    print "\"L/" $2 "\": \"le " $1 "\",";
-# 	    print "\"S/" $2 "\": \"ce " $1 "\",";
-# 	    print "\"SOn/" $2 "\": \"son " $1 "\",";
-# 	    # print "\"T*U/" $2 "\": \"du " $1 "\",";
-# 	    # print "\"Un/" $2 "\": \"un " $1 "\",";
-# 	    # print "\"T*Un/" $2 "\": \"d'un " $1 "\",";
-# 	    # print "\"KT*Un/" $2 "\": \"que d'un " $1 "\",";
-# 	    # print "\"KUn/" $2 "\": \"qu'un " $1 "\",";
-# 	    # if ($1 !~ /[^i][^t]é$/ ){					# si le mot se termine avec é mais pas "ité"
-# 	    # 	print "\"L/" $2 "\": \"le " $1 "\",";
-# 	    # 	print "\"T*/" $2 "\": \"de " $1 "\",";
-# 	    # 	print "\"An/" $2 "\": \"en " $1 "\",";
-# 	    # 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-# 	    # 	print "\"K/" $2 "\": \"que " $1 "\",";
-# 	    # 	print "\"S/" $2 "\": \"ce " $1 "\",";
-# 	    # 	print "\"SOn/" $2 "\": \"son " $1 "\",";
-# 	    # }								# S'il y a moyen de faire élision avec CE QUE DE
-# 	    if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
-# 	    # if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-# 	    # if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]é$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-# 	    # if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]é$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-# 	}
-
-# ## *** Féminin  singulier ^C
-# 	if ($A  ~ /^[^aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /f/){
-# 	    print "\"LA/" $2 "\": \"la " $1 "\",";
-# 	    print "\"UnC/" $2 "\": \"une " $1 "\",";
-# 	    print "\"SA/" $2 "\": \"sa " $1 "\",";
-# 	    print "\"ST/" $2 "\": \"cette " $1 "\",";
-# 	    # print "\"T*LA/" $2 "\": \"de la " $1 "\",";
-# 	    # print "\"T*/LA/" $2 "\": \"de la " $1 "\",";
-# 	    # print "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-# 	    # print "\"T*UnC/" $2 "\": \"d'une " $1 "\",";
-# 	    # print "\"KT*UnC/" $2 "\": \"que d'une " $1 "\",";
-# 	    # if ($1 !~ /[^i][^t]ée$/ ){
-# 	    # 	print "\"T*/" $2 "\": \"de " $1 "\",";
-# 	    # 	print "\"An/" $2 "\": \"en " $1 "\",";
-# 	    # 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-# 	    # 	print "\"K/" $2 "\": \"que " $1 "\",";
-# 	    # 	print "\"SA/" $2 "\": \"sa " $1 "\",";
-# 	    # }
-# 	    if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-# 	    # if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]ée$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-# 	    # if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]ée$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-# 	    if ($2 ~ /^[LR]/)					{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-# 	    if ($2 ~ /^[FN]/)					{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-# 	    if ($2 ~ /^[FN]/)					{ssone = gensub(/([KPMTFNLR])/, "ST\\1", 1,$2); print "\"" ssone "\": \"cette " $1 "\",";}
-# 	}
-# ## *** Masculin singulier ^V
-# 	if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /m/ ){
-# 	    print       "\"Un/" $2 "\": \"un " $1 "\",";
-# 	    print        "\"L" $2 "\": \"l'" $1 "\",";
-# 	    print        "\"ST" $2 "\": \"cet " $1 "\",";
-# 	    print       "\"ST/" $2 "\": \"cet " $1 "\",";
-# 	    # print     "\"T*Un/" $2 "\": \"d'un " $1 "\",";
-# 	    # print    "\"KT*Un/" $2 "\": \"que d'un " $1 "\",";
-# 	    # print      "\"KUn/" $2 "\": \"qu'un " $1 "\",";
-# 	    # if ($1 !~ /[^i][^t]é$/ ){
-# 	    # 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-# 	    # 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-# 	    # 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-# 	    # 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-# 	    # 	print         "\"L" $2 "\": \"l'" $1 "\",";
-# 	    # 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-# 	    # 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-# 	    # 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-# 	    # 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-# 	    # 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
-# 	}
-
-# ## *** Féminin  singulier ^V
-# 	if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /f/ ){
-# 	    print "\"L" $2 "\": \"l'" $1 "\",";
-# 	    print "\"UnC/" $2 "\": \"une " $1 "\",";
-# 	    print "\"ST" $2 "\": \"cette " $1 "\",";
-# 	    print "\"ST/" $2 "\": \"cette " $1 "\",";
-# 	    print  "\"SOn/" $2 "\": \"son " $1 "\",";
-# 	    # print "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-# 	    # print "\"T*UnC/" $2 "\": \"d'une " $1 "\",";
-# 	    # print "\"KT*UnC/" $2 "\": \"que d'une " $1 "\",";
-# 	    # print      "\"UnC/" $2 "\": \"une " $1 "\",";
-# 	    # print      "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-# 	    # if ($1 !~ /[^i][^t]ée$/ ){
-# 	    # 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-# 	    # 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-# 	    # 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-# 	    # 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-# 	    # 	print         "\"L" $2 "\": \"l'" $1 "\",";
-# 	    # 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-# 	    # 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-# 	    # 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-# 	    # 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-# 	    # 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
-# 	}
-
-## ** Deuxième moulinage ancien
-	# if ($5 ~ /p/){							# Si pluriel
-	#     print "\"LE/" $2 "\": \"les " $1 "\",";
-	#     print "\"T*E/" $2 "\": \"des " $1 "\",";
-	#     print "\"KLE/" $2 "\": \"que les " $1 "\",";
-	#     print "\"K/T*E/" $2 "\": \"que des " $1 "\",";
-	#     print "\"KT*E/" $2 "\": \"que des " $1 "\",";
-	# }
-
-	# if ($1  ~ /^[^aeiouéàâêïîôh]/ && $5 ~ /s/ && $4 ~ /m/){		# si masclin singulier et ne commence pas avec une voyelle
-	#     print "\"T*U/" $2 "\": \"du " $1 "\",";
-	#     print "\"Un/" $2 "\": \"un " $1 "\",";
-	#     if ($1 !~ /[^i][^t]é$/ ){					# Si se termine avec é mais n'est pas ité
-	# 	print "\"L/" $2 "\": \"le " $1 "\",";
-	# 	print "\"T*/" $2 "\": \"de " $1 "\",";
-	# 	print "\"An/" $2 "\": \"en " $1 "\",";
-	# 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	# 	print "\"K/" $2 "\": \"que " $1 "\",";
-	# 	print "\"S/" $2 "\": \"ce " $1 "\",";
-	# 	print "\"SOn/" $2 "\": \"son " $1 "\",";
-	#     }								# S'il y a moyen de faire élision avec CE QUE DE
-	#     if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
-	#     if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-	#     if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]é$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	#     if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]é$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	# }
-
-	# if ($A  ~ /^[^aeiouéàâêïîôh]/ && $5 ~ /s/ && $4 ~ /f/){		# si féminin singulier et ne commence pas avec une voyelle
-	#     print "\"LA/" $2 "\": \"la " $1 "\",";
-	#     print "\"UnC/" $2 "\": \"une " $1 "\",";
-	#     print "\"ST/" $2 "\": \"cette " $1 "\",";
-	#     if ($1 !~ /[^i][^t]ée$/ ){
-	# 	print "\"T*/" $2 "\": \"de " $1 "\",";
-	# 	print "\"An/" $2 "\": \"en " $1 "\",";
-	# 	print "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	# 	print "\"K/" $2 "\": \"que " $1 "\",";
-	# 	print "\"SA/" $2 "\": \"sa " $1 "\",";
-	#     }
-	#     if ($2 ~ /^[PMTFNLR]/)				{ksone = gensub(/([PMTFNLR])/, "K\\1", 1, $2);  print "\"" ksone "\": \"que " $1 "\",";}
-	#     if ($2 ~ /^[LR]/ && $1 !~ /[^i][^t]ée$/)		{ttsone = gensub(/([LR])/, "T*\\1", 1, $2);	print "\"" ttsone "\": \"de " $1 "\",";}
-	#     if ($2 ~ /^[FN]/ && $1 !~ /[^i][^t]ée$/)		{tsone = gensub(/([FN])/, "T\\1", 1, $2);	print "\"" tsone "\": \"de " $1 "\",";}
-	#     if ($2 ~ /^[FN]/)					{ssone = gensub(/([KPMTFNLR])/, "ST\\1", 1,$2); print "\"" ssone "\": \"cette " $1 "\",";}
-	# }
-
-	# if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /m/ ){		# si masclin singulier commence avec une voyelle
-	#     print       "\"Un/" $2 "\": \"un " $1 "\",";
-	#     print      "\"KUn/" $2 "\": \"qu'un " $1 "\",";
-	#     print        "\"ST" $2 "\": \"cet " $1 "\",";
-	#     print       "\"ST/" $2 "\": \"cet " $1 "\",";
-	#     if ($1 !~ /[^i][^t]é$/ ){
-	# 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-	# 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-	# 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-	# 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	# 	print         "\"L" $2 "\": \"l'" $1 "\",";
-	# 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-	# 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-	# 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-	# 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-	# 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
-	# }
-
-	# if ($1 ~ /^[aeiouéàâêïîô]/ && $5 ~ /s/ && $4 ~ /f/ ){		# si féminin singulier commence avec une voyelle
-	#     print      "\"UnC/" $2 "\": \"une " $1 "\",";
-	#     print      "\"KUnC/" $2 "\": \"qu'une " $1 "\",";
-	#     print        "\"ST" $2 "\": \"cette " $1 "\",";
-	#     print       "\"ST/" $2 "\": \"cette " $1 "\",";
-	#     if ($1 !~ /[^i][^t]ée$/ ){
-	# 	print        "\"T*" $2 "\": \"d'" $1 "\",";
-	# 	print      "\"SOn/" $2 "\": \"son " $1 "\",";
-	# 	print	    "\"An/" $2 "\": \"en " $1 "\",";
-	# 	print	   "\"KAn/" $2 "\": \"qu'en " $1 "\",";
-	# 	print         "\"L" $2 "\": \"l'" $1 "\",";
-	# 	print         "\"K" $2 "\": \"qu'" $1 "\",";
-	# 	print       "\"T*L" $2 "\": \"de l'" $1 "\",";
-	# 	print        "\"KL" $2 "\": \"que l'" $1 "\",";
-	# 	print       "\"KT*" $2 "\": \"que d'" $1 "\",";
-	# 	print      "\"KT*L" $2 "\": \"que de l'" $1 "\",";}
-	# }
-
-## ** Troisième moulinage
+## ** 3e moulinage
 # 	if ($11 > 2){
 # 	    for (i in arr)
 # 	    {
@@ -1042,7 +865,7 @@ function noms(){
 # 	    # 	}
 
 
-## ** fin du script
+## ** fin de noms()
     }
 }
 
@@ -2128,3 +1951,512 @@ function adjectifs(){
 # PRO:pos
 # PRO:rel
 # VER
+## * H aspiré pas d'élision
+
+# hâblerie
+# hâbleur
+# hâbleuse
+# hachage
+# hache
+# haché
+# hachée
+# hache-légumes
+# hachement
+# hache-paille
+# hacher
+# hachette
+# hacheur
+# hache-viande
+# hachis
+# hachisch
+# hachoir
+# hachure
+# hachurer
+# hackle
+# hadal
+# hadale
+# hadaux
+# haddock
+# haflinger
+# hafnium
+# hagard
+# haggis
+# haie
+# haillon
+# haillonneuse
+# haillonneux
+# haine
+# haineuse
+# haineusement
+# haineux
+# haïr
+# haire
+# haïssable
+# Haïtien
+# Haïtienne
+# halage
+# hâlage
+# halal
+# halbi
+# halbran
+# halbrené
+# halbrenée
+# halde
+# hâle
+# hâlé
+# hale-bas
+# hale-breu
+# hale-croc
+# hâlée
+# halefis
+# hâle-haut
+# haler
+# hâler
+# haletant
+# halètement
+# haleter
+# haleur
+# haleuse
+# half-track
+# hall
+# halle
+# hallebarde
+# hallux
+# halo
+# halte
+# halte-garderie
+# hamac
+# hamada
+# hamburger
+# hameau
+# hamman
+# hampe
+# hamster
+# hanche
+# hanchement
+# hancher
+# hand-ball
+# handballeur
+# handballeuse
+# handicap
+# handicapant
+# handicapante
+# handicapé
+# handicapée
+# handicaper
+# handicapeur
+# handisport
+# hangar
+# hanneton
+# hanon
+# hanse
+# hanter
+# hantise
+# happement
+# happening
+# happer
+# happy end
+# haque
+# haquenée
+# haquet
+# hara-kiri
+# harangue
+# haranguer
+# harangueur
+# harangueuse
+# haras
+# harassant
+# harassante
+# harassé
+# harassée
+# harassement
+# harasser
+# harcelant
+# harcelante
+# harcèlement
+# harceler
+# hard
+# hard-bop
+# hard-core
+# harde
+# hardé
+# hard-edge
+# harder
+# hardes
+# hard ground
+# hardi
+# hardie
+# hardiesse
+# hardiment
+# hard-rock
+# hard-top
+# hardware
+# harem
+# hareng
+# harengade
+# harengaison
+# harengère
+# harenguet
+# harengueux
+# harenguier
+# harenguière
+# haret
+# harfang
+# hargne
+# hargneuse
+# hargneusement
+# hargneux
+# haricot
+# haridelle
+# harissa
+# harka
+# harki
+# harnachement
+# harnacher
+# harnais
+# harnat
+# harnois
+# haro
+# harouelle
+# harpail
+# harpaye
+# harpe
+# harpe-cithare
+# harpe-luth
+# harpette
+# harpie
+# harpiste
+# harpocéras
+# harpodon
+# harpoise
+# harpon
+# harponnage
+# harponnement
+# harponner
+# harponneur
+# harpye
+# harrier
+# hart
+# hasard
+# hasarder
+# hasardeuse
+# hasardeusement
+# hasardeux
+# has been
+# hasch
+# haschich
+# haschisch
+# hase
+# hâte
+# hâter
+# hatha-yoga
+# hâtier
+# hâtif
+# hâtive
+# hattéria
+# hauban
+# haubanage
+# haubaner
+# haubert
+# hausse
+# hausse-col
+# haussement
+# hausser
+# hausse-repère
+# haussier
+# haussière
+# haut
+# hautain
+# hautaine
+# haut-bar
+# hautbois
+# hautboïste
+# haut-commissaire
+# haut-commissariat
+# haut-de-chausse(s)
+# haut-de-côtelettes
+# haut-de-côtes
+# haut-de-forme
+# haute
+# haute-contre
+# hautement
+# haute-tige
+# hauteur
+# haut-fond
+# haut-fourneau
+# hautin
+# haut-jointé
+# haut-jointée
+# haut-le-cœur
+# haut-le-corps
+# haut-le-pied
+# haut-parc
+# haut-parleur
+# haut-relief
+# hauturier
+# hauturière
+# havage
+# havane
+# hâve
+# havée
+# haveneau
+# havenet
+# haver
+# haveur
+# haveuse
+# havre
+# havresac
+# havrit
+# haylage
+# hayon
+# hé !
+# heat-set
+# heaume
+# hein !
+# héler
+# hem !
+# henné
+# hennin
+# hennir
+# hennissant
+# hennissante
+# hennissement
+# hennuyer
+# hep !
+# héraut
+# hère
+# hérissé
+# hérissée
+# hérissement
+# hérisser
+# hérisson
+# hérissonne
+# herniaire
+# hernie
+# hernié
+# herniée
+# hernieuse
+# hernieux
+# héroïne
+# héron
+# héronneau
+# héronnier
+# héronnière
+# héros
+# hersage
+# herse
+# herser
+# hersillon
+# hêtraie
+# hêtre
+# heu !
+# heurt
+# heurter
+# heurtoir
+# hibou
+# hic
+# hickory
+# hideur
+# hideuse
+# hideusement
+# hideux
+# hidjab
+# hiement
+# hiérarchie
+# hiérarchique
+# hiérarchiquement
+# hiérarchisation
+# hiérarchiser
+# hiérarque
+# hi-fi
+# high bulk
+# high-tech
+# hilaire
+# hile
+# hindi
+# hip !
+# hip-hop
+# hippie
+# hippy
+# hissage
+# hit
+# hit-parade
+# ho !
+# hobby
+# hobbyste
+# hobereau
+# hochement
+# hochepot
+# hochequeue
+# hocher
+# hochet
+# hockey
+# hockeyeur
+# hockeyeuse
+# ho! hisse!
+# holà !
+# holding
+# hold-up
+# Hollande
+# hollandite
+# hollywoodien
+# hollywoodienne
+# homard
+# homarderie
+# homardier
+# home
+# home-trainer
+# hongre
+# hongrer
+# hongreur
+# hongreuse
+# Hongrie
+# hongroierie
+# hongroyage
+# hongroyer
+# hongroyeur
+# honning
+# honnir
+# honoris causa
+# honte
+# honteuse
+# honteusement
+# honteux
+# hooligan
+# hooliganisme
+# hop !
+# hop-je
+# hoquet
+# hoqueter
+# hoqueton
+# horde
+# horion
+# hormis
+# hornblende
+# hors
+# horsain
+# hors-bord
+# hors-cote
+# hors de
+# hors-de-cour
+# hors-d'œuvre
+# horse-guard
+# horse power
+# horsin
+# hors-jeu
+# hors-la-loi
+# hors-ligne
+# hors-marché
+# hors-piste(s)
+# hors-statut
+# horst
+# hors-texte
+# hot
+# hot dog
+# hot-flue
+# hotinus
+# hot money
+# hotte
+# hottée
+# hotu
+# hou !
+# houache
+# houage
+# houaiche
+# houblon
+# houe
+# houer
+# houille
+# houiller
+# houillère
+# houle
+# houlette
+# houleuse
+# houleux/euse
+# houligan
+# houliganisme
+# houlque
+# houp !
+# houppe
+# houppelande
+# houppette
+# houppier
+# hourd
+# hourdage
+# hourder
+# hourdir
+# hourdis
+# houri
+# hourque
+# hourra !
+# hourri
+# hourrite
+# hourvari
+# housche
+# houseau
+# house-boat
+# houspiller
+# houssage
+# housse
+# housser
+# housset
+# houssière
+# houst !
+# houx
+# hovéa
+# hoyau
+# hoyé
+# hoyée
+# huard
+# huart
+# hublot
+# huche
+# hucher
+# huchier
+# hue !
+# huée
+# huer
+# huerta
+# huguenot
+# huipil
+# huir
+# huis clos
+# huit
+# huitain
+# huitaine
+# huitante
+# huit-en-huit
+# huitième
+# huitièmement
+# huit-reflets
+# hulotte
+# hululation
+# hululement
+# hululer
+# humer
+# hum ! humantin
+# hune
+# hunier
+# hunter
+# huppe
+# huppé
+# huppée
+# huque
+# hurdler
+# hure
+# hurlant
+# hurlement
+# hurler
+# hurleur
+# hurleuse
+# huron
+# Huron
+# huronne
+# hurrah !
+# hurricane
+# husky
+# hussard
+# hussarde
+# hutinet
+# hutte
+# hutteau

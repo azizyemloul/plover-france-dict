@@ -92,18 +92,20 @@ trois parties : l'attaque, le noyau et la coda.
 
 #+BEGIN_EXAMPLE
 			syllabe
-			  /\
-			 /  \
+			 _/\_
 			/    \
-		       /     /\
-		      /     /  \
-		     /	   /    \
-		    /     /      \
+		       /      \
+		      /      _/\_
+		     /      /    \
+		    /	   /      \
+		   /      /        \
              attaque    noyau     coda
             (consonne) (voyelle)  (consonne)
 
-exemple :       l         a          k
+Exemple :         l       a         k
 #+END_EXAMPLE
+
+Source : http://www.pomme.ualberta.ca/ling/phono.htm
 
 La sténotype - ainsi est appelée la machine de sténotypie - produit
 des signes sténographiques "types" reconnaissables par n'importe quel
@@ -570,7 +572,7 @@ problématiques est le Traitement automatique du langage naturel
 (TALN).
 
 * La disposition des touches sur le clavier d'ordinateur
-** AZERTY
+** Azerty
 #+BEGIN_EXAMPLE
  ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ ___ _____
 |A  |Z  |E  |R  |T  |Y  |U  |I  |O  |P  |^  |$  |Enter|
@@ -601,7 +603,7 @@ _|__q|__s|__d|__f|__g|__h|__j|__k|__l|__m|__ù|___|____|
 ___|___|___|__c|__v|___|__n|__,|___|___|___|__________|
 #+END_EXAMPLE
 * Footnotes
-[1] Les performances vélotypiques en termes de vitesse avoisinent
-les 150 mots/minute, loin derrière la sténotypie à 210 mots
-/minute. Toutefois, la vélotypie a réussi son accès au sous-titrage
-des programmes audiovisuels en direct.
+[1] Les performances vélotypiques en termes de vitesse avoisinent les
+150 mots/minute, loin derrière la sténotypie à 210 mots
+/minute. Toutefois, la vélotypie a mieux réussi son accès au
+sous-titrage des programmes audiovisuels en direct.
