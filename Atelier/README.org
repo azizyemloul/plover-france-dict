@@ -16,7 +16,7 @@ PUlexique500.org
 README.org
 #+END_SRC
 
-* 1{ère} Partie
+* 1^{ère} Partie
 Les dossiers ne sont pas concernés. On travaille sur les fichiers suivants :
 #+BEGIN_EXAMPLE
 Ulexique500.txt
@@ -27,7 +27,7 @@ dic-generator.awk
 
 | 1_steno | 2_ortho | 3_cgram | 4_genre | 5_nombre | 6_infover | 7_cgramortho | 8_lemme | 9_syll | 10_orthosyll | 11_nbsyll | 12_freqmyn |
 
-Nous allons travailler avec la 7{e} colonne qui contient les entrées différenciées suivantes :
+Nous allons travailler avec la 7^{e} colonne qui contient les entrées différenciées suivantes :
 
 #+BEGIN_SRC
 ADJ
