@@ -1,0 +1,68 @@
+Pour moi, awk est un animal un peu sauvage qu'il faut prévoir à
+défaut d'apprivoiser.
+
+C'est pour ça que je tiens ce carnet de route. Je laisse des traces
+derrière moi pour retrouver ma route pour savoir d'où je viens parce que je ne sais pas où il
+va me mener.
+
+Voici le linsting d'origine de ce dossier :
+
+#+BEGIN_SRC
+Hunspell-aff/
+Lexique380/
+Plover-files/
+dic-generator.awk
+Ulexique500.txt
+PUlexique500.org
+README.org
+#+END_SRC
+
+* 1{ère} Partie
+Les dossiers ne sont pas concernés. On travaille sur les fichiers suivants :
+#+BEGIN_EXAMPLE
+Ulexique500.txt
+dic-generator.awk
+#+END_EXAMPLE
+
+~Ulexique500.texte~ contient une base de données. Celle-ci a la forme suivante :
+
+| 1_steno | 2_ortho | 3_cgram | 4_genre | 5_nombre | 6_infover | 7_cgramortho | 8_lemme | 9_syll | 10_orthosyll | 11_nbsyll | 12_freqmyn |
+
+Nous allons travailler avec la 7{e} colonne qui contient les entrées différenciées suivantes :
+
+#+BEGIN_SRC
+ADJ
+ADJ,ADV
+ADJ,ADV,NOM
+ADJ,ADV,NOM,ONO
+ADJ,ADV,NOM,ONO,VER
+ADJ,ADV,NOM,PRE
+ADJ,ADV,NOM,PRE,VER
+ADJ,ADV,NOM,VER
+ADJ,CON,NOM
+
+ADJ,NOM
+ADJ,NOM,ONO
+ADJ,NOM,ONO,VER
+ADJ,NOM,PRE
+ADJ,NOM,PRE,VER
+ADJ,NOM,VER
+
+ADJ,ONO
+
+ADJ,PRE
+
+ADJ,VER
+ADJ,VER,NOM
+AUX,VER,ADJ
+
+NOM,ADJ
+NOM,VER,ADJ
+
+VER,ADJ
+VER,ADJ,ADV,NOM
+VER,ADJ,NOM
+VER,ADJ,NOM,AUX
+VER,ADJ,PRE
+VER,NOM,ADJ
+#+END_SRC
