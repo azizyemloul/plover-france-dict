@@ -2,8 +2,8 @@ Pour moi, awk est un animal un peu sauvage qu'il faut prévoir à
 défaut d'apprivoiser.
 
 C'est pour ça que je tiens ce carnet de route. Je laisse des traces
-derrière moi pour retrouver ma route pour savoir d'où je viens parce que je ne sais pas où il
-va me mener.
+derrière moi pour retrouver mon chemin parce que je ne sais pas où la
+bête me mènera.
 
 Voici le linsting d'origine de ce dossier :
 
