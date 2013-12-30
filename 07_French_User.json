@@ -1,6 +1,7 @@
 {
 
-"*RC": "{.}{#Return}{-|}",
+
+"*RC": "{#Return}{-|}",
 
     "______commentaire": "Dictionnaire personnel",
     "______commentaire": "Généré avec ELISP",
@@ -209,6 +210,11 @@
 "K": "que",
 "KUn": "qu'un",
 "KUnC": "qu'une",
+"T*Un": "d'un",
+"T*UnC": "d'une",
+"LUn": "l'un",
+"LUnC": "l'une",
+"PA/PA": "papa",
 "KME": "que mes",
 "KTE": "que tes",
 "KSE": "que nos",
@@ -900,6 +906,8 @@
 "YOU/P*LI ": "j'oublie",
 "YOUl": "jour",
 "YU$C/A": "jusqu'à",
+"A$C": "à ce que",
+
 
 
 "": "",

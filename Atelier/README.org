@@ -23,9 +23,21 @@ Ulexique500.txt
 dic-generator.awk
 #+END_EXAMPLE
 
-~Ulexique500.texte~ contient une base de données. Celle-ci a la forme suivante :
+~Ulexique500.texte~ contient une base de données avec les indices suivants :
 
-| 1_steno | 2_ortho | 3_cgram | 4_genre | 5_nombre | 6_infover | 7_cgramortho | 8_lemme | 9_syll | 10_orthosyll | 11_nbsyll | 12_freqmyn |
+1_steno
+2_ortho
+3_cgram
+4_genre
+5_nombre
+6_infover
+7_cgramortho
+8_lemme
+9_syll
+10_orthosyll
+11_nbsyll
+12_freqmyn
+
 
 Nous allons travailler avec la 7^{e} colonne qui contient les entrées différenciées suivantes :
 
