@@ -1,0 +1,2574 @@
+#
+# RÈGLES DE GRAMMAIRE FRANÇAISE POUR GRAMMALECTE
+# par Olivier R.
+#
+
+# DOCUMENTATION
+# Expressions régulières en Python : http://docs.python.org/library/re.html
+#
+# [char] : caractère par caractère
+# [Char] : caractère par caractère, insensible à la casse
+# [word] : mot par mot
+# [Word] : mot par mot, insensible à la casse (par défaut)
+
+# [gc] : règles de contrôle du texte
+# [pp]   : préprocesseur de texte
+
+# [++]   : accroissement de la profondeur de 1. Par défaut, 0.
+
+# Fin d’interprétation du fichier avec une ligne commençant par #END
+
+# FAUTES COURANTES
+# http://fr.wikipedia.org/wiki/Wikip%C3%A9dia:Fautes_d%27orthographe/Courantes
+
+# BUG DE PYTHON 2.6
+# les chaînes dont le premier caractère contient un diacritique sont susceptibles d’être mal reconnues
+
+
+############################## VERBES ##############################
+
+# MÉMO :
+# avoir -> ([aeo]\w*)
+# être -> ([êeésf]\w+)
+# avoir et être -> ([aeêésfo]\w*)
+# aller -> ((all|v|ir)\w+)
+# ppas -> (\w[\w-]+[éiust]e?s?)
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+## PASSE 0
+## paragraphe par paragraphe
+################################################################################################################################################################
+################################################################################################################################################################
+
+
+#
+# //////////////////////////////////////// PRÉPROCESSEUR ////////////////////////////////////////
+#
+[pp]
+
+[char]
+https?://\S+ -> @
+
+[word]
+(M[.]) (?:[A-ZÉÈÎ]\w+|le) -1> Mr
+MM[.] -> "MM "
+
+#
+# //////////////////////////////////////// RÈGLES DE CONTRÔLE ////////////////////////////////////////
+#
+[gc]
+
+
+############################## TYPOGRAPHIE ##############################
+
+[Word]
+
+# etc.
+etc([.][.][.]|…) <- option('typo') -> etc.				# Un seul point après « etc. »
+
+# virgules manquantes
+([\w]+)( car) <- option('typo') and not morph(\1, "po:(det|prep)", False) -2> , car     # Si « car » est la conjonction de coordination, une virgule est peut-être souhaitable.
+([\w]+)( etc[.]) <- option('typo') -2> , etc.                                           # Avant « etc. », il faut mettre une virgule.
+
+[char]
+
+# définitions
+abc [a-z]+
+ABC [A-Z]+
+Abc [a-zA-Z]+
+
+(\w+)[?!,:;%‰‱˚»”](\w+) <- option('typo') and not \1.isdigit() -2> " \2"      # Il manque une espace.
+{abc}[.]([A-ZÉÂÎ]\w+) <- option('typo') -2> " \2"                             # Il manque une espace.
+
+[.][.][.] <- option('typo') -> …                                # Typographie : trois points. Utilisez le caractère dédié.
+#[.][.] -> .|…                                                  # Un ou trois points ?
+…[.][.]? <- option('typo') -> …                                 # Point(s) superflu(s).
+" ([].,)”])" <- option('typo') -> \1                            # Pas d’espace avant cette ponctuation.
+(\w+)([.],)
+	<- option('typo') and not re.match(u"(etc|[A-Z]|fig|hab|litt|circ|coll|ref|étym|suppl|bibl|bibliogr|cit|vol|déc|nov|oct|janv|juil|avr|sept)$", \1)
+	-2> .|,                                                       # Pas de virgule après un point (sauf éventuellement après une abréviation).
+"([[(“]) " <- option('typo') -> \1                              # Pas d’espace après cette ponctuation.
+(?<=[^(][^(][^(][^(])[)]\b <- option('typo') -> ") "            # Il manque une espace après la parenthèse.
+\b[(](?=[^)][^)][^)]) <- option('typo') -> " ("                 # Il manque une espace avant la parenthèse.
+"^-( | )" <- option('typo') -> "– |— "                          # Dialogues et énumérations : un tiret cadratin ou demi-cadratin, suivi d’une espace insécable, est requis.
+"^([—–]) +" <- option('typo') -> "\1 "                          # Dialogues et énumérations : ce tiret doit être suivi d’une espace insécable.
+" - " <- option('typo') -> " – | — "                            # Tiret d’incise : un tiret cadratin ou demi-cadratin est requis.
+
+\b\d+( ?([kcmµn]?(?:[lmgJKΩ]|Wh?|Hz|dB)|[%‰]|°C))\b
+	<- option('unit') -1> " \2"                                 # Il manque une espace insécable.
+
+"( |\b)([?!;»])" <- option('nbsp') -> " \2"                     # Il manque une espace insécable.
+"( |\b):(?= |$)" <- option('nbsp') -> " :"                      # Il manque une espace insécable.
+"([.!?])»" <- option('nbsp') -> "\1 »"                          # Il manque une espace insécable.
+"«( |\b)" <- option('nbsp') -> "« "                             # Il manque une espace insécable.
+
+(\d+) ?[x*] ?(\d+) <- option('typo') -> \1 × \2                         # Signe de multiplication typographique.
+
+# Guillemets
+\"(\w[^\'"]*[\w.?!,])\" <- option('typo') -> « \1 »|“\1”                # Guillemets typographiques.
+\B'(\w[^']*[\w.?!,])'\B <- option('typo') -> “\1”|‘\1’                  # Guillemets typographiques.
+
+# Apostrophe typographique
+(?i)([cdjlmnst]|jusqu|lorsqu|aujourd|entr|presqu|qu)['´‘′`](?=\w) <- option('apos') -> \1’                      # Apostrophe typographique.
+
+### Espaces surnuméraires
+"^ +" <- option('esp') -> ""                                            # Espace(s) en début de ligne à supprimer : utilisez les tabulations ou les espacements de paragraphes.
+#"(  |  )" <- option('typo') -> " "                                      # Incohérence : l’espace insécable à côté de l’espace sécable n’a pas d’effet.
+#"  +" <- option('typo') -> " "                                          # Espace(s) insécable(s) surnuméraire(s) à supprimer.
+(\b|[.?!,:;%‰‱˚»”])  +\b <- option('typo') -> "\1 "                     # Espace(s) surnuméraire(s) à supprimer.
+" +$" <- option('esp') -> ""                                            # Espace(s) en fin de ligne à supprimer.
+
+[Char]
+"\b(([cdjlmnst]|qu|jusqu|lorsqu|aujourd|entr|presqu)[’'´‘′`] )[aeéiouyîèêôû]" <- option('typo') -1> \2’     # Espace superflu. Pas d’espace après une apostrophe.
+"\b(lorsqu|qu|puisqu|presqu|quoiqu) " <- option('typo') -> \1’                                              # Il manque probablement une apostrophe.
+
+[Word]
+# élisions
+(l[ea] )([aâeéêiîoôu]\w+) <- not re.match(u"(?i)(onz|énième|I)", \2) and not morph(\2, "po:mg", False)
+	-1> l’                                                             # Élision de l’article devant un mot commençant par une voyelle.|http://fr.wikipedia.org/wiki/Élision
+(ce) ([aâeéêiîoôu]\w+) <- option('typo') and not re.match(u"(?i)(onz|énième)", \2) and morph(\2, "is:(mas|epi)")
+	-1> cet                                                            # « ce » devient « cet » devant un mot commençant par une voyelle.
+si (ils?) <- option('typo') -> s’\1                                    # Il faut élider « si » et l’accoler au pronom.|http://fr.wikipedia.org/wiki/Élision
+que (ils?|elles?|on) <- option('typo') -> qu’\1                        # Il faut élider « que » et l’accoler au pronom.|http://fr.wikipedia.org/wiki/Élision
+
+
+
+[word]
+# Chimie
+(Ca(CO3|SO4)|CO2|(H2|Na2)(CO3|O|SO4)|[HNO]2|HNO3|Fe2O3|KMnO4|NO2|SiO2|SO[23])
+	<- option('chim') -> =\0.replace("2", u"₂").replace("3", u"₃").replace("4", u"₄")           # Typographie des composés chimiques. [!]
+
+
+############################## LIAISONS - TRAITS D’UNION ##############################
+
+[Char]
+a[- ]t['’ ](il|elle|on) <- option('tu') -> a-t-\1                        # Liaisons incorrectes.
+a t-(il|elle|on) <- option('tu') -> a-t-\1                               # Liaisons incorrectes.
+va[ -]t[ -]en <- option('tu') and word(1) != 'guerre' -> va-t’en         # Une apostrophe est nécessaire (s’en aller).
+va[ -]t['’ -]en guerres? <- option('tu') -> va-t-en-guerre               # Va-t-en-guerre (invariable) : des traits d’union sont nécessaires.
+y['’-]([aeêésfo]\w*) <- morph(\1, ":v0", False) or \1 == "en" -> y \1    # Ici, ni apostrophe, ni trait d’union.
+
+[Word]
+
+### ce / cet / cette / ces + nom + là
+(?:ce[st]?|cette) ((\w[\w-]+) là)(?! où) <- option('tu') and morph(\2, "po:nom") -1> \2-là    # Il manque probablement un trait d’union.
+
+### Préfixes
+ex (\w\w+) <- option('tu') and morph(\1, "po:nom") and not re.match(u"(?i)(aequo|nihilo|cathedra|absurdo|abrupto)", \1)
+	-> ex-\1                                                                     # Il manque un trait d’union.
+mi (\w\w+) <- option('tu') and morph(\1, "po:(nom|adj|ppas)", False) -> mi-\1  # Il manque un trait d’union.
+(?:l[ea]|ces?|cette|des?|ma|mon|[lmts]es) (quasi (\w+))
+	<- option('tu') and morphex(\2, "po:nom", "po:(adj|mg|adv)")
+	-1> quasi-\2                                                                       # Il manque un trait d’union : « quasi » s’accroche au mot qui le suit s’il s’agit d’un nom.
+semi (\w\w+) <- option('tu') and morph(\1, "po:(nom|adj|ppas)", False) -> semi-\1    # Il manque un trait d’union.
+
+### Tri 1
+[àa] tout vas? -> à tout-va                                                     # « À tout-va » : locution invariable.
+allers? retours? -> =\0.replace(' ', '-')                                       # Il manque un trait d’union.
+arcs? en ciel <- option('tu') -> =\0.replace(' ', '-')                          # Il manque les traits d’union.
+après demain <- option('tu') -> après-demain                                    # Il manque un trait d’union.
+au (delà|dehors|desso?us|devant) <- option('tu') -> au-\1                       # Il manque un trait d’union.
+avant hier <- option('tu') -> avant-hier                                        # Il manque un trait d’union.
+c’est [àa] dire <- option('tu') -> c’est-à-dire                                 # Il manque les traits d’union.
+chef lieu <- option('tu') -> chef-lieu                                          # Il manque un trait d’union.
+(celles?|celui|ceux) là <- option('tu') -> \1-là                                # Il manque un trait d’union.
+(celles?|celui|ceux) [cs]i <- option('tu') -> \1-ci                             # Il manque un trait d’union.
+centres? villes? <- option('tu') -> centre-ville|centres-villes                 # Il manque un trait d’union.
+ci (desso?us|devant) <- option('tu') -> ci-\1                                   # Il manque un trait d’union.
+de ci,? de là <- option('tu') -> de-ci de-là|de-ci, de-là                       # Il manque les traits d’union.
+^(Est ce) que? <- option('tu') -1> Est-ce                                       # Il manque probablement un trait d’union.
+état major <- option('tu') -> état-major                                        # Il manque un trait d’union.
+grand chose <- option('tu') -> grand-chose                                      # Il manque un trait d’union.
+grand (père|mère) <- option('tu') -> grand-\1                                   # Il manque un trait d’union.
+ici bas <- option('tu') -> ici-bas                                              # Il manque un trait d’union.
+jusque là <- option('tu') -> jusque-là                                          # Il manque un trait d’union.
+là (bas|haut|desso?us|dedans|devant|derrière) <- option('tu') -> là-\1          # Il manque un trait d’union.
+n’est( ce[ -]pas|-ce-pas) <- option('tu') -> n’est-ce pas                       # Un trait d’union.
+( |sud) ouest <- option('tu') -> \1-ouest                                    # Il manque un trait d’union.
+(nord|sud) est <- option('tu') and not word(1) -> \1-est                        # Il manque un trait d’union.
+outre mer <- option('tu') -> outre-mer                                          # Il manque un trait d’union.
+ou[iï] dire <- option('tu') and morph(word(-1), "po:mg") -> ouï-dire            # Il manque un trait d’union.
+par (desso?us|devant|delà|derrière|dehors|dedans|devers)
+	<- option('tu') -> par-\1                                                   # Il manque un trait d’union.
+par ci,? par là <- option('tu') -> par-ci par-là|par-ci, par-là                 # Trait(s) d’union manquant(s).
+(prêts?) à porter <- option('tu') and re.match("(?i)(les?|du|des|un|ces?|[mts]on)", word(-1))
+	-> \1-à-porter                                                              # Il manque les traits d’union.
+plate(s)? forme(?(1)s) <- option('tu') -> plate-forme|plates-formes             # Il manque un trait d’union.
+quelques (une?s) <- option('tu') -> quelques-\1                                 # Il manque un trait d’union.
+rez de chaussée <- option('tu') -> rez-de-chaussée                              # Il manque un trait d’union.
+(\w+) (sans gêne) <- option('tu') and morph(\1, ":det", False) -2> sans-gêne    # Il manque un trait d’union.
+science fiction <- option('tu') -> science-fiction                              # Il manque un trait d’union.
+sous (jacente?s?) <- option('tu') -> sous-\1                                    # Il manque un trait d’union.
+# sur-mesures
+vice (président|roi) <- option('tu') -> vice-\1                                 # Il manque un trait d’union.
+vis [àa] vis <- option('tu') -> vis-à-vis                                       # Il manque les traits d’union.
+week (ends?) <- option('tu') -> week-\1                                         # Il manque un trait d’union.
+
+### Tri 2
+(?:les|aux) (beaux arts) <- option('tu') -1> beaux-arts                         # Il manque un trait d’union.
+(basket|volley) ball <- option('tu') -> \1-ball                                 # Il manque un trait d’union.
+#(jusque|moment|celles?|celui|ceux|matins?|jours?|nuits?|deux) là
+(lui|elle|soi|vous) même <- option('tu') -> \1-même                             # Il manque un trait d’union.
+(nous|vous|eux|elles) mêmes <- option('tu') -> \1-mêmes                         # Il manque un trait d’union.
+(?:[lcd]es?|un|[mts]on|leurs?) (va et vient) <- option('tu') -1> va-et-vient    # Il manque les traits d’union.
+
+### Noms propres
+[word]
+Royaume Uni <- option('tu') -> Royaume-Uni                              # Il manque un trait d’union (s’il s’agit de l'État englobant la Grande-Bretagne et l’Irlande du Nord).
+Grande Bretagne <- option('tu') -> Grande-Bretagne                      # Il manque un trait d’union (s’il s’agit de l'État englobant l’Angleterre, l’Écosse et le pays de Galles).
+(?:[Ll]es|[aA]ux) (Pays Bas) <- option('tu') -1> Pays-Bas               # Il manque un trait d’union.
+Aix en Provence <- option('tu') -> Aix-en-Provence                      # Il manque un trait d’union.
+Bosnie Herzégovine <- option('tu') -> Bosnie-Herzégovine                # Il manque un trait d’union.
+Charente Maritime <- option('tu') -> Charente-Maritime                  # Il manque un trait d’union.
+Clermont Ferrand <- option('tu') -> Clermont-Ferrand                    # Il manque un trait d’union.
+Colombie Britannique <- option('tu') -> Colombie-Britannique            # Il manque un trait d’union.
+Franche Comté <- option('tu') -> Franche-Comté                          # Il manque un trait d’union.
+Haute Garonne <- option('tu') -> Haute-Garonne                          # Il manque un trait d’union.
+[ÎI]le de France <- option('tu') -> Île-de-France                       # Il manque les traits d’union.
+Jean (Baptiste|Claude|François|Jacques|Louis|Luc|Marc|Marie|Michel|Paul|Philippe|Pierre)
+	<- option('tu') -> Jean-\1                                          # Il manque un trait d’union.
+Jésus Christ <- option('tu') -> Jésus-Christ                            # Il manque un trait d’union.
+Moyen Orient <- option('tu') -> Moyen-Orient                            # Il manque un trait d’union.
+Nouveau Brunswick <- option('tu') -> Nouveau-Brunswick                  # Il manque un trait d’union.
+Nouvelle (Zélande|Calédonie|Orléans) <- option('tu') -> Nouvelle-\1     # Il manque un trait d’union.
+Pas de Calais <- option('tu') -> Pas-de-Calais                          # Il manque les traits d’union.
+Rhône Alpes <- option('tu') -> Rhône-Alpes                              # Il manque les traits d’union.
+Saône et Loire <- option('tu') -> Saône-et-Loire                        # Il manque un trait d’union.
+
+[Word]
+
+### nombres
+(dix|vingts?|trente|quarante|cinquante|soixante|septante|octante|huitante|nonante) ((deux|trois|six|sept|huit)(ièmes?)?|quatre|quatrièmes?|cinq|cinquièmes?|neuf|neuvièmes?)
+	<- option('tu')
+	-> =\0.replace(' ', '-').replace('vingts', 'vingt')                     # Il manque un trait d’union.
+soixante ((douz|treiz|quatorz|quinz|seiz)(e|ièmes?)|(dix|dix[- ]sept|dix[- ]huit)(ièmes?)?|dix[- ]neuf|dix[- ]neuvièmes?)
+	<- option('tu')
+	-> =\0.replace(' ', '-')                                                # Trait(s) d’union manquant(s).
+quatre[- ]vingts? (une|(un|deux|trois|six|sept|huit|dix|dix-sept|dix-huit)(ièmes?)?|(quatr|onz|douz|treiz|quatorz|quinz|seiz)(e|ièmes?)?|cinq|cinquièmes?|neuf|neuvièmes?)
+	<- option('tu')
+	-> =\0.replace(' ', '-').replace('vingts', 'vingt')                     # Trait(s) d’union manquant(s).
+(vingt|trente|quarante|cinquante|soixante|septante|octante|huitante|nonante)[- ](une?|unièmes?)
+	<- option('tu')
+	-> \1 et \2|\1-et-\2                                                    # Il manque « et ». (Si vous suivez la réforme orthographique, utilisez des traits d’union.)
+
+### Impératifs
+v(iens|enez|enons) y <- option('tu') -> v\1-y                               # Il manque un trait d’union.
+all(ons|ez) y
+	<- option('tu') and not morph(xword(1), "po:infi", False, False) -> all\1-y                          # Il manque un trait d’union.
+vas? y
+	<- option('tu') and not word(-1) and not morph(xword(1), "po:infi", False, False) -> vas-y           # Il manque un trait d’union.
+conv(iens|enez|enons) en(?! partie) <- option('tu') -> conv\1-en                                       # Il manque un trait d’union.
+
+#(\w+) ([mt]oi|[nv]ous|lui|leur) <- option('tu') and morph(\1, "po:v[123].* is:impe", False) -> \1-\2   # Il manque un trait d’union.
+
+### Pas de trait d’union
+deux-tiers <- option('tu') -> deux tiers                                    # Pas de trait d’union.
+en-(bas|haut|dessous|deça) <- option('tu') -> en \1                         # Pas de trait d’union.
+peu-[aà]-peu <- option('tu') -> peu à peu                                   # Pas de trait d’union.
+s’il-([tm]e|[vn]ous)-(pla[îi]t) <- option('tu') -> s’il \1 \2               # Pas de traits d’union.
+tout-à-fait <- option('tu') -> tout à fait                                  # Pas de trait d’union.
+trois-quarts <- option('tu') -> trois quarts                                # Pas de trait d’union.
+parce-(que?) <- option('tu') -> parce \1                                    # Pas de trait d’union.
+
+[Char]
+\b-(ç[aà])\b <- option('tu') -> " \1"                                       # Pas de trait d’union.
+
+
+############################## NOMBRES ##############################
+
+### Grands nombres
+
+[char]
+
+d   \d\d\d          # 3 chiffres
+d2  \d{2,3}         # 2 ou 3 chiffres
+D   \d{1,3}         # 1, 2 ou 3 chiffres
+
+\b{d2}{d}\b         <- option('num') -> {d2} {d}                       # Séparateur des milliers (avec espace insécable).
+\b{D}{d}{d}\b       <- option('num') -> {D} {d} {d}                    # Séparateur des milliers (avec espaces insécables).
+\b{D}{d}{d}{d}\b    <- option('num') -> {D} {d} {d} {d}                # Séparateur des milliers (avec espaces insécables).
+
+#(\d\d\d\d)-(\d\d\d\d)   -> \1–\2                                        # Ne pas séparer deux dates par un trait d’union, mais par un tiret demi-cadratin.
+
+[word]
+[\dO]+O[\dO]+ <- option('num') -> =\0.replace('O', '0')                # S’il s’agit d’un nombre, utilisez le chiffre « 0 » plutôt que la lettre « O ».
+[1-9]O <- option('num') -> =\0.replace('O', '0')                       # S’il s’agit d’un nombre, utilisez le chiffre « 0 » plutôt que la lettre « O ».
+
+### Nombres ordinaux
+
+[word]
+
+([0-9]+)(è|i?[èe]mes?) <- option('typo') -> \1e                                  # Nombre ordinal. Mettez « e » en exposant.
+([IVXLCM]{1,3})(è|i?[èe]mes?) <- option('typo') -> \1e                           # Nombre ordinal romain. Mettez « e » en exposant.
+
+
+############################## RÈGLES DE BASE ##############################
+
+[Word]
+
+### doublon avec casse identique
+(\w+) \1 <- not re.match(u"(?i)([nv]ous|faire|en|la|donnant|est|mieux|[0-9]+)$", \1) -> \1   # Doublon.
+mieux mieux <- not re.match(u"(?i)qui$", word(-1)) -> mieux                        # Doublon.
+(?<![lLdD][’'])(est) \1 -> \1                                                       # Doublon.
+
+
+### double négation
+pas (personne|aucune?|jamais)
+	-> \1|pas, \1                          # Double négation : les mots « pas \1 » ne devraient pas se succéder.
+
+[word]
+### incohérences globales
+([cCdDlLmMtTsS]es|[nNvV]os|[cC]ettes?|[mMtTsS]a|[mM]on|[aA]ux?) ([cdlmst]es|[nv]os|cettes?|[mts]a|mon|je|tu|ils?|elle?|[vn]ous|on)
+	-> _                                   # Incohérence : les mots « \1 \2 » ne devraient pas se succéder.
+
+
+################################################## STYLE ##################################################
+
+########## Basique
+
+[char]
+
+#Mr <- option('bs') -> M.                                                                # M. est l’usage courant pour “Monsieur”. « Mr » est l’abréviation ancienne, française.
+
+[Word]
+
+# avoir été
+([aeo]\w*) été chez <- option('bs') and \1 != "avoir" and stem(\1) == ["avoir"]
+	-> _                                                                                # Tournure familière. Utilisez « être allé ».
+
+# abyme / abîme
+mis\w+ en (ab[îi]mes?) <- option('bs') -1> abyme                                        # Classiquement, on écrit plutôt « abyme » dans cette expression.
+
+# malgré que
+malgré (que|qu’\w+) <- option('bs') and not (word(1) == 'en' and 'avoir' in stem(word(2))) and not (word(2) == 'en' and 'avoir' in stem(word(3)))
+	-> bien \1                                                                          # Tournure populaire. Utilisez « bien que ».
+
+# pire
+(?:moins|aussi|plus) (pires?) <- option('bs') -1> mauvais|mauvaise|mauvaises            # Tournure familière. Utilisez « mauvais ».
+de mal en pire <- option('bs') -> de mal en pis                                         # Tournure familière. Utilisez « de mal en pis ».
+au pire aller <- option('bs') -> au pis aller                                           # Tournure familière. Utilisez « au pis aller ».
+
+# très / trop
+tr(ès|op) (beaucoup|assez|mieux|pire|meilleur|délicieux) <- option('bs') -> \2          # « tr\1 » est superflu.
+
+#(tomb\w+) dans les pommes <- option('bs') -> \1 dans les pâmes                          # « Tomber dans les pâmes » est l’ancienne tournure.
+#(?<![nN][’'])(\w[\w’-]+) (pas|jamais|rien)
+#	<- option('bs') and morph(\2, "po:v", False) and word(-1) != 'ne' and word(-2) != 'ne' and word(-3) ! 'ne'
+#	-> _                                                                               # Il manque « ne » dans cette phrase.
+
+
+######### Expressions impropres
+
+#([mts]e|[nv]ous) (rappel\w+) (de) <- word(1) != 'ne' and not morph(word(1), "po:v")
+#	-3> _                                                                # Expression impropre. « Se rappeler quelque chose » ou « Se souvenir de quelque chose ».
+#Se rappelle de l’amour
+
+#enjoindre à qqn de faire qqch
+
+########## Pléonasmes
+
+[Word]
+
+(abol\w+) entièrement <- option('pleo') and 'abolir' in stem(\1) -> \1                                              # Pléonasme.
+(accul\w+) aux? pieds? du mur <- option('pleo') -> \1                                                               # Pléonasme.
+(ach[eè]v\w+) compl[éè]tement <- option('pleo') and 'achever' in stem(\1) -> \1                                     # Pléonasme.
+actuellement en cours <- option('pleo') -> en cours                                                                 # Pléonasme. *
+actuellement en train de <- option('pleo') -> en train de                                                           # Pléonasme.
+(ajout\w+) en plus <- option('pleo') -> \1                                                                          # Pléonasme.
+(apanages?) exclusifs? <- option('pleo') -> \1                                                                      # Pléonasme.
+(applaudi\w+) des deux mains <- option('pleo') -> \1                                                                # Pléonasme.
+au jour d[’']aujourd’hui <- option('pleo') -> aujourd’hui                                                           # Pléonasme.
+(avan[cç]\w*) en avant <- option('pleo') -> \1                                                                      # Pléonasme. *
+s’avér(\w+) vrai(e?s?) <- option('pleo') -> s’avér\1 exact\2                                                        # Pléonasme. *
+(avérée?s?) vraie?s? <- option('pleo') -> \1                                                                        # Pléonasme.
+avenir devant (lui|[mts]oi|eux|[nv]ous) <- option('pleo') and (morph(word(-1), "po:adj", False) or word(-1) == 'un') -> avenir           # Pléonasme.
+(bourrasques?) de vent <- option('pleo') -> \1                                                                      # Pléonasme.
+car en effet <- option('pleo') -> car|en effet                                                                      # Pléonasme.
+(cirrhoses?) du foie <- option('pleo') -> \1                                                                        # Pléonasme.
+(collabor\w+) ensemble <- option('pleo') -> \1                                                                      # Pléonasme.
+comme par exemple <- option('pleo') -> comme|par exemple                                                            # Pléonasme.
+(compar\w+) entre eux <- option('pleo') and stem(\1) == ['comparer'] -> \1                                          # Pléonasme.
+(contrainte?s?) malgré (soi|eux|lui|moi|elle|toi) <- option('pleo') -> \1                                           # Pléonasme.
+(contrai\w+) malgré (soi|eux|lui|moi|elle|toi) <- option('pleo') and stem(\1) == ['contraindre'] -> \1              # Pléonasme.
+de (d’autres?) <- option('pleo') -> \1                                                                              # Pléonasme.
+(descend\w+) en bas(?! de) <- option('pleo') -> \1                                                                  # Pléonasme.
+(dessin\w+) un dessin <- option('pleo') -> \1                                                                       # Pléonasme.
+donc par conséquent <- option('pleo') -> donc|par conséquent|c’est pourquoi                                         # Pléonasme.
+(enchevêtr\w+) les uns dans les autres <- option('pleo') -> \1                                                      # Pléonasme.
+(s’entraid\w+) (mutuellement|les uns les autres) <- option('pleo') -> \1                                            # Pléonasme.
+(erreurs?) involontaires? <- option('pleo') -> \1                                                                   # Pléonasme.
+(étapes?) intermédiaires? <- option('pleo') -> \1                                                                   # Pléonasme.
+(hasards?) imprévus? <- option('pleo') -> \1                                                                        # Pléonasme.
+(hémorragies?) de sang <- option('pleo') -> \1                                                                      # Pléonasme.
+(join\w+) ensemble <- option('pleo') and stem(\1) == ['joindre'] -> \1|mettre ensemble                              # Pléonasme.
+lever debout <- option('pleo') -> lever                                                                             # Pléonasme. *
+mais (cependant|pourtant|toutefois) <- option('pleo') -> mais|cependant|pourtant|toutefois                          # Pléonasme.
+(marches?) à pieds? <- option('pleo') -> \1                                                                         # Pléonasme.
+(méandres?) sinueux <- option('pleo') -> \1                                                                         # Pléonasme.
+(m[eé]dias?) d’informations? <- option('pleo') -> \1                                                                # Pléonasme.
+(monopoles?) exclusifs? <- option('pleo') -> \1                                                                     # Pléonasme.
+(mont\w+) en haut <- option('pleo') and word(1) != "de" -> \1                                                       # Pléonasme.
+(opportunités?) à saisir <- option('pleo') -> \1                                                                    # Pléonasme.
+(orages? électriques?) <- option('pleo') -> \1                                                                      # Pléonasme.
+paires? de jumelles <- option('pleo') -> jumelles                                                                   # Pléonasme.
+(panacées?) universelles? <- option('pleo') -> \1|remède universel                                                  # Pléonasme.
+(perspectives?) d’avenir <- option('pleo') -> \1                                                                    # Pléonasme.
+premiers? (balbutiements?) <- option('pleo') -> \1                                                                  # Pléonasme.
+premières? (priorités?) <- option('pleo') -> \1                                                                     # Pléonasme.
+(projets?) futurs? <- option('pleo') -> \1                                                                          # Pléonasme.
+futurs? (projets?) <- option('pleo') -> \1                                                                          # Pléonasme.
+(prototypes?) expérimenta(l|ux) <- option('pleo') -> \1                                                             # Pléonasme.
+(rénov\w+) à neuf <- option('pleo') -> \1                                                                           # Pléonasme.
+puis (après|ensuite|alors) <- option('pleo') -> puis|après|ensuite|alors                                            # Pléonasme.
+(se|[nv]ous) (réuni(?:r|\w+on[st]|\w+ez)) ensemble <- option('pleo') -> \1 \2                                       # Pléonasme.
+(recul\w*) en arrière <- option('pleo') -> \1                                                                       # Pléonasme.
+(risqu\w+) de menace[rs] <- option('pleo') -> \1                                                                    # Pléonasme.
+(risques?) potentiels? <- option('pleo') -> \1                                                                      # Pléonasme.
+(secousses?) sismiques? <- option('pleo') -> secousse tellurique|secousses telluriques|tremblement de terre         # Pléonasme.
+(solidaires?) les uns des autres <- option('pleo') -> \1                                                            # Pléonasme.
+(suffi\w+) simplement <- option('pleo') and stem(\1) == ['suffire'] -> \1                                           # Pléonasme.
+(tunnels?) souterrains? <- option('pleo') -> \1                                                                     # Pléonasme.
+vieilles hardes <- option('pleo') -> hardes                                                                         # Pléonasme.
+voire même <- option('pleo') -> voire|même                                                                          # Pléonasme.
+
+# d’avance / à l’avance
+((pré[pvds]|pressent|pronostiqu|réserv|devan[cç]|avert)\w+) (d’avance|à l’avance)
+	<- option('pleo') and stemchk(\1, u"^(prévenir|prévoir|prédire|présager|préparer|pressentir|pronostiquer|avertir|devancer|réserver)$", False)
+	-> \1                                                                                                            # Pléonasme.
+
+# plus tard / à une date ultérieure
+((diff|ajourn|report)\w+) à (plus tard|date ultérieure|une date ultérieure)
+	<- option('pleo') and stemchk(\1, u"^(ajourner|différer|reporter)$", False)
+	-> \1                                                                                                            # Pléonasme.
+
+
+########## Redondances
+
+W [-\w]{6,}
+
+{W}(?: [-–\w“”’',;]+)* \1 <- option('redon') and not morph(\1, "po:mg") -> _                                        # Redondance de « \1 ».
+
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+## PASSE 1
+## phrase par phrase
+################################################################################################################################################################
+################################################################################################################################################################
+[++]
+
+#
+# //////////////////////////////////////// PRÉPROCESSEUR ////////////////////////////////////////
+# épuration des signes inutiles
+#
+[pp]
+
+[char]
+
+[«»“”„"©]+ -> *
+^ *[-–—] -> *
+
+[Word]
+# les références aux notes
+[a-zA-ZéèâàôîùÉÈÂÀÔÎÙ]+(\d+) <- not morph(\0, "po:", False) -1> *
+
+
+#
+# //////////////////////////////////////// RÈGLES DE CONTRÔLE ////////////////////////////////////////
+#
+[gc]
+
+[Word]
+
+## CONFUSIONS
+
+# incohérences
+très +(\w\w+)
+	<- option('conf') and morphex(\1, "po:(infi|[123](sg|pl))", "po:(mg|adj|ppas|adv)")
+	-1> _                                                                        # Incohérence : « \1 » n’est ni un adjectif, ni un participe passé, ni un adverbe.
+
+(?:[pP]resque|[sS]i|[tT]rop) +(\w\w+)
+	<- option('conf') and morphex(\1, "po:([123](sg|pl))", "po:(mg|adj|ppas|adv|prn|patr)")
+	-1> _                                                                        # Incohérence : « \1 » n’est ni un adjectif, ni un participe passé, ni un adverbe.
+
+si +(\w\w+)
+	<- option('conf') and morphex(\1, "po:([123](sg|pl))", "po:(mg|nom|adj|ppas|adv|prn|patr|titr)")
+	-1> _                                                                        # Incohérence : « \1 » n’est ni un adjectif, ni un participe passé, ni un adverbe.
+
+de plus en plus +(\w\w+)
+	<- option('conf') and morphex(\1, "po:(infi|[123](sg|pl))", "po:(mg|adj|ppas|adv)") and not morph(word(-1), "po:v[123].* po:[123](sg|pl)", False, False)
+	-1> _                                                                        # Incohérence : « \1 » n’est ni un adjectif, ni un participe passé, ni un adverbe.
+
+# a / à
+(à) +(\w\w+)
+	<- option('conf') and re.match("(?i)(par|avec|pour|sur|alors|donc|que?|lorsque?|puisque?)$", \2)
+	-1> a                                                                        # Confusion probable : “à” est une préposition. Écrivez “a” pour la conjugaison de “avoir”.
+
+(à) +(\w\w+)
+	<- option('conf') and morph(\2, "po:[123](sg|pl)", True)
+	-> _                                                                         # Incohérence : “\1” est une préposition. “\2” est un verbe conjugué.
+
+
+# peu / peut / peut-être
+(?<![dDuUnN][eEnN] )(peu) (?:pas|donc|jamais|parfois|alors|enfin|rarement|éventuellement) <- option('conf') -1> peut      # Confusion probable.
+^ *(il|ce|cela|ceci) (peut-être) <- option('conf') -2> peut être                                                          # Confusion probable : « peut-être » signifie « possiblement ».
+[ns]e (peu) <- option('conf') -1> peut                                                                                    # Confusion. Exemples : Il est peu habile, mais il peut y arriver.
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+## PASSE 2
+################################################################################################################################################################
+################################################################################################################################################################
+[++]
+
+
+#
+# //////////////////////////////////////// PRÉPROCESSEUR ////////////////////////////////////////
+# épuration des adverbes, locutions adverbiales, interjections et expressions usuelles
+#
+[pp]
+
+[word]
+(?:[dD]epuis le|[lL]e|[dD]u|[aA]u|[jJ]usqu’au) (?:1er|\d\d?) (?:janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre|vendémiaire|brumaire|frimaire|nivôse|pluviôse|ventôse|germinal|floréal|prairial|messidor|thermidor|fructidor)( \d+|) -> *
+(en (?:janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre|vendémiaire|brumaire|frimaire|nivôse|pluviôse|ventôse|germinal|floréal|prairial|messidor|thermidor|fructidor) *\d+) (\w+) <- not morph(\2, "po:(nom|adj)", False) -1> *
+à la mi-(?:janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre|vendémiaire|brumaire|frimaire|nivôse|pluviôse|ventôse|germinal|floréal|prairial|messidor|thermidor|fructidor) -> *
+depuis \d+ -> *
+
+[Word]
+
+## Inconditionnel
+^ *(?:et(?: puis|)|puis|car) -> *
+à côté (?:de (?:ça|lui|[mt]oi|[nv]ous)|d’(?:elles|eux))(?! et) -> *
+à la (?:bourre|con|dérobée|diable|fois|longue|papa|ramasse|redresse|sauvette|volée) -> *
+à (?:au(?:cun prix|trui)|bas co[ûu]t|beaucoup près|bien (?:des égards|y penser)|bon escient|bout (?:de souffle|portant)|bras ouverts|cause de ça|ce (?:compte-là|moment-là|titre)|cet (?:égard|instant)|cette époque|chaque (?:fois|instant)|cœur (?:joie|ouvert|perdu)|ciel ouvert|coup sûr|court terme|de nombreuses reprises|des kilomètres à la ronde|feu et à sang|hue et à dia|huis clos|juste (?:raison|titre)|long terme|longueur (?:de (?:temps|journée)|d’année)|main armée|maints égards|mi-temps|moyen terme|part (?:entière|ça)|parts égales|pas de géant|perte de vue|petit feu|peu (?:de choses |)près|plate couture|plein (?:régime|temps)|point nommé|portée de main|première vue|proprement parler|qui (?:mieux mieux|que ce soit)|quelque distance|quelques exceptions près|ras bord|tel point|temps (?:plein|partiel)|tête reposée|tire d’aile|titre (?:conservatoire|d’exemple|indicatif|informatif|grâcieux|personnel)|tort (?:ou à raison|et à travers)|tour de (?:bras|rôle)|toutes fins utiles|usage interne|vive allure|vrai dire|y regarder de plus près) -> *
+à partir (?:de (?:demain|là|maintenant)|d’(?:aujourd’hui|ici)) -> *
+à (?:califourchon|confesse|contre(?:cœur|temps)|demi-mot|grand-peine|loisir|merveille|moitié|nouveau|outrance|peine|présent|rallonge|reculons|regret|risque|tâtons|temps|tort|tout-va) -> *
+à quelques-un(?:s d’entre eux|es d’entre elles) -> *
+à tout (?:âge|bout de champ|crin|instant|jamais|le (?:moins|monde)|moment|point de vue|prix) -> *
+à toute (?:allure|bride|épreuve|force|heure|vitesse) -> *
+à l’(?:heure (?:actuelle|qu’il est)|accoutumée|aven(?:ir|ant)|évidence|aveuglette|emporte-pièce|improviste) -> *
+à (?:[mts]es|[nv]os|leurs) (?:côtés|dépens|risques et périls|trousses) -> *
+à (?:[mts]a|[nv]otre|leur) (?:connaissance|disposition|grande (?:surprise|tristesse)|guise) -> *
+à (?:[mts]on|[nv]otre|leur) (?:avis|c(?:œur|orps) défendant|encontre|égard|grand désarroi|insu|sujet|tour) -> *
+à mi(?:di|nuit)(?: pile|) -> *
+à cette heure(?: du jour| de la nuit| tardive|) -> *
+[aà] (?:priori|post[eé]riori|contrario) -> *
+ad (?:hoc|vitam æternam) -> *
+advienne que pourra -> *
+après (?:[mts]oi|lui|eux|mûre réflexion|tout,|un certain temps) -> *
+(heure|minute|seconde|jour|semaine|trimestre|semestre|mois|décennie|année|siècle) après \1 -> *
+au-dessus (?:de (?:[mts]oi|lui|[nv]ous)|d’(?:eux|elles?)) -> *
+au (?:commencement|contraire|débotté|début|demeurant|hasard|jugé|moins|préalable|quotidien|surplus) -> *
+au (?:bon moment|bout (?:du compte|d’un moment)|cas par cas|coude à coude|coup par coup|doigt mouillé|fil (?:des ans|du temps)|fur et à mesure|jour le jour|lieu de ça|milieu de nulle part|plus (?:haut point|pressé|vite|tôt|tard)|premier abord|sens(?:propre|figuré)) -> *
+au (?:dernier|même|bon|mauvais) (?:moment|instant) -> *
+au cours des (?:deux|trois|quatre|cinq|six|sept|huit|neux|dix|onze|douze|treize|quatorze|quinze|seize|dix-(?:sept|huit|neuf)|vingt|trente|quarante|cinquante|soixante|soixante-dix|quatre-vingt|quatre-vingt-dix|cent) dernières années -> *
+(?:tout |)au fond (?:de (?:[mts]oi|lui|[nv]ous)|d’(?:elles?|eux))(-mêmes?|) -> *
+autant que (?:nécessaire|possible) -> *
+autrement dit -> *
+avant (?:terme|tout le monde|toute chose|toutes choses|d’aller plus loin) -> *
+avec (?:autrui|[mts]oi|lui|elles?|[nv]ous|eux|tout le monde|tout ça)(?! qui) -> *
+beaucoup (?:plus|moins) -> *
+bel et bien -> *
+bien (?:assez tôt|des fois|souvent) -> *
+bon gré,? mal gré -> *
+çà et là -> *
+ce faisant -> *
+ceci mis à part -> *
+ces derniers temps -> *
+ce(?:lui|lles?|ux) (d’entre (?:[nv]ous|eux|elles)) -1> *
+cette fois-(?:là|ci) -> *
+chacune? (d’entre (?:[nv]ous|eux|elles)) -1> *
+chez (?:[mt]oi|lui|elles?|[nv]ous|eux|autrui) -> *
+comme (?:avant|autrefois|d’habitude|de juste|bon (?:me|te|lui|leur|[nv]ous) semble|au bon vieux temps) -> *
+comme tant d’autres (?:avant|après) (?:[mts]oi|lui|[nv]ous|eux|elles?)(?! qui) -> *
+contre (?:nature|toute (?:attente|vraisemblance)|vents et marées|[mts]oi|lui|elles?|[nv]ous|eux|(?:[mts]on|[nv]otre|leur) gré) -> *
+convention (récepteur|générateur) -1> *
+côte à côte -> *
+co[ûu]te que co[ûu]te -> *
+cro(?:yez|ois)-le ou (?:non|pas) -> *
+#dans tous les cas(?: possibles| envisagés|) -> *
+dans (?:ce cas(?: précis|-là|-ci|)|la mesure du possible|peu de temps|tout (?:ce(?:la|ci)|ça)) -> *
+début (?:janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre)(?: \d\d\d\d|) -> *
+déclarations? (sur l’honneur) -1> *
+d’(abord|aujourd’hui|autant (?:plus|moins)|autre(?:s fois| part)|avant en arrière|à côté|emblée|extrême[ -](?:droite|gauche)|habitude|ordinaire|ore?s et déjà|un (?:bout à|côté comme de) l’autre|un autre côté) -> *
+d’une (?:(?:façon|manière) ou d’une autre|certaine (?:façon|manière)|tout autre ampleur) -> *
+d’(?:ouest|est) en (?:ouest|est) -> *
+d’(heure|année) en \1 -> *
+d’ici(?: là|) -> *
+d’où qu’(?:(?:il|elle|on) vienne|(?:ils|elles) viennent) -> *
+de-ci,? de-là -> *
+de (?:rechange|conserve|facto|là|nouveau|permanence|surcro[îi]t|visu|(?:façon|manière) habituelle|bas (?:en haut|étage)|bon (?:aloi|gré)|bonne foi|bric et de broc|but en blanc|ce fait(?: même|)|droite à gauche|fond en comble|fra[iî]che date|gauche à droite|gré ou de force|haut(?: en bas|e volée)|loin|mauvais (?:aloi|gré)|mauvaise foi|nos jours|plus belle|plein droit|guingois|là|longue (?:date|haleine)|mieux en mieux|nombreuses (?:fois|années plus (?:tôt|tard))|nos jours|notoriété publique|pire en pire|près ou de loin|prime abord|premier ordre|seconde zone|pied ferme|la (?:même (?:façon|manière)|sorte|tête aux pieds)|part et d’autre|toute (?:éternité|évidence|façon|urgence)|vive voix) -> *
+de (?:tout (?:poil|temps)|toutes parts|tous (?:côtés|bords)) -> *
+de (?:(ceux|celles)-(?:ci|là))(?! qui)
+de (?:[mts]on|[nv]otre|leur) (?:plein gré|propre chef) -> *
+de temps (?:en temps|à autre) -> *
+de (moins|plus|mieux|pire|jour|minute|semaine|mois|trimestre|semestre|siècle|millénaire|décennie) en \1 -> *
+^ *de plus -> *
+de (?:(?:ceux|celles?|celui)-(?:là|ci)|(?:[mts]a|[nv]otre|leur) part) -> *
+dès (?:aujourd’hui|à présent|demain(?: matin| après-midi| soir|)|lors|que possible) -> *
+des (?:fois|uns et des autres) -> *
+depuis (?:belle lurette|des lustres|(?:bien |si |assez |)longtemps|lors|peu de temps|quelque temps|quelques (?:secondes|minutes|heures|jours|semaines|mois|trimestres|semestres|années|décennies|siècles|millénaires)|toujours|tout ce temps) -> *
+du (?:début à la fin|jour au lendemain|haut en bas|(?:nord|sud) au (?:nord|sud)) -> *
+(après-|avant |)demain(?: matin| soir| après-midi|) -> *
+(don) Juan -1> *
+droit au but -> *
+du (?:coup|même (?:ordre|coup)) -> *
+en cours(?! de| d) -> *
+en (?:aparté|apparence|arrière|avance|avant|ceci|cela|clair|commun|conséquence|continu|contrepartie|définitive|détail|douce|effet|émoi|général|goguette|hâte|outre|pâmoison|parallèle|partie|particulier|permanence|personne|pratique|principe|priorité|public|réalité|retour|revanche|rogne|route|secret|silence|somme|suspens|vain|vérité|ville|vitesse) -> *
+en (?:bonne (?:et due forme|posture|santé)|cas de (?:besoin|doute)|chair et en os|cours de route|d’autres termes|dehors de (?:ça|cela)|dents de scie|dernier (?:lieu|recours)|désespoir de cause|état de marche|fin de (?:compte|journée|matinée|soirée)|garde à vue|grande (?:majorité|partie|pompe)|l’occurrence|lieu sûr|mauvaise (?:posture|santé)|même temps|nombre (?:plus que |)suffisant|premier lieu|première instance|pure perte|quantité (?:plus que |)suffisante|quelque sorte|règle générale|sens inverse|tête à tête|temps (?:et en heure|opportun|normal|voulu)|tous (?:les cas|sens)|tout (?:cas|genre|lieu|et pour tout|état de cause|sens|temps)|toute (?:innocence|hâte|impartialité|impunité)|un rien de temps|une autre occasion) -> *
+en (?:[mts]on|leur|[nv]otre) (?:âme et conscience|for intérieur) -> *
+en aucun(?: cas|e (?:circonstance|façon|manière)) -> *
+en ce(?: (?:moment|temps-là)|t instant) -> *
+encore(?: une fois| et (?:encore|toujours)|) -> *
+envers (?:autrui|et contre tout|tout le monde) -> *
+entre (?:(?:[mt]oi|lui|elles?|[nv]ous|eux) et (?:[mt]oi|lui|elles?|[nv]ous|eux)|autres choses) -> *
+épaule contre épaule -> *
+(?:oh|ah|euh|eh bien) -> *
+et (?:ainsi de suite|tutti quanti) -> *
+et(/ou) -1> *
+face à face -> *
+(?:deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|vingt|trente|quarante|cinquante|soixante|cent) fois de suite -> *
+grosso modo -> *
+(?:avant-|)hier(?: matin| soir| après-midi|) -> *
+hors du commun -> *
+ici(?: et (?:là|maintenant)| même|-bas) -> *
+id est -> *
+il y a (longtemps|peu de temps|quelques (?:secondes|minutes|heures|jours|semaines|mois|années|siècles|millénaires)|quelque temps) -> *
+illico presto -> *
+in (?:extenso|extremis|fine|petto|situ|utero|vitro|vivo) -> *
+ipso facto -> *
+jusque-là -> *
+jusqu’(?:alors|ici) -> *
+jusqu’à (?: aujourd’hui|présent|maintenant|(?:demain|hier)(?: matin| soir| après-midi|)|nouvel ordre|preuve du contraire|la fin de [mts]es jours) -> *
+la (?:plupart du temps|main dans la main|mort dans l’âme) -> *
+le (?:cas échéant|moins (?:du monde|souvent)|plus (?:tôt|tard|souvent) possible|plus souvent) -> *
+là(?:-bas|-haut|-desso?us| non plus) -> *
+l’une? (?:après|pour|de|avec|contre|sur|près de) l’autre -> *
+le pour et le contre -> nmp
+les une?s (?:des |(?:après |pour |avec |contre |sur |)les) autres -> *
+non (?:loin (?:d’ici|de là)|plus|seulement) -> *
+loin (?:de (?:là|tout ça)|d’ici|s’en faut) -> *
+(?:[ldmts]es|nos|vos|leurs) (\d+) -1> *
+maintes fois -> *
+malgré (?:[mt]oi|lui|elles?|[nv]ous|eux)(?! qui) -> *
+malgré (?:ça|cela) -> *
+manu militari -> *
+moins que nécessaire -> *
+moitié (\w\w+),? moitié (\w\w+) -> *
+mot pour mot -> *
+mutatis mutandis -> *
+ni plus ni moins -> *
+non plus -> *
+nulle part -> *
+ou (bien) -1> *
+oui (?:ou|et) non -> *
+outre mesure -> *
+(une?|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|vingt|trente|quarante|cinquante|soixante|cent|mille|éta[pg]e|morceau|pièce) par \1 -> *
+par (?:ailleurs|avance|chance|conséquent|curiosité|contre|défaut|endroits|essence|exemple|hasard|ici|inadvertance|là|moments|monts et par vaux|nature|terre) -> *
+par (?:la (?:même occasion|suite)|(?:bien des|certains) (?:aspects|côtés)|acquit de conscience|ce biais|beau temps|lui-même|elle-même|eux-mêmes|elles-mêmes|[nv]ous-mêmes?|[mt]oi-même|tout le monde) -> *
+par-(?:devant|derrière|dessus tout|ci,? par-là) -> *
+par-devers (?:moi|toi|lui|elles?|lui|eux|nous|vous) -> *
+par (deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|vingt|trente|quarante|cinquante|soixante|cent) fois -> *
+parmi (?:[nv]ous|eux|elles) -> *
+pas (?:du tout|à pas|tout à fait) -> *
+pendant (?:ce temps-là|(?:bien |si |assez |)longtemps) -> *
+petit à petit -> *
+peu (?:à peu|de temps auparavant|ou prou) -> *
+pile poil -> *
+plein (?:nord|sud|ouest|de fois) -> *
+plus avant(?! de | que?) -> *
+plus (?:du tout|que jamais) -> *
+plusieurs fois(?: de suite)? -> *
+pour (?:autrui|le (?:moment|moins)|une fois|l’instant|l’heure|de bon|la suite|un oui ou pour un non|ainsi dire|ce faire|quelque (?:part|temps)|tout le monde) -> *
+pour (?:[mt]oi|elles?|eux|ça|cela|ceci|ceux-(?:là|ci)|celles?-(?:là|ci))(?! qui) -> *
+pour la (?:première|seconde|[\w-]+ième) fois(?: de suite| de ma vie|) -> *
+pour (?:[mts]a|[nv]otre|leur) (?:gouverne|part) -> *
+pour (?:[mts]on|[nv]otre|leur) propre bien -> *
+quand bien même -> *
+quant à (?:[mt]oi|lui|elles?|[nv]ous|eux)(?! qui) -> *
+que ça (?:me|te|lui|leur|[nv]ous) plaise ou non -> *
+que (?:je le veuille|tu le veuilles|vous le vouliez|nous le voulions) ou non -> *
+qu’(?:(?:il|elle|on) le veuille|(?:ils|elles) le veuillent) ou non -> *
+quel qu’en soit le (?:moyen|prix) -> *
+quelle qu’en soit la (?:cause|raison) -> *
+quelque (?:part|temps) -> *
+quelques (?:instants|secondes|minutes|heures|jours|semaines|mois|années|siècles|millénaires|trimestres|semestres) (?:auparavant|plus (?:tard|tôt)) -> *
+qui plus est -> *
+qui (ce (?:jour|matin|après-midi|soir)-là|cette (?:nuit|matinée|soirée)-là) -1> *
+quoi qu’il arrive -> *
+sans (?:ambages|arrêt|aucun doute|cesse|conteste|coup férir|crier gare|dire mot|doute|fin|mot dire|nul doute|queue ni tête|relâche|succès|trêve) -> *
+sans (?:y (?:prendre garde|faire attention|parvenir|réussir)|faire de vagues|s’en (?:rendre compte|apercevoir)|l’aide de personne|le faire exprès) -> *
+séance tenante -> *
+selon (toute vraisemblance|(?:[mt]oi|lui|elles?|eux|nous|vous)(?! qui)) -> *
+sembl(?:e-t-il|ait-il) -> *
+sens dessus dessous -> *
+seule?s? à seule?s? -> *
+s’il (?:te|vous) pla[îi]t -> *
+si (?:longtemps|possible|soudain) -> *
+sine (?:die|qua non) -> *
+soit dit en passant -> *
+stricto sensu -> *
+sur ce, -> *
+tant bien que mal -> *
+tôt ou tard -> *
+toutes (?:griffes dehors|proportions gardées) -> *
+tour à tour -> *
+tous comptes faits -> *
+tout (?:à (?:fait|coup|l’heure)|le temps|de (?:même|suite|go)|au plus|aussi bien|simplement|bonnement|compte fait|du long) -> *
+toutes affaires cessantes -> *
+(une?) à \1 -> *
+un (?:jour ou l’autre|peu (?:mieux|moins bien|partout)|tant soit peu) -> *
+une (?:autre fois|fois(?: pour toutes| de plus|)) -> *
+urbi et orbi -> *
+v(?:aille que vaille|entre à terre) -> *
+
+# je / tu / il / elles / nous / vous / ils / elles
+je (?:t’en|vous en) (?:prie|supplie) -> *
+nous (?:t’en|vous en) (?:prions|supplions) -> *
+
+# Après
+(?:bien|si|assez) longtemps -> *
+plus (?:près|loin|tôt|tard|ou moins|que (?:nécessaire|jamais)|d’une fois) -> *
+
+## Simplification partielle
+à (cause|contre-courant|côté|court|l’(?:arrière|aune|avant|insu)|partir|propos) d(?:es?|u) -1> *
+au (bout|courant|cours|gré|l(?:ieu|ong)|milieu|sujet|vu et au su) d(?:es?|u) -1> *
+(compte tenu) d(?:es?|u) -1> avec
+en (arrière|cas|cours|dehors|guise|lieu et place|présence|raison) d(?:es?|u) -1> *
+l’une? (d’entre (?:[nv]ous|eux|elles)) -1> *
+p(?:eu|lusieurs) (d’entre (?:[nv]ous|eux|elles)) -1> *
+noire?s? comme (?:la nuit|une nuit sans lune) -1> *
+
+## Conditionnel
+aussi (\w+) que (?:nécessaire|possible) <- morph(\1, "po:adv", False) -> *
+(nombre) des? <- morph(xword(-1), "po:(prep|cjsub|cjco)", False) -1> *
+(\w+)(-là) <- morphex(\1, "po:nom", "po:mg") -2> *
+à (\w+) reprises <- morph(\1, "po:nb", False) or re.match("(?i)(plusieurs|maintes)", \1) -> *
+(\w[\w-]+) (comme (?:eux|elles?|lui|ça|celui-(?:ci|là)|celles?-(?:ci|là)|ceux(?:ci|là)|l[ea] [nv]ôtre|le [mts]ien|la [mts]ienne|les ([nv]ôtres|sien(?:ne|)s)))
+	<- morph(\1, "po:(nom|adj|ppas)", False) -2> *
+(\w+) (pêle-mêle) <- not morph(\1, "po:det", False) -2> *
+plein est <- not morph(word(-1), "po:det", False, False) -> *
+(pour autant (?:que (?:je sache|tu saches|nous sachions|vous sachiez)|qu’(?:(?:il|elle) sache|(?:ils|elles) sachent))) ([\w-]+) <- not morph(\2, "po:infi", False) -1> *
+#avec (\w+) <- morph(\1, "po:nom") and not re.match("(?i)(force|air)$", \1) and not morph(word(1), "po:adj", False) -> *
+((?:de |d’)(\w[\w-]+)) (\w\w+) <- morph(\2, "po:nom", False) and morph(\3, "(?:po:[123](sg|pl)|st:[nmts]e )") -1> *
+((?:pas |)tant que ça) (\w+) <- not morph(\2, "po:(3sg|negadv)", False) -1> *
+
+# Noms propres
+Amérique (centrale|du (?:Nord|Sud)) -1> *
+([A-ZÉÈÂ][\w-]+) ([A-ZÉÈÂ][\w-]+) <- morph(\1, "po:(patr|prn)", False) and (morph(\2, "po:(patr|prn)", False) or not spell(\2)) -2> *
+(?:de |d’)([A-ZÉÈÂ][\w-]+) +(?:et|ou) (?:de |d’)([A-ZÉÈÂ][\w-]+) <- morph(\1, "po:(patr|prn|geo)", False) and morph(\2, "po:(patr|prn|geo)", False)-> *
+(?:de |d’)([A-ZÉÈÂ][\w-]+) <- morph(\1, "po:(patr|prn|geo)", False) -> *
+entre ([A-ZÉÈÂ][\w-]*) +et ([A-ZÉÈÂ][\w-]*) <- morph(\1, "po:(patr|prn|nom)") and morph(\2, "po:(patr|prn|nom)") -> *
+en (\w[\w-]+) <- morph(\1, "po:geo") -> *
+[lc]e (?:baron|docteur|duc|prince|professeur) ([A-ZÉÈÂ][\w-]+) <- morph(\1, "po:(patr|prn)", False) -1> *
+M(?:r|lle|me|gr|iss) ([A-ZÉÈÂ][\w-]+) -1> *
+
+# après être, après avoir
+([êeésf]\w+) +(à jamais|un jour|sous peu|du moins|avant tout|de passage) <- morph(\1, "po:v0e", False) -2> *
+([êeésf]\w+) +(on ne peut (?:pas |)(?:plus|moins)) +(\w\w+) <- morph(\1, "po:v0e", False) and morph(\3, "po:(adj|ppas)", False) -2> *
+([aeêésfo]\w*) +(en partie) <- morph(\1, "po:v0", False) -2> *
+([aeêésfo]\w*) +(bien entendu|dans (?:leur |son |l’)ensemble) +(\w[\w-]+) <- morph(\1, "po:v0", False) and morph(\3, "po:(adj|ppas)") -2> *
+
+# après verbe
+(\w+) (?:pas |)(jour et nuit|quand même) <- morph(\1, "po:v", False) -2> *
+(\w[\w-]*) (bien entendu|juste) <- morph(\1, "po:v[123]") -2> *
+(\w+) ((?:fort|très|super) (?:bien|mal)|bien|mal) <- morph(\1, "po:v[1-3]", False) -2> *
+(\w[\w-]*) ((?:[mt]oi|[nv]ous|elles?|lui|eux) aussi) <- morph(\1, "po:v", False) -2> *
+(?:tout |)aussi -> *
+aussi(?:tôt|) -> *
+(\w[\w’-]*) (même) <- morphex(\1, "po:v", "po:mg") -2> *
+
+# avant adjectifs, avant adverbes
+(plus|moins) (\w\w\w+) (que (?:les autres|l’autre)) <- morph(\2, "po:(adj|ppas)") -3> *
+plus (\w\w\w+) (les uns que les autres) <- morph(\2, "po:(adj|ppas)", False) -2> *
+bien sûr(?! de) -> *
+(bien|mal|(?:fort|super) (?:bien|mal)|fort) +(\w[\w-]+)
+	<- morph(\2, "po:ad[jv]") -1> *
+(à (?:demi|peine|peu près)|depuis peu|quelque peu|un peu(?: plus| moins|)|peu|plus|moins|si) +(\w[\w-]+)
+	<- morph(\2, "po:ad[jv]", False) -1> *
+(un (?:brin|chou[iï]a|tantinet|soupçon)) (\w+) <- morph(\2, "po:ad[jv]", False) -1> *
+assez +(\w+ment)
+	<- morphex(\1, "po:adv", "po:3pl") -> *
+(assez) +(\w[\w-]+)
+	<- morphex(\2, "po:ad[jv]", "po:[1-3]") -1> *
+
+# adverbes en -ment
+(\w[\w-]+) ((?:le|la) (?:plus|moins) (\w+ment)) (\w[\w-]+)
+	<- morph(\1, "po:(nom|adj|ppas)", False) and morph(\3, "po:adv", False) and morph(\4, "po:(adj|ppas)", False) -2> *
+complètement <- not morph(word(-1), "po:det", False) -> *
+\w+ment <- morph(\0, r"po:adv\b") -> *
+
+# couleurs invariables
+(\w[\w-]+) +((?:beige|blanc|bleu|brun|châtain|cyan|gris|jaune|magenta|marron|orange|pourpre|rose|rouge|vert|violet) (?:clair|fluo|foncé|irisé|pâle|pastel|sombre|vif))
+	<- morph(\1, "po:(nom|adj|ppas)", False) -2> *
+
+# locutions adjectivales & couleurs
+(\w[\w-]+) +(bon (?:enfant|marché|teint)|grand (?:public|luxe)|grandeur nature|plein cadre|bas(?: de gamme|se consommation)|haut(?: de gamme|e résolution)|top secret|vieux jeu|open source|Créative Commons|pur jus|bleu (?:saphir|turquoise)|vert émeraude|rouge (?:brique|rubis)|jaune sable)
+	<- morph(\1, "po:(nom|adj|ppas)", False) -2> *
+
+
+## 1 mot
+ai(?:lleurs|nsi) -> *
+al(?:entour|ors) -> *
+au(?:jourd’hui|paravant) -> *
+bientôt -> *
+ce(?:pendant|rtes) -> *
+ci-desso?us -> *
+de(?:bout|rechef) -> *
+dé(?:jà|sormais) -> *
+do(?:nc|rénavant) -> *
+en(?:fin|suite) -> *
+guère -> *
+jadis -> *
+lo(?:in|ngtemps) -> *
+m(?:ais|ouais) -> *
+n(?:aguère|éanmoins) -> *
+par(?:fois|tout) -> *
+p(?:eut-être|lutôt|ourtant|resque) -> *
+quelquefois -> *
+sou(?:dain|vent) -> *
+tou(?:jours|tefois) -> *
+sur(?:-le-champ|tout) -> *
+t(?:ôt|ard) -> *
+tr(?:ès|op) -> *
+volontiers -> *
+(?:primo|secundo|tertio) -> *
+
+
+[Char]
+, +(oui|non), -> *
+
+[char]
+, +, -> *
+^ *, -> *
+, *$ -> *
+[(] +[)] -> *
+
+
+
+#
+# //////////////////////////////////////// RÈGLES DE CONTRÔLE ////////////////////////////////////////
+#
+[gc]
+
+
+############################## GROUPE NOMINAL ##############################
+
+[Word]
+
+#### 1 mot
+
+## Usage impropre
+
+(au le) (\w+) <- morph(\2, "po:(nom|adj|ppas)", False) -1> au                      # Usage impropre. Après “au”, l’article “le” est inapproprié. (Ex : Je vais à la gare, je vais au stade.)
+(au les) (\w+) <- morph(\2, "po:(nom|adj|ppas)", False) -1> aux                    # Usage impropre. Après “au”, l’article “les” n’est pas nécessaire.
+(au la) (\w+) <- morph(\2, "po:(nom|adj|ppas).* is:fem", False) -1> à la           # Usage impropre. Avec un nom féminin, utilisez la préposition “à”. (Ex : Je vais à la gare, je vais au stade.)
+(au) l’\w[\w-] -1> à                                                               # Usage impropre.
+
+
+## Genre
+
+(?:[\w-]*),? (le) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|ppre|mg|adv|[1-3](sg|pl)|infi)")
+	-1> la                                                                                 # Accord de genre erroné : « \2 » est féminin.
+^ *(le) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|ppre|mg|adv|infi)")
+	-1> la                                                                                 # Accord de genre erroné : « \2 » est féminin.
+
+(ledit) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|mg|adv)")
+	-1> ladite                                                                             # Accord de genre erroné : « \2 » est féminin.
+(un) +(?:des |)(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|mg|adv|v0|3sg)")
+	-1> une                                                                                # Accord de genre erroné : « \2 » est féminin.
+(certains) +(?:des |)(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|mg|adv|ppre)")
+	-1> certaines                                                                          # Accord de genre erroné : « \2 » est féminin.
+(du) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|mg|adv)")
+	-1> de la                                                                              # Accord de genre erroné : « \2 » est féminin.
+(cet?) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|mg|adv)")
+	-1> cette                                                                              # Accord de genre erroné : « \2 » est féminin.
+(au) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|mas|mg|adv)")
+	-1> à la                                                                               # Accord de genre erroné : « \2 » est féminin.
+
+(?:[\w-]*),? +(la) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:mas", ":(epi|fem|ppre|mg|adv|[1-3](sg|pl)|infi)")
+	-1> le                                                                                 # Accord de genre erroné : « \2 » est masculin.
+^ *(la) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:mas", ":(epi|fem|ppre|mg|adv|infi)")
+	-1> le                                                                                 # Accord de genre erroné : « \2 » est masculin.
+
+(ladite) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:mas", ":(epi|fem|mg|adv)")
+	-1> ledit                                                                              # Accord de genre erroné : « \2 » est masculin.
+(une) +(?:des |)(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:mas", ":(epi|fem|mg|adv|v0|3sg)")
+	-1> un                                                                                 # Accord de genre erroné : « \2 » est masculin.
+(certaines) +(?:des |)(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:mas", ":(epi|fem|mg|adv|ppre)")
+	-1> certains                                                                           # Accord de genre erroné : « \2 » est masculin.
+(cette) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas) is:mas", ":(epi|fem|mg|adv)")
+	-1> ce|cet                                                                             # Accord de genre erroné : « \2 » est masculin.
+
+(([mts])on) +([^aâeéèêiîoôuûyœæhAÂEÉÈÊIÎOÔUÛYŒÆH\s][\w-]+)
+	<- option('gn') and morphex(\3, "po:(nom|adj|ppas) is:fem", ":(epi|mas|mg|adv)")
+	-1> \2a                                                                                # Accord de genre erroné : « \3 » est féminin.
+(([mst])a) ([aâeéèêiîoôuûyœæAÂEÉÈÊIÎOÔUÛYŒÆ]\w+)
+	<- option('gn') and morphex(\3, "is:fem", ":(epi|mg|adv)")
+	-1> \2on                                                                               # Même si « \3 » est féminin, on utilise « \2on » pour faire la liaison.
+(([mts])a) +(\w[\w-]+)
+	<- option('gn') and morphex(\3, "po:(nom|adj|ppas) is:mas", ":(epi|fem|mg|adv)")
+	-1> \2on                                                                               # Accord de genre erroné : « \3 » est masculin.
+
+
+## Nombre
+
+(?:[\w-]*),? les +(\w[\w-]+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:sg")
+	and not (morph(word(1), "st:(et|ou)", False, False) and morph(word(2), "po:(nom|adj|ppas)", True, False))
+	-1> _                                                                                   # Accord de nombre erroné : « \1 » devrait être au pluriel.
+^ *les +(\w[\w-]+)
+	<- option('gn') and morphex(\1, ":(nom|adj|ppas).* is:sg", ":(inv|pl|ppre|mg|adv)")
+	and not (morph(word(1), "st:(et|ou)", False, False) and morph(word(2), "po:(nom|adj|ppas)", True, False))
+	-1> _                                                                                   # Accord de nombre erroné : « \1 » devrait être au pluriel.
+([dcmts]es|[nv]os|leurs|quelques|plusieurs|certaine?s|lesdits|aux|moult) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, ":(nom|adj|ppas).* is:sg", ":(inv|pl|mg|adv)")
+	and not (morph(word(1), "st:(et|ou)", False, False) and morph(word(2), "po:(nom|adj|ppas)", True, False))
+	-2> _                                                                                   # Accord de nombre erroné : « \2 » devrait être au pluriel.
+
+(?:[\w-]*),? +(?:le|la|leur) +(\w[\w-]+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:pl")
+	-1> _                                                                                   # Accord de nombre erroné : « \1 » devrait être au singulier.
+^ *(?:le|la|leur) +(\w[\w-]+)
+	<- option('gn') and morphex(\1, "po:(nom|adj|ppas).* is:pl", ":(inv|sg|mg|adv)")
+	-1> _                                                                                   # Accord de nombre erroné : « \1 » devrait être au singulier.
+
+(ce|du|[mts]on|cette|[nv]otre|ledit|ladite|au|chaque) +(\w[\w-]+)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas).* is:pl", ":(inv|sg|mg|adv)")
+	-2> _                                                                                   # Accord de nombre erroné : « \2 » devrait être au singulier.
+
+(quelque) +(\w[\w-]+)(?! que?)
+	<- option('gn') and morphex(\2, "po:(nom|adj|ppas).* is:pl", ":(mg|sg|inv)")
+	-1> quelques                                                                           # Il manque un “s” à « quelque » ou « \2 » doit être au singulier.
+
+une? +(\w[\w-]+)
+	<- option('gn') and morphex(\1, "po:(nom|adj|ppas).* is:pl", ":(inv|sg|mg|adv)") and not morph(word(-2), "po:nb", False)
+	-1> _                                                                                  # Accord de nombre erroné : « \1 » devrait être au singulier.
+
+(deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|dix\-sept|dix\-huit|dix\-neuf|vingt|trente|quarante|cinquante|soixante|soixante\-dix|quatre\-vingts|quatre\-vingt\-dix|cents?) +(\w[\w-]+)
+	<- option('gn') and morph(\2, "po:(nom|adj|ppas).* is:sg")
+	and not re.match(u"(?i)(janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre|rue|route|ruelle|place|boulevard|avenue|allée|chemin|sentier|square|impasse|cour|quai|chaussée|côte|vendémiaire|brumaire|frimaire|nivôse|pluviôse|ventôse|germinal|floréal|prairial|messidor|thermidor|fructidor)$", \2)
+	-2> _                                                                                   # Accord de nombre erroné : « \2 » est au singulier.
+
+mille +(\w[\w-]+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:sg") and not re.match(u"(?i)(le|un|ce|du)$", word(-1))
+	-1> _                                                                                  # Accord de nombre erroné : « \1 » est au singulier.
+
+[01] (\w[\w-]+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:pl")
+	and not re.match(u"(?i)(janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre|rue|route|ruelle|place|boulevard|avenue|allée|chemin|sentier|square|impasse|cour|quai|chaussée|côte|vendémiaire|brumaire|frimaire|nivôse|pluviôse|ventôse|germinal|floréal|prairial|messidor|thermidor|fructidor)$", \1)
+	-> _                                                                                   # Accord de nombre erroné : « \1 » est au pluriel.
+(?<!/)(\d+) (\w[\w-]+)
+	<- option('gn') and \1 != '1' and \1 != '0' and morph(\2, "po:(nom|adj|ppas).* is:sg")
+	and not re.match(u"(?i)(janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre|vendémiaire|brumaire|frimaire|nivôse|pluviôse|ventôse|germinal|floréal|prairial|messidor|thermidor|fructidor)$", \2)
+	and not re.match(u"(?i)(de|janvier|février|mars|avril|mai|juin|juillet|ao[ûu]t|septembre|octobre|novembre|décembre|vendémiaire|brumaire|frimaire|nivôse|pluviôse|ventôse|germinal|floréal|prairial|messidor|thermidor|fructidor)$", word(-1))
+	-2> _                                                                                  # Accord de nombre erroné : « \2 » est au singulier.
+
+
+## quel / quels / quelle / quelles
+(quel) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:fem is:pl") -1> quelles                                # Accord de genre et de nombre erroné : « \2 » est féminin et au pluriel.
+(quel) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:mas is:pl") -1> quels                                  # Accord de nombre erroné : « \2 » est au pluriel.
+(quel) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:fem is:(sg|inv)") -1> quelle                           # Accord de nombre erroné : « \2 » est féminin.
+(quels) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:fem is:sg") -1> quelle                                # Accord de genre et de nombre erroné : « \2 » est féminin et au singulier.
+(quels) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas).* is:sg") -1> quel                                       # Accord de nombre erroné : « \2 » est au singulier.
+(quels) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:fem") -1> quelles                                     # Accord de nombre erroné : « \2 » est féminin.
+(quelle) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:mas is:pl") -1> quels                                # Accord de genre et de nombre erroné : « \2 » est masculin et au pluriel.
+(quelle) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:fem is:pl") -1> quelles                              # Accord de nombre erroné : « \2 » est au pluriel.
+(quelle) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:mas is:(sg|inv)") -1> quel                           # Accord de nombre erroné : « \2 » est masculin.
+(quelles) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:mas is:sg")  -1> quel                               # Accord de genre et de nombre erroné. « \2 » est masculin et au singulier.
+(quelles) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas).* is:sg") -1> quelle                                   # Accord de nombre erroné : « \2 » est au singulier.
+(quelles) +(\w[\w-]+) <- option('gn') and morph(\2, "po:(nom|adj|ppas) is:mas") -1> quels                                     # Accord de nombre erroné : « \2 » est masculin.
+
+## Cas particuliers
+[cldmts]es (même) <- option('gn') -1> mêmes                                                                                   # Accord de nombre erroné : mettez “même” au pluriel.
+
+
+#### 2 mots
+
+## Sans article
+
+^ *(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn')
+	and ((morph(\1, "po:(nom|adj|ppas).* is:mas") and morph(\2, "po:(nom|adj|ppas).* is:fem")) or (morph(\1, "po:(nom|adj|ppas).* is:fem") and morph(\2, "po:(nom|adj|ppas).* is:mas")))
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de genre erroné avec « \1 ».
+
+^ *(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn')
+	and ((morph(\1, "po:(nom|adj|ppas).* is:sg") and morph(\2, "po:(nom|adj|ppas).* is:pl")) or (morph(\1, "po:(nom|adj|ppas).* is:pl") and morph(\2, "po:(nom|adj|ppas).* is:sg")))
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de nombre erroné avec « \1 ».
+
+## Prépositions
+
+(de|à|en|par|sur|avec|pour|sans) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn')
+	and ((morph(\2, "po:(nom|adj|ppas).* is:mas") and morph(\3, "po:(nom|adj|ppas).* is:fem")) or (morph(\2, "po:(nom|adj|ppas).* is:fem") and morph(\3, "po:(nom|adj|ppas).* is:mas")))
+	and not apposition(\2, \3)
+	and morph(word(-1), "po:(v|prep|proneg)", True, True)
+	-3> _                                                                                  # Accord de genre erroné avec « \2 ».
+
+(de|à|en|par|sur|avec|pour|sans) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn')
+	and ((morph(\2, "po:(nom|adj|ppas).* is:pl") and morph(\3, "po:(nom|adj|ppas).* is:sg")) or (morph(\2, "po:(nom|adj).* is:sg") and morph(\3, "po:(nom|adj|ppas).* is:pl")))
+	and not apposition(\2, \3)
+	and morph(word(-1), "po:(v|prep|proneg)", True, True)
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 ».
+
+## l’
+
+(?<!et |ou |de )l’(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not re.match("(?i)air$", \1) and not \2.startswith('seul')
+	and ((morph(\1, "is:mas") and morph(\2, "po:(nom|adj|ppas) is:fem")) or (morph(\1, "is:fem") and morph(\2, "po:(nom|adj|ppas) is:mas")))
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de genre erroné entre « \1 » et « \2 ».
+(?:[eE]t|[oO]u|[dD]e) +l’(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \2.startswith('seul')
+	and ((morph(\1, "is:mas") and morph(\2, "po:(nom|adj|ppas) is:fem")) or (morph(\1, "is:fem") and morph(\2, "po:(nom|adj|ppas) is:mas")))
+	and not morph(word(-1), "po:(nom|adj|ppas)", False, False)
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de genre erroné entre « \1 » et « \2 ».
+
+(?<!et |ou |de )l’(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not re.match("(?i)air$", \1) and not \2.startswith('seul')
+	and morph(\1, "is:(sg|inv)") and morph(\2, "po:(nom|adj|ppas).* is:pl")
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de nombre erroné avec « \1 » : « \2 » devrait être au singulier.
+(?:[eE]t|[oO]u|[dD]e) +l’(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not re.match("(?i)air$", \1) and not \2.startswith('seul')
+	and morph(\1, "is:(sg|inv)") and morph(\2, "po:(nom|adj|ppas).* is:pl")
+	and not morph(word(-1), "po:(nom|adj|ppas)", False, False)
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de nombre erroné avec « \1 » : « \2 » devrait être au singulier.
+
+## des
+
+des +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and \1 != 'fois' and not \2.startswith('seul')
+	and ((morph(\1, "po:(nom|adj|ppas).* is:mas") and morph(\2, "po:(nom|adj|ppas).* is:fem")) or (morph(\1, "po:(nom|adj|ppas).* is:fem") and morph(\2, "po:(nom|adj|ppas).* is:mas")))
+	and morph(word(-1), "po:(v|prep|nb|proneg)", True, True)
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de genre erroné avec « \1 ».
+
+des +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:(pl|inv)", False) and morph(\2, "po:(nom|adj|ppas).* is:sg")
+	and morph(word(-1), "po:(v|prep|nb|proneg)", True, True)
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de nombre erroné avec « \1 » : « \2 » devrait être au pluriel.
+
+## un / une
+
+(?<!et |ou | d’)une? +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and \1 != "fois" and morph(\1, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morph(\2, "po:(nom|adj|ppas).* is:pl") and not \2.startswith('seul')
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de nombre erroné avec « \1 » : « \2 » devrait être au singulier.
+(?:et|ou) +(?:d’|)une? +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and \1 != "fois" and morph(\1, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morph(\2, "po:(nom|adj|ppas).* is:pl") and not \2.startswith('seul')
+	and not apposition(\1, \2)
+	and not morph(word(-1), "po:(nom|adj|ppas|nb)", False, False)
+	-2> _                                                                                  # Accord de nombre erroné avec « \1 » : « \2 » devrait être au singulier.
+
+## articles divers
+
+# Genre
+(?<!et |ou |de )(le|un|[mts]on|cet?|[lcmts]es|[nv]os|leurs?|certains|chaque|quelques?) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \3.startswith('seul')
+	and morphex(\2, "po:(nom|adj|ppas) is:mas", ":(epi|nb|mg|v0|fem)") and morph(\3, "po:(nom|adj|ppas).* is:fem")
+	and not apposition(\2, \3)
+	-3> _                                                                                   # Accord de genre erroné : « \2 » est masculin, « \3 » est féminin.
+(?:et|ou|de) +(le|un|[mts]on|cet?|[lcmts]es|[nv]os|leurs?|certains|chaque|quelques?) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \3.startswith('seul')
+	and morphex(\2, "po:(nom|adj) is:mas", ":(epi|nb|mg|v0|fem)") and morph(\3, ":(nom|adj|ppas).* is:fem")
+	and not apposition(\2, \3)
+	and not morph(word(-1), ":(nom|adj|ppas|et|ou)", False, False)
+	-3> _                                                                                   # Accord de genre erroné : « \2 » est masculin, « \3 » est féminin.
+
+(?<!et |ou |de )(la|une|[mts]a|cette|[lcmts]es|[nv]os|leurs?|certaines|chaque|quelques?) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and \2 != "fois" and not \3.startswith('seul')
+	and morphex(\2, "po:(nom|adj) is:fem", ":(epi|nb|mg|v0|mas)") and morph(\3, "po:(nom|adj|ppas).* is:mas")
+	and not apposition(\2, \3)
+	-3> _                                                                                   # Accord de genre erroné : « \2 » est féminin, « \3 » est masculin.
+(?:et|ou|de) +(la|une|[mts]a|cette|[lcmts]es|[nv]os|leurs?|certaines|chaque|quelques?) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and \2 != "fois" and not \3.startswith('seul')
+	and morphex(\2, "po:(nom|adj|ppas) is:fem", ":(epi|nb|mg|v0|mas)") and morph(\3, "po:(nom|adj|ppas).* is:mas")
+	and not apposition(\2, \3)
+	and not morph(word(-1), ":(nom|adj|ppas|et|ou)", False, False)
+	-3> _                                                                                   # Accord de genre erroné : « \2 » est féminin, « \3 » est masculin.
+
+# Nombre
+(?<!et |ou |de )(le|la|leur) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \3.startswith('seul')
+	and morph(\2, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morph(\3, "po:(nom|adj|ppas).* is:pl")
+	and not apposition(\2, \3)
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 » : « \3 » devrait être au singulier.
+(?:et|ou|de) +(le|la|leur) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \3.startswith('seul')
+	and morph(\2, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morph(\3, "po:(nom|adj|ppas).* is:pl")
+	and not apposition(\2, \3)
+	and not morph(word(-1), ":(nom|adj|ppas|et|ou)", False, False)
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 » : « \3 » devrait être au singulier.
+
+(?<!et |ou |de )(ce|[mts]on|cette|[nv]otre|ledit|ladite|au) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \3.startswith('seul')
+	and morph(\2, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morphex(\3, "po:(nom|adj|ppas).* is:pl", ":(inv|mg|adv)")
+	and not apposition(\2, \3)
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 » : « \3 » devrait être au singulier.
+(?:et|ou|de) +(ce|[mts]on|cette|[nv]otre|ledit|ladite|au) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \3.startswith('seul')
+	and morph(\2, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morphex(\3, "po:(nom|adj|ppas).* is:pl", ":(inv|mg|adv)")
+	and not apposition(\2, \3)
+	and not morph(word(-1), ":(nom|adj|ppas|et|ou)", False, False)
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 » : « \3 » devrait être au singulier.
+
+les +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \2.startswith('seul')
+	and morph(\1, "po:(nom|adj|ppas).* is:(pl|inv)") and morph(\2, "po:(nom|adj|ppas).* is:sg")
+	and not apposition(\1, \2)
+	-2> _                                                                                  # Accord de nombre erroné avec « \1 » : « \2 » devrait être au pluriel.
+([cmts]es|[nv]os|leurs|quelques|plusieurs|certaine?s|lesdite?s|aux|moult) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and not \3.startswith('seul')
+	and morph(\2, "po:(nom|adj|ppas).* is:(pl|inv)", False) and morph(\3, "po:(nom|adj|ppas).* is:sg")
+	and not apposition(\2, \3)
+	and not before(r"(?i)\bune? de ")
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 » : « \3 » devrait être au pluriel.
+
+
+#### 3 mots
+
+les +(\w[\w-]+) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:(pl|inv)") and morph(\2, "po:(nom|adj|ppas).* is:(pl|inv)") and morph(\3, "po:(nom|adj|ppas).* is:sg")
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 » : « \3 » devrait être au pluriel.
+(?:[cmts]es|[nv]os|leurs|quelques|plusieurs|certaine?s|lesdits|aux|moult) +(\w[\w-]+) +(\w[\w-]+) +(\w[\w-]+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:(pl|inv)", False) and morphex(\2, "po:(nom|adj|ppas).* is:(pl|inv)", "po:mg") and morph(\3, "po:(nom|adj|ppas).* is:sg")
+	-3> _                                                                                  # Accord de nombre erroné avec « \2 » : « \3 » devrait être au pluriel.
+
+
+#### Divers
+
+## tout / toute / toutes
+tout(?= [cl]es\b) <- option('gn') and not re.match(u"(?iu)(d[eu]|avant|après|sur)$", word(-1))
+	-> tous                                             # Erreur d’accord probable.
+tout(?= ceux\b) <- option('gn') and not re.match(u"(?iu)(d[eu]|avant|après|sur)$", word(-1))
+	-> tous                                             # Erreur d’accord probable.
+toute(?= (celles|[cl]es)\b) <- option('gn') -> toutes     # Erreur d’accord probable.
+toute(?= (ce|cet)\b) <- option('gn') -> tout              # Erreur d’accord probable.
+
+(tous) +(?:[lcdmts]es) +(\w[\w-]+) <- option('gn') and morph(\2, "is:fem") and not re.match(u"(?iu)(à|pas|de|[nv]ous|eux)$", word(-1))
+	-1> toutes                                           # Erreur d’accord probable. « \2 » est féminin.
+(toutes) +(?:[lcdmts]es) +(\w[\w-]+) <- option('gn') and morph(\2, "is:mas") and not re.match(u"(?iu)(à|pas|de|[nv]ous|eux)$", word(-1))
+	-1> tous                                             # Erreur d’accord probable. « \2 » est masculin.
+
+
+tout (\w\w\w+)
+	<- option('gn') and morph(\1, "po:nom.* is:(fem|pl)") and morph(word(-1), "(po:prep|st:de)", False, True)
+	-1> _                                                # “\1” devrait être au masculin singulier.
+
+tout (\w\w\w+)
+	<- option('gn') and morph(\1, "po:(adj|ppas).* is:(fem|pl)") and morph(word(-1), "(po:prep|st:de)", False, False)
+	-1> _                                                # “\1” devrait être au masculin singulier.
+
+toute (\w\w\w+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:(mas|pl)") and morph(word(-1), "(po:prep|st:de)", False, True)
+	-1> _                                                # “\1” devrait être au féminin singulier.
+
+tous (\w\w\w+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:(fem|sg)") and morph(word(-1), "(po:prep|st:de)", False, True)
+	-1> _                                                # “\1” devrait être au masculin pluriel.
+
+toutes (\w\w\w+)
+	<- option('gn') and morph(\1, "po:(nom|adj|ppas).* is:(mas|sg)") and morph(word(-1), "(po:prep|st:de)", False, True)
+	-1> _                                                # “\1” devrait être au féminin pluriel.
+
+
+# L’accord par syllepse est obligatoire après /la plupart/, ainsi qu’après /nombre/ et /quantité/ employés sans déterminant. L’accord se fait avec le « pseudo-complément ».
+
+## quelque adverbe
+quelques(?= \d+) -> quelque                                                 # Devant un nombre, « quelque » est un adverbe, donc invariable.
+(quelques) +(\w+) <- morph(\2, "po:nb.* is:pl", False) -1> quelque          # Devant un nombre, « quelque » est un adverbe, donc invariable.
+
+## divers
+de tel(s|les|) sorte(s|nt|) <- option('gn') -> de telle sorte               # Accord erroné.
+
+
+
+############################## INCOHÉRENCES NOMS/ VERBES ##############################
+
+[Word]
+
+#### Articles et prépositions
+
+(?:du|[dcmts]es|mon|[mt]a|aux?(?:dite?s?|)|cet(?:te|)|quelques|avec) (\w[\w-]+)
+	<- morph(\1, "po:v.* po:(infi|[123](sg|pl))")
+	-1> _                                                                                                     # Incohérence : « \1 » est un verbe.
+
+[mt]on (\w[\w-]+)
+	<- morph(\1, "po:v.* po:(infi|[123](sg|pl))") and not xword(-1)
+	-1> _                                                                                                     # Incohérence : « \1 » est un verbe.
+
+(?<!’)un (\w[\w-]+) <- morph(\1, "po:(infi|[123](sg|pl))") and not re.match(u"(?i)(dont|sauf)$", word(-1)) -1> _    # Incohérence : « \1 » est un verbe.
+
+(?:de|par|après) (\w[\w’-]+)
+	<- morph(\1, "po:v.* po:[123](sg|pl)")
+	-1> _                                                                                                     # Incohérence : « \1 » est un verbe conjugué.
+
+(ce) (\w[\w-]+)
+	<- morph(\2, "po:v[123].* po:(infi|[123](sg|pl))") and not stemchk(\2, "^(devoir|pouvoir)$")
+	-1> se                                                                                                    # Confusion : « \2 » est un verbe. Exemples : ce bâtiment, se perdre.
+(sa) (\w[\w-]+) <- morph(\2, "po:v.* po:(infi|[123](sg|pl))") or \2 == "va" -1> ça                          # Confusion : « \2 » est un verbe. Exemples : sa jambe, ça vient.
+
+
+#### Participes présents
+
+[nmts]e (\w+ant) <- option('gv') and not morph(\1, "po:ppre", False) -1> _                         # Incohérence : « \1 » n’est pas un participe présent.
+(?:[nv]ous|lui) (\w+ant) <- option('gv') and morph(\1, "po:(nom|adj)") -1> _                       # Incohérence : « \1 » n’est pas un participe présent.
+
+
+#### Pronoms
+
+#(?<![dD]’)(je|tu|il|elle|on|ils|elles) (?:[mnst]e |la |les? |[nv]ous |lui |leur |y |en |)(\w[\w-]+)
+(?<![dD]’)(je|tu|il|elle|on|ils|elles) (\w[\w-]+)
+	<- not re.match(u"(?i)([lmtsn]|soussignée?s?|seule?s?)$", \2) and morph(\2, "po:(nom|adj|ppas)") and not morph(word(-1), "po:v0")
+	-2> _                                                                                            # Incohérence : « \2 » est un nom, un adjectif ou un participe passé.
+
+ne (\w[\w-]+)
+	<- morph(\1, "po:(nom|adj|ppas)")
+	-1> _                                                                                             # Incohérence : « \1 » est un nom, un adjectif ou un participe passé.
+
+
+############################## SINGULIERS & PLURIELS ##############################
+
+[Word]
+
+### Prépositions
+
+# Similaires à prépositions : http://www.synapse-fr.com/manuels/PP_ATTENDU.htm
+# attendu, compris, non-compris, y compris, entendu, excepté, ôté, ouï, passé, supposé, vu
+# ! problème avec l’ouïe, ouï retiré de la liste
+^(Compris|Non[- ]compris|Entendu|Excepté|Ôté|Supposé)(?:e|s|es)(?! ainsi)
+	<- option('sgpl') -> \1                                                # Considéré comme préposition, invariable.
+^(Passé(?:e|s|es)) +(?:[lc]es?|la|cette|leurs?)
+	<- option('sgpl') -1> Passé                                            # Considéré comme préposition, invariable.
+
+(attendu(?:e|s|es)) que? <- not word(-1) -1> attendu                      # Considéré comme préposition, invariable.
+étant donné(?:e|s|es) <- not word(-1) -> étant donné                      # Considéré comme préposition, invariable.
+(vu(?:e|s|es)) (?:[lc]es?|la|cette|leurs?|que?) <- not xword(-1) -1> vu   # Considéré comme préposition, invariable.
+
+
+### Nombres cardinaux
+
+vingts <- option('tu') and word(-1) != 'quatre'
+	-> vingt                                                                # Vingt ne prend la marque du pluriel que dans « quatre-vingts ».
+quatre[- ]vingt <- option('tu') and not morph(word(1), "po:nb") and not re.match(u"(numéro|page|chapitre|référence|année|test|série)s?$", word(-1))
+	-> quatre-vingts                                                        # Mettre « vingt » au pluriel, excepté s’il s’agit d’une référence (page, chapitre, année…).
+(dix|vingt|trente|quarante|cinquante|soixante|soixante-dix|quatre-vingt|quatre-vingt-dix)-neufs
+	<- option('tu')
+	-> \1-neuf                                                              # Pas de “s”.
+
+nbplac (deux|trois|quatre|cinq|six|sept|huit|neuf|mille)           # nombre pluriel avant cent
+
+{nbplac} cent <- not morph(word(1), "po:nb", False, True) and not re.match("(un|une)$", word(1))
+	-> \1 cents                                                    # Mettre « cent » au pluriel (centaines entières), excepté s’il s’agit d’une référence (page, chapitre, année…).
+{nbplac} cents <- morph(word(1), "po:nb", False) or re.match("(un|une)$", word(1))
+	-> \1 cent                                                     # Nombre cardinal : pas de « s » à « cents » (seulement sur les centaines entières).
+
+milles <- morph(word(1), "po:nb") or (morph(word(-1), "po:nb") and morph(word(1), "po:(nom|adj|ppas)", False))
+	-> mille                                                       # « Mille » est invariable s’il s’agit d’un nombre (et non de l’unité de mesure maritime).
+
+
+### Locutions
+
+# affaires
+chiffres? d’(affaire) <- option('sgpl') -1> affaires                    # Le chiffre d’affaires. Toujours un “s” final.
+(f\w+) (affaires) avec <- option('sgpl') and 'faire' in stem(\1)
+	-2> affaire                                                         # « Faire affaire avec ». Pas de “s”.
+(f\w+) (affaire) (?:à|en) (\w[\w-]+) <- option('sgpl') and 'faire' in stem(\1) and morph(\3, "geo")
+	-2> affaires                                                        # Ajoutez un “s” à « affaire ».
+
+# ayants droit
+[ldc]es (ayant[- ]droits?) <- option('sgpl') -1> ayants droit           # Au singulier : « un ayant droit ». Au pluriel : « des ayants droit ».
+
+# boisson
+débits? de (boisson) <- option('sgpl') -1> boissons                     # Il manque un “s” à « boisson ».
+
+# carnet
+carnet de (chèque|note|timbre|ticket|vacance) -1> \1s                   # Il manque un “s”.
+
+# cor / cri
+à cors? et à cris <- option('sgpl') -> à cor et à cri                   # Locution adverbiale invariable.
+
+# demi-heure, heure et demie
+demie[- ]heure(s|) <- option('sgpl') -> demi-heure\1                    # « Une demi-heure ».
+heures? et (demi(?:s|es|)) <- option('sgpl') -1> demie                  # « Une heure et demie », « deux heures et demie », etc.
+
+# dévolu
+jet\w+ +(leurs dévolus) <- option('sgpl') -1> leur dévolu               # Au singulier.
+
+# escalier
+cages? d’(escaliers) <- option('sgpl') -1> escalier                     # Pas de “s” à escalier.
+
+# collet monté
+(\w+) (collets[- ]montés) <- option('sgpl') and morph(\1, "po:(v0e|adv)", False) or \1 == 'très'
+	-2> collet monté                                                    # « Être collet monté » : dans cette locution, « collet monté » est invariable.
+
+# coûter cher
+((?:co[uû]t|pa)\w+) +(?:pas |jamais |)(chers|chères?|chaire?s?) <- option('sgpl') and stemchk(\1, u"^(co[ûu]ter|payer)$", False)
+	-2> cher                                                            # Ici, « cher » est un adverbe, invariable.
+
+# par intermittence
+par (intermittences) <- option('sgpl') -1> intermittence                # « Par intermittence ».
+
+# par intervalles
+par (intervalle) <- option('sgpl') -1> intervalles                      # « Par intervalles ».
+
+# donner lieu
+(donn\w+) +(?:pas |jamais |)(lieux) <- option('sgpl') and stemchk(\1, "^donner$", False)
+	-2> lieu                                                            # « Donner lieu » : lieu est invariable dans cette locution verbale.
+
+# eux-mêmes, elles-mêmes
+(eux|elles)-(même) -2> mêmes                                            # Il manque un “s” à même.
+
+# nu
+(m\w+) +([aà] nu(e|s|es)) <- option('sgpl') and stemchk(\1, u"^(mettre|mise)$", False)
+	-2> à nu                                                            # « nu » est invariable dans cette locution.
+
+# à parts égales
+à part égale? <- option('sgpl') -> à parts égales                       # Il y a plusieurs parts.
+
+# pied
+([aeop]\w*) (?:pas |)(pieds) <- option('sgpl') and stemchk(\1, u"^(avoir|perdre)$", False)
+	-2> pied                                                            # Pas de “s” final.
+à (pieds) <- option('sgpl') and not before("(?i)\\b(lit|fauteuil|armoire|commode|guéridon|tabouret|chaise)s?\\b")
+	-1> pied                                                            # Pas de “s” final.
+(?:à|aux) pieds? levée?s? <- option('sgpl') -> au pied levé             # Locution adverbiale invariable.
+
+# pleines dents
+[àa] (pleine dents?|pleines? dent) <- option('sgpl') -> à pleines dents # Toujours au pluriel.
+
+# plus que prévu / mois que prévu
+(?:plus|moins|autant) que (prévues?|prévus) <- option('sgpl') -1> prévu         # Invariable. Implicitement, plus (ou moins) que ce qui est/était prévu.
+autant (?:de |d’)([\w-]+) que (prévues?|prévus) <- option('sgpl') -2> prévu     # Invariable. Implicitement, autant de \1 que ce qui est/était prévu.
+comme ((annoncé|convenu|prévu)(?:es?|s)) <- option('sgpl') -1> \2               # Invariable. Implicitement, comme ce qui est/était \2.
+
+# possible
+autant (?:(?:de |d’)[\w-]+ |)que (possibles) <- option('sgpl') -1> possible     # Invariable. Implicitement, autant que ce qui est possible.
+
+# quelque
+quelques temps <- option('sgpl') -> quelque temps                       # « Quelque temps » : un temps indéterminé, pas de « s ».
+
+# rafales
+(?:par|en) (rafale) <- option('sgpl') -1> rafales                       # Par rafales, en rafales.
+
+#sans (crainte|défense)s -> sans \1                                     # En général, pas de pluriel.
+
+# par souci de
+par (soucis) (?:de|d) <- option('sgpl') -1> souci                       # Invariable dans cette locution.
+
+# termes
+en (terme) (?:de|d) <- option('sgpl') -1> termes                        # Au pluriel.
+
+# tous / tout / toutes
+tout azimuts? <- option('sgpl') -> tous azimuts                         # « Tous azimuts » signifie « dans toutes les directions ».
+une (?:bonne |)fois pour (toute) <- option('sgpl') -1> toutes           # Il manque un “s”.
+
+# vacances
+bonne vacance <- option('sgpl') -> bonnes vacances                      # Au pluriel.
+(\w+) +(?:pas |jamais |toujours |souvent |)en (vacance) <- option('sgpl') and stemchk(\1, u"^(aller|partir)$", False)
+	-2> vacances                                                        # Si vous parlez des congés, « vacance » doit être au pluriel.
+
+# vu / vue
+points? de (vu(?:s|es)) <- option('conf') -1> vue                       # Au singulier.
+
+
+############################## MOTS COMPOSÉS ###############################
+
+[Word]
+(\w\w+)-(\w\w+)
+	<- option('mc') and not \1.isdigit() and not \2.isdigit() and not morph(\0, "po:", False) and not morph(\2, "po:mg", False) and spell(\1+\2)
+	-> \1\2                                # Vous pouvez ôter le trait d’union.
+(\w\w+)-(\w\w+)
+	<- option('mc') and not re.match("(?i)(ex|mi|quasi|semi|non|demi)$", \1) and not \1.isdigit() and not \2.isdigit() and not morph(\2, "po:mg", False) and \2 != u"là"
+	and not morph(\0, "po:", False) and not spell(\1+\2)
+	-> _                                   # Mot inconnu du dictionnaire.
+
+
+############################## CONFUSIONS, HOMONYMES ET FAUX-AMIS ###############################
+
+[Word]
+
+# a / à
+grâce (a) <- option('conf') and morph(xword(-1), "po:(v|nom)", False, True) -1> à                       # Confusion probable.
+a moins que <- option('conf') and not xword(-1) -> à moins que                                          # Confusion probable : « à moins que » signifie « sauf si ».
+tout a co[uû][pt]? <- option('conf') -> tout à coup                                                     # Confusion.
+a coup s[uû]r <- option('conf') -> à coup sûr                                                           # Confusion.
+face (a) <- option('conf') and not re.match("(?i)([lmts]a|leur|une)", word(-1)) -1> à                   # Confusion.
+pas a pas <- option('conf') -> pas à pas                                                                # Confusion.
+([seê]\w+) (a)(?! priori| posteriori)
+	<- option('conf') and stem(\1) == [u"être"]
+	-2> à                                                                                                 # Confusion. Utilisez la préposition « à ».
+(a peu[tx]? (près|prés?|prêts?)|à peu[tx] (près|prés?|prêts?)|à peu (prés?|prêts?))
+	<- option('conf') -> à peu près                                                                       # Confusion.
+(il|elle|on) à <- option('conf') and not morph(word(-1), "po:(v|prep)", False) and not (\1 == 'elle' and morph(word(1), "po:properobj", False))
+	-> \1 a                                                                                             # Confusion probable.
+a rebours <- option('conf') -> à rebours                                                                # Confusion. Utilisez la préposition « à ».
+(a) part (\w+) <- option('conf') and morph(\2, "po:(prn|patr|det|properobj)") -1> à                     # Confusion probable.
+(il|on) *> *(à) <- option('conf') -2> a                                                                 # Confusion probable : “à” est une préposition.
+(a) ne (?:jamais|pas|rien|guère) <- option('conf') -1> à                                                # Confusion probable.
+
+# acquis / acquit
+par (acquis) de conscience <- option('conf') -1> acquit                                                 # Confusion. On écrit « par acquit de conscience ».
+(t\w+) +(?:pas|jamais)? *pour (acquit) <- option('conf') and stem(\1) == ['tenir'] -2> acquis           # Confusion. On écrit « tenir pour acquis ».
+
+# affilée / affilé
+d’affilé <- option('conf') -> d’affilée                                                                 # Locution.
+
+# à faire / affaire
+#à faire (à|avec) <- option('conf') and morph(word(-1), "po:v0a") -> affaire \1                         # Confusion.
+
+# amende / amande
+yeux en amendes? <- option('conf') -> yeux en amande                                                    # Confusion.
+(m\w+) à l’amande <- option('conf') and 'mettre' in stem(\1) -> \1 à l’amende                           # Confusion. L’amande est un fruit.
+(f\w+) (amandes? honorables?) <- option('conf') and 'faire' in stem(\1) -2> amende honorable            # Confusion. L’amande est un fruit.
+
+# au temps / autant
+autant pour moi <- option('conf') and not word(-1) -> au temps pour moi                                 # Pour avouer son erreur, « au temps pour moi » est l’expression recommandée par l’Académie.
+au (temps|tant) que faire [sc]e peu[xt]? -> autant que faire se peut                                    # Locution adverbiale : « autant que faire se peut ».
+
+# avion / avions
+nous (avion) <- option('conf') -1> avions                                                               # Confusion probable : l’avion est un appareil volant.
+
+# bât / bas
+le (ba[st]) bless\w+ <- option('conf') -1> bât                                                          # Confusion : là où le bât blesse.|http://fr.wiktionary.org/wiki/b%C3%A2t
+
+# bel et bien
+(belle) et bien (?!que?|sûr) <- option('conf') and not morph(word(1), "po:(adj|ppas)")
+	-1> bel                                                                                               # Confusion. « Bel et bien » est équivalent à « vraiment ».
+
+# bite / bitte
+(bite) d’amarrage -1> bitte                                                                             # Bitte d’amarrage
+
+# en butte à / but / bute
+en bute?s? (à|aux?) <- option('conf') -> en butte \1                                                    # Confusion. Écrivez « en butte \1 ».
+
+# ça / çà / sa
+comme (sa) <- option('conf') and (not word(1) or re.match("(?i)que?", word(1))) -1> ça                  # Confusion.
+(ça) (\w\w+) <- option('conf') and morph(\2, "po:(nom|adj|ppas) is:fem") -1> sa                         # Confusion. « sa » (sa maison, sa voiture) ≠ « ça » (ça pue, ça craint).
+çà(?! et là) <- option('conf') and not re.match("(?i)(oh|ah)", word(-1)) -> ça                          # Confusion: « çà » ne s’emploie plus guère que dans l’expression « çà et là ».
+
+# ce / se
+(se) (\w+) <- option('conf') and morph(\2, "po:(nom|adj|ppas)") -1> ce                                  # Confusion. « se » (se lever, se demander) ≠ « ce » (ce chien, ce chat).
+(ce) (\w+(?:er|ir|re)) <- option('conf') and morph(\2, "is:infi") -1> se                                # Confusion. « se » (se lever, se demander) ≠ « ce » (ce chien, ce chat).
+pour (se) faire,? (?:je|tu|ils?|elles?|[nv]ous|on) <- option('conf') -1> ce                              # Confusion. Dans cette locution usuelle, il faut employer “ce”.|http://fr.wiktionary.org/wiki/pour_ce_faire
+
+# chair / chère
+(?:f\w+) (?:pas |si |jamais |souvent |)(bonnes? ch(?:ai|e)re?) <- option('conf') -1> bonne chère        # Confusion. « Faire bonne chère » signifie bien manger, ripailler.
+
+# compte / comte / conte
+co[mn]te(s)? bancaire(?(1)s) <- option('conf') -> compte bancaire|comptes bancaires                     # Confusion.
+co[mn]tes? à rebours <- option('conf') -> compte à rebours|comptes à rebours                            # Confusion.
+
+# content / comptant
+([aeo]\w*) (?:tout |)(?:[mts]on|[nv]otre|leur) (comptant) <- option('conf') and morph(\1, "po:v0a", False)
+	-2> content                                                                                         # Confusion. Avoir (tout) son content…
+
+# cor / corps
+à corps et à cris? <- option('conf') -> à cor et à cri                                                  # Locution adverbiale invariable.
+
+# cour / cours / court
+(au court?) (?:des?|du|d) <- option('conf') -1> au cours                                                # Confusion probable.
+en cour(?! martiale?) <- option('conf') -> en cours                                                     # Confusion probable.
+(coup\w+) (cours?) <- option('conf') and stem(\1) == ['couper'] -2> court                               # « Couper court ». Écourter.
+libre court? <- option('conf') -> libre cours                                                           # Confusion probable.
+à cours? de <- option('conf') -> à court de                                                             # Confusion probable. « à court de … » pour « manquer de … »
+à cour(?:s|ts|) termes? <- option('conf') -> à court terme                                              # Confusion.
+
+# davantage / d’avantage
+(?:peu|plein|beaucoup|trop|plus|moins|assez|suffisamment|tellement|obtentions?|régimes?) (davantage)
+	<- option('conf') -1> d’avantages                                                                   # Confusion probable.
+(\w+) (d’avantages?) <- option('conf') and morph(\1, "po:v.\w+ is:(?!ppas)") -2> davantage              # Confusion probable.
+(?:[\w-]+)-(?:je|tu|ils?|elles?|[nv]ous|on) (d’avantages) <- option('conf') -1> davantage               # Confusion probable.
+(d’avantages?) (?:de|du|d) <- option('conf') -1> davantage                                              # Confusion possible.
+#([êeésf]\w+) d’avantages? <- option('conf') and morph(\1, "po:v0e", False) -> \1 davantage             # Confusion possible.
+
+# dés / dès
+(dés) (le|la|les|que|lors|avant|toujours|demain) <- option('conf') and not re.match("(?i)[dlmt]es|[nv]os|leurs$", word(-1)) -1> dès     # Confusion.
+
+# différend / différent
+(?:[mts]on|[vn]otre|leur) +(différent) <- option('conf') and morphex(word(1), "po:mg", "po:(nom|adj|ppas)", True)
+	-1> différend                                                                                       # « différent » est un adjectif, « différend » est le nom qui signifie désaccord.
+un différent <- option('conf') and morphex(word(1), "po:(mg|v)", "po:(nom|adj|ppas)")
+	-> un différend                                                                                     # « différent » est un adjectif, « différend » est le nom qui signifie désaccord.
+(?:leurs|[mts]es|[nv]os) (différents) <- option('conf') and morphex(word(1), "po:mg", "po:(nom|adj|ppas)", True)
+	-1> différends                                                                                      # « différent » est un adjectif, « différend » est le nom qui signifie désaccord.
+(?:[ld]es) (différents) <- option('conf') and morphex(word(1), "po:mg", "po:(nom|adj|ppas)")
+	-1> différends                                                                                      # « différent » est un adjectif, « différend » est le nom qui signifie désaccord.
+([êeésf]\w+) +(?:pas +|)(?:si +|)(différend(s|)) <- option('conf') and morph(\1, "po:v0e", False)
+	-2> différent\3                                                                                     # « différent » est un adjectif, « différend » est le nom qui signifie désaccord.
+
+# du / dû
+(du) (?:à|aux?) <- option('conf') -1> dû                                                                # Confusion. Ce qui est dû.
+du a <- option('conf') -> dû à                                                                          # Confusion. Ce qui est dû.
+(?:mon|notre|votre) (du) <- option('conf') -1> dû                                                       # Confusion. Ce qui est dû.
+[ts]on (du) <- option('conf') and not morph(word(1), "po:nom.* is:mas", False) -1> dû                   # Confusion. Ce qui est dû.
+
+# eh bien, hé bien / et bien
+et bien(?! que?| sûr| d’autres | entendu| avant| souvent| longtemps) <- option('conf') and not xword(-1)
+	-> eh bien|hé bien                                                                                  # Confusion probable.|http://66.46.185.79/bdl/gabarit_bdl.asp?Al=2&T1=Eh
+
+# en train / entrain
+entrain <- option('conf') and morph(word(-1), "po:v0e", False) -> en train                              # Confusion.
+
+# envi / envie
+à l’(envie) <- option('conf') -1> envi                                                                  # Locution adverbiale « à l’envi », signifiant « autant que possible ».
+
+# aire / ère
+aire (?:glacière|glaciaire) <- option('conf') -> ère glaciaire                                          # Confusion : « ère » est une époque, « aire » une surface.
+(aire) (?:baroque|numérique) <- option('conf') -1> ère                                                  # Confusion : « ère » est une époque, « aire » une surface.
+
+# colon / côlon
+cancer du (colon) <- option('conf') -1> côlon                                                           # Confusion : le côlon est un segment du gros intestin.
+
+# censé / sensé
+([êeésf]\w+) +(sensée?s?) +(\w[\w’'-]+)
+	<- option('conf') and morph(\1, "po:v0e", False) and morph(\3, ":infi", False)
+	-2> =\2.replace("sens", "cens")                                                                     # Confusion : « sensé » se dit de quelqu’un de « bon sens ».
+
+# côté / coté
+(?:à|au|autre|bon|mauvais|[cdl]e|du|[mts]on|[nv]otre|chaque|un|leur) (coté) <- option('conf') -1> côté  # Confusion : « coté » est le participe passé du verbe « coter ».
+
+# cote / côte
+(cote) de (?:bœuf|porc|veau)[sx]? <- option('conf') -1> côte                                            # Confusion : « cote » est un terme servant à chiffrer.|http://fr.wiktionary.org/wiki/cote
+(côte) (?:mobilière|foncière|de (?:niveau|popularité)|d’(?:alerte|altitude|amour))
+	<- option('conf') -1> cote                                                                          # Confusion : utilisez « cote » pour chiffrer.|http://fr.wiktionary.org/wiki/cote
+
+# faite / faîte / fait
+vous +(?:ne |)(faîtes?) <- option('conf') -1> faites                                                    # Confusion. Le faîte (≠ faire) est le point culminant de quelque chose.
+faîtes?[- ]vous <- option('conf') -> faites-vous                                                        # Confusion. Le faîte (≠ faire) est le point culminant de quelque chose.
+([aeêésfo]\w*) (faîte(s|)) <- option('conf') and morph(\1, "po:v0", False)
+	-2> faite\3                                                                                         # Confusion. Le faîte (≠ faire) est le point culminant de quelque chose.
+en fa[iî]te <- option('conf') -> en fait                                                                # Confusion probable. « En fait » = « en réalité ».
+
+# flamant rose
+flamands? roses? <- option('conf') -> =\0.replace('and', 'ant')                                         # Confusion. Flamand = habitant des Flandres. Flamant = oiseau.
+
+# mauvaise foi
+mauvaise (fois) <- option('conf') -1> foi                                                               # Confusion. Écrivez « mauvaise foi » si vous évoquez l’hypocrisie.
+
+# fond / fonds
+à (fond) perdus? <- option('conf') -1> fonds                                                            # Confusion : fonds (ce qui constitue une richesse) ≠ fond (partie la plus basse/profonde).
+(fond) (?:monétaire|de (?:commerce|garantie|roulement|solidarité)) <- option('conf') -1> fonds          # Confusion : fonds (ce qui constitue une richesse) ≠ fond (partie la plus basse/profonde).
+(fonds) baptismaux <- option('conf') -1> fonts                                                          # Confusion. « Fonts » vient du latin « fons », qui signifie « fontaine, source ».
+
+# glaciaire / glacière
+(\w) (glaciaires?) <- option('conf') and morph(\1, "po:det") -2> glacière                               # Confusion : « glaciaire » est un adjectif.
+ère (glacière) <- option('conf') -1> glaciaire                                                          # Confusion : une glacière est un contenant préservant le froid.
+
+# en son for intérieur / fort
+(?:en|dans) (?:[mts]on|leur|[nv]otre) (forts? intérieurs?) <- option('conf') -1> for intérieur          # Confusion. For, au sens figuré,
+
+# gène / gêne
+sans[- ]gènes? <- option('conf') -> sans-gêne                                                           # Confusion. Gène = élément des chromosomes. Gêne = embarras.
+[lmts]es (gênes) <- option('conf') -1> gènes                                                            # Confusion probable. Gène = élément des chromosomes. Gêne = embarras.
+
+# gent [nf] / gent(e)(s) [adj]
+la (gente) (?:féminine|masculine) <- option('conf') -1> gent                                            # Confusion. « Gente » est un adjectif vieilli. Utiliser « gent » pour désigner un groupe de personnes.
+
+# gré / grès
+à (?:[mts]on|[nv]otre|leur) (grès) <- option('conf') -1> gré                                            # Confusion probable. Le grès est une roche.
+bon grès(,|) mal grès <- option('conf') -> bon gré\1 mal gré                                            # Confusion : « bon gré mal gré » signifie « que cela convienne ou non ».
+au (grès) des? <- option('conf') -1> gré                                                                # Confusion probable.
+de (grès) ou de force <- option('conf') -1> gré                                                         # Confusion. Le grès est une roche.
+#contre son gré, « contre sa volonté »
+#de son (plein) gré, « avec son accord »
+#savoir gré à quelqu'un « lui être reconnaissant »
+#au gré de quelqu'un, « selon son goût, son désir »
+
+# la / là
+(celles?|celui|ceux)[ -]la <- option('conf') -> \1-là                                                   # \1-là
+(\w\w+)-(là) <- option('conf') and morph(\1, "po:v", "po:(nom|adj|ppas)") -2> la                        # Confusion : pour un COD, utilisez “la”.
+(\w\w+)-(la) <- option('conf') and morph(\1, "po:(nom|adj|ppas)", "po:[123](sg|pl)") -2> là             # Confusion : « \1 » n’est pas un verbe.
+la(?= où\b| que?\b| l[ea]?\b) <- option('conf') -> là                                                   # Confusion probable. Écrivez “là” si vous voulez dire “ici”.
+
+
+# laissez-passer / laissez-faire
+laisser-passer <- option('conf') -> laissez-passer                                                      # Confusion.
+laissez-(aller|faire) <- option('conf') -> laisser-\1                                                   # Confusion.
+
+# leur / leurs
+(\w+) (leurs) (\w+) <- option('conf') and morph(\3, "is:infi") and not re.match(u"(?i)[ld]es", \1) -2> leur    # Confusion.
+
+# levée / lever
+levée?(?= de rideau) <- option('conf') -> lever                                                         # Confusion.
+levée?(?= d[eu] soleil) <- option('conf') -> lever                                                      # Confusion.
+
+# lever un lièvre / soulever
+(sou(l\w+)) un lièvre <- 'soulever' in stem(\1) -1> \2                                                  # Expression impropre. On dit : « lever un lièvre ».
+
+# mare / marre
+(?:la|une) (marre) <- option('conf') -2> mare                                                           # Confusion. Une mare est une étendue d’eau. En avoir marre de = en avoir assez de.
+
+# n’est-ce pas - ai / es / est
+n’(es|ai[et]?)[- ]ce[- ]pas -> n’est-ce pas                                                             # Erreur de conjugaison.
+
+# notre / nôtre -- votre / vôtre
+(?:les?|la|du|des|aux?) ([nv]otres?) <- option('conf') -1> =\1.replace('otre', u"ôtre")                   # Confusion : « notre possession », « la nôtre ».
+[nv]ôtres? <- option('conf') and not re.match("(?i)les?|la|du|des|aux?", word(-1)) and morph(word(1), "po:(nom|adj|ppas)")
+	-> =\0.replace(u"ôtre", 'otre').replace(u"s", '')                                                     # Confusion : « notre possession », « la nôtre ».
+# Hunspell corrige déjà les formes au pluriel (les nôtres).
+## prep/verb + nôtre + nom
+
+# nulle part
+nul part <- option('conf') and not morph(word(-1), "po:det") -> nulle part                              # Confusion : « nulle part » = en aucun lieu.
+
+# mi / mis
+([aeo]\w*) +(?:pas |jamais |)(mie?) <- option('conf') and morph(\1, "po:v0a", False) -2> mis              # Confusion. Pour le participe passé de mettre, écrivez :
+(mie?) en (?:abyme|bouteilles?|cause|demeure|évidence|examen|f[ûu]ts?|images?|liquidation|mémoire|musique|œuvres?|paiement|place|pièces?|quarantaine|scène|tonneaux?|service|valeur)
+	<- option('conf') -1> mis                                                                           # Confusion. Pour le participe passé de mettre, écrivez :
+(mie?) à (?:jours?|pieds?|dispositions?|part|mal|nue?|contribution|rude|mort)
+	<- option('conf') -1> mis                                                                           # Confusion. Pour le participe passé de mettre, écrivez :
+
+# ou / où
+^(Ou) (\w[\w-]+) <- option('conf') and morph(\2, "po:v.\w+ is:(?!infi)") -1> Où                         # Confusion probable. Utilisez “où” pour “en quel lieu”.
+^(Ou) ([eéêsf]\w+) <- option('conf') and morphex(\2, "po:v0e", "po:infi")
+	-1> Où                                                                                                # Confusion probable. Utilisez “où” pour “en quel lieu”.
+(?:[aA]u moment|[pP]ar|[vV]ers) (ou) <- option('conf') -1> où                                                    # Confusion.
+
+# pair / paire
+((?:all|v|ir)\w+) de (pair(e|s|es)|perd?s?) <- option('conf') and 'aller' in stem(\1) -2> pair          # « Aller de pair ».
+
+# parti / partie
+(pr\w+) (parti(?:s|es?)) <- option('conf') and "prendre" in stem(\1) -2> parti                          # Confusion. « Prendre parti »
+(tir\w+) (parti(?:s|es?)) <- option('conf') and "tirer" in stem(\1) -2> parti                           # Confusion. « Tirer parti »
+(f[ai]\w+) (parti(?:s|es|)) <- option('conf') and "faire" in stem(\1) -2> partie                        # Confusion. « Faire partie »
+juges? et partis? <- option('conf') -> juge et partie|juges et parties                                  # Confusion. « Être juge et partie »
+(pr\w+) +(?:[\w’-]+ +|)([àa] partis?) <- option('conf') and "prendre" in stem(\1) -2> à partie          # Confusion. « Prendre à partie »
+
+# pâte / patte
+(?:coqs?) en (pattes?) <- option('conf') -1> pâte                                                       # Confusion. Patte = jambe. Pâte = matière pâteuse.
+
+# peu / peux / peut
+(peu[xt]) (?:de |d’)(\w\w+) <- option('conf') and morph(\2, "po:(nom|adj|ppas)") -1> peu                # Confusion probable : « \1 » est une conjugaison de « pouvoir ».
+^ *(peu[tx]) importe(nt|) <- option('conf') and not word(-1) -1> peu                                    # Confusion : « \1 » est une conjugaison de « pouvoir », utilisez « peu ».
+(?:très|trop|de|quelque|pour|à) (peu[tx]) <- option('conf') -1> peu                                     # Confusion : « \1 » est une conjugaison de « pouvoir », utilisez « peu ».
+(?<![^dDlL]’)un (peu[xt]) <- option('conf') -1> peu                                                     # Confusion : « \1 » est une conjugaison de « pouvoir », utilisez « peu ».
+peu[xt]? a peu[xt]? <- option('conf') -> peu à peu                                                      # Confusion : « peu à peu » ou « petit à petit ».
+(?:il|on) (?:ne |)(peu) <- option('conf') -1> peut                                                      # Confusion : « peu » signifie « pas beaucoup ».
+(?:je|tu) (?:ne |)(peu) <- option('conf') -1> peux                                                      # Confusion : « peu » signifie « pas beaucoup ».
+(peu[tx]) (\w[\w-]) <- option('conf') and morph(\2, "po:adj") -1> peu                                   # Confusion probable : « \1 » est une conjugaison de « pouvoir », utilisez « peu ».
+
+# peut-être / peut être
+(\w+) (peut être) <- option('conf') and morphex(\1, "po:v", "po:(nom|adj|ppas|mg)") -2> peut-être       # Confusion probable.
+^ *(peut être) <- option('conf') -1> peut-être                                                          # Confusion probable.
+
+# plain / pied
+(de|au) pleins?[- ]pieds? -> \1 plain-pied                                                              # « \1 plain-pied ». Plain (vieux) : qui est plat, uni.
+
+# la plupart
+la plu[st][ -]part <- option('conf') -> la plupart                                                      # Confusion : « la plupart » = la majeure partie.
+
+# pôle / pole
+pole(?! position) <- option('conf') -> pôle                                                             # « pole », uniquement pour la « pole position ».
+
+# prêt / près
+prêts? de <- option('conf') and morph(word(1), "po:(v|patr|prn|geo)") -> près de                        # Confusion. Être près de (faire) quelque chose. Prêt à faire quelque chose.
+près à <- option('conf') and word(-1) != "peu" and morph(word(1), "po:v")-> prêt à|prêts à              # Confusion. Être près de (faire) quelque chose. Prêt à faire quelque chose.
+
+# pot aux roses / poteau rose
+poteau rose <- option('conf') -> pot aux roses                                                          # Confusion probable. On dit : « découvrir le pot aux roses ».
+
+# pu / pus
+([aeo]\w*) (pu(?:es?|s)) <- option('conf') and morph(\1, "po:v0a", False) -2> pu                          # Confusion. Pour le participe passé de pouvoir, écrivez :
+
+# quand / quant
+(?<!de )(quand) (?:à|aux?) <- option('conf') -1> quant                                          # Confusion probable. Quand = à quel moment. Quant à = à propos de.
+(quant)(?! à| aux?) <- option('conf') -1> quand                                                 # Confusion. Quand = à quel moment. Quant à = à propos de.
+
+# quand même / comme même
+(comme même) *$ <- option('conf') -1> quand même                                                                    # Confusion.|http://fr.wiktionary.org/wiki/quand_m%C3%AAme
+(\w+) (comme même) <- option('conf') and morphex(\1, "po:v", "po:ppas") -2> quand même                              # Confusion probable.|http://fr.wiktionary.org/wiki/quand_m%C3%AAme
+
+# quel que soit / quoi qu’il en soit
+quelques? soi(en|)t <- option('conf') -> quel que soit|quelle que soit|quels que soient|quelles que soient          # Confusion.
+quoiqu’il en soit <- option('conf') -> quoi qu’il en soit                                                           # Confusion.
+
+# quelque part
+quel(le)? que par[ts]? <- option('conf') -> quelque part                                                            # Confusion probable.
+
+# quoiqu’il en coûte
+(quoiqu’il) en (?:co[uû]te) <- option('conf') and not word(1) -1> quoi qu’il                                        # Confusion probable.
+
+# raisonner / résonner
+(la|les|[lmts]e|[nv]ous) (résonn\w+)
+	<- option('conf') and u"résonner" in stem(\2) -2> =\2.replace(u"résonn", u"raisonn")                  # Confusion probable. Vous utilisez la raison, mais vous ne « sonnez » pas.
+
+# ris
+(riz?) (?:de veaux?|d’agneaux?) <- option('conf') -1> ris                                               # Confusion.|http://fr.wiktionary.org/wiki/ris
+
+# saint / sain / sein / seing
+(s[ae]in) ([A-ZÉÊ]\w+) <- option('conf') and morph(\1, "po:prn", False) -1> saint                       # Confusion.
+(en|dans|sur) [mts]on (saint?) <- option('conf') -2> sein                                               # Confusion.
+au (sain) (?:de|du|des) <- option('conf') -1> sein                                                      # Confusion.
+blanc-(?:s[ae]int?)(s|) <- option('conf') -> blanc-seing\1                                              # Confusion.|http://fr.wiktionary.org/wiki/blanc-seing
+
+# sans / sens
+sans dessus dessous <- option('conf') -> sens dessus dessous                                            # Confusion.
+
+# savoir / ignorer
+([êeésf]\w+) pas sans (ignor(?:er|ée?s?)) <- morph(\1, ":v0e", False)
+	-2> savoir                                                                 # Confusion : vous écrivez l’inverse de ce que vous voulez dire.|http://fr.wiktionary.org/wiki/vous_n%E2%80%99%C3%AAtes_pas_sans_savoir
+
+# sceptique / septique
+(?:fosses?|plaies?|chocs?) (sceptique(s|)) <- option('conf') -1> septique\2                             # Confusion. Septique = corrompu, infecté. Sceptique = ayant des doutes.
+([seêéf]\w+) +(septique(s|)) <- option('conf') and morph(\1, "po:v0e", False) -2> sceptique\3           # Confusion possible. Septique = corrompu, infecté. Sceptique = ayant des doutes.
+
+# s’ensuivre
+s’en (sui\w+) <- option('conf') and "suivre" in stem(\1) -> s’en\1                                      # Verbe « s’ensuivre ».
+
+# soi / soit
+soit-disant <- option('conf') -> soi-disant                                                             # Confusion.
+(?:chez|don de|sur|avec|pour|sur) (soit) <- option('conf') -1> soi                                      # Confusion probable.
+(?<![iI]l )en (soit) <- option('conf') and morph(word(1), "po:(mg|infi)", True, True) and not before("quel(?:s|les?|) qu’$")
+	-1> soi                                                                                               # Confusion probable.
+
+# statu / statut
+statu[ts] quo <- option('conf') -> statu quo                                                            # Confusion.
+statu(?! quo) <- option('conf') -> statut                                                               # Confusion. « Statu » ne s’emploie que dans l’expression « statu quo ».
+
+# sur / sûr
+(sure?s?) que <- option('conf') -1> =\1.replace('sur', u"sûr")                  # Confusion probable : « sur » signifie acide ou aigre ; « sûr » signifie certain, indubitable, vrai ou sans danger.
+(sure?s?) (?:de (?:moi|toi|vous|nous|lui)|d’elles?|d’eux)
+	<- option('conf') -1> =\1.replace('sur', u"sûr")                              # Confusion probable : « sur » signifie acide ou aigre ; « sûr » signifie certain, indubitable, vrai ou sans danger.
+
+# tant / temps
+en (temps) que? -1> tant                                                        # Incorrect. Écrivez « en tant que ».
+en (tant) de? -1> temps                                                         # Incorrect. Écrivez « en temps de ».
+de tant en tant -> de temps en temps                                            # Incorrect. Écrivez « de temps en temps ».
+un (temps) soit peu -1> tant                                                    # Incorrect. Écrivez « un tant soit peu ».
+il ([êeésf]\w+) +(tant) de ((?:\w+)(?:er|ir|re))
+	<- morph(\1, "po:v0e", False) and morph(\3, "is:infi", False)
+	-2> temps                                                                     # Incorrect.
+
+# tort / tord
+à (tord) <- option('conf') -1> tort                                             # Confusion : « tord » est une conjugaison du verbe tordre.
+([aeo]\w*) +(?:pas|jamais)? *(tord)
+	<- option('conf') and "avoir" in stem(\1) -2> tort                            # Confusion : « tord » est une conjugaison du verbe tordre.
+
+# venimeux / vénéneux
+(?:serpent|araignée|scorpion|vipère|cobra|crapaud|grenouille|dendrobate|poulpe|guêpe|abeille|méduse|morsure|piqûre|dard|dent|croc|crochet)s? (vénéneu(?:x|ses?))
+	<- option('conf') -1> \1.replace(u"vénén", u"venim")                          # Confusion : « vénéneux » se dit des plantes, employez « venimeux ».
+
+(?:(?:plante|champignon|lépiote|fruit|herbe|fleur|chair|moule|humus|substance)s?|végéta(?:l|ux)) (venimeu(?:x|ses?))
+	<- option('conf') -1> \1.replace(u"venim", u"vénén")                          # Confusion : pas de « venin » ici.
+
+# vieil / vieux
+vieux ([aeiou]\w+) <- option('conf') and morph(\1, "po:(nom|adj|ppas) is:(mas|epi).* is:sg")
+	-> vieil \1                                                         # Utilisez « vieil » pour un nom masculin singulier commençant par une voyelle ou un h.
+# nouveau / nouvel
+
+# voie / vois / voix
+à haute (voi[tes]) <- option('conf') -1> voix                                   # Confusion.
+à (voi[tes]) (?:basse|haute) <- option('conf') -1> voix                         # Confusion.
+
+# vu / vue
+points? de (vu) <- option('conf') -1> vue                                       # Mettez au féminin. Vu = ce qui est vu.
+
+
+############################## TYPOGRAPHIE ##############################
+
+[word]
+# accentuation la préposition en début de phrase
+^(A) (\w[\w’'-]+)
+	<- option('typo') and morphex(\2, "po:(mg|nom|adj|infi)", ":ppas") and not re.match(u"(?i)(priori|post[eé]riori|capella)", \2)
+	-1> À                                                                      # S’il s’agit de la préposition « à », il faut accentuer la majuscule.
+# \w\w+ est utile pour parer aux confusions avec « A t[-’]il » ou autres erreurs de ce genre.
+
+
+############################## MAJUSCULES & MINUSCULES ###############################
+
+[word]
+# Les jours
+(?<=[\w,] )(Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche)
+	<- option('maj')
+	-> =\0.lower()   # Pas de majuscule sur les jours de la semaine.|http://www.academie-francaise.fr/la-langue-francaise/questions-de-langue#42_strong-em-jours-de-la-semaine-pluriel-et-majuscules-em-strong
+
+# Les mois
+(?<=[\w,] )(Janvier|Février|Avril|Mai|Juin|Juillet|Ao[ûu]t|Septembre|Octobre|Novembre|Décembre|Vendémiaire|Brumaire|Frimaire|Nivôse|Pluviôse|Ventôse|Germinal|Floréal|Prairial|Messidor|Thermidor|Fructidor)
+	<- option('maj')
+	-> =\0.lower()   # Pas de majuscule sur les mois.|http://www.academie-francaise.fr/la-langue-francaise/questions-de-langue#42_strong-em-jours-de-la-semaine-pluriel-et-majuscules-em-strong
+(en|([0-9][0-9]?)) (Mars) <- option('typo') -2> mars                                        # Pas de majuscule sur les mois.|http://www.academie-francaise.fr/la-langue-francaise/questions-de-langue#42_strong-em-jours-de-la-semaine-pluriel-et-majuscules-em-strong
+
+
+# Les États
+(état) (?:français|belge|suisse|canadien|palestinien|souverain|américain|membre|africain|européen|voyou|démocratique|totalitaire|fédéral|fédéré|capitaliste|communiste)
+	<- option('maj')
+	-1> État                                            # Majuscule manquante : si vous parlez de l’institution dirigeante d’une nation, écrivez « État ».
+(états) (?:français|belges|suisses|canadiens|palestiniens|souverains|membres|américains|africains|européens|voyous|démocratiques|totalitaires|fédéraux|fédérés|capitalistes|communistes)
+	<- option('maj')
+	-1> États                                           # Majuscule manquante : si vous parlez de l’institution dirigeante d’une nation, écrivez « État ».
+
+(?:affaire|agent|administration|chancellerie|chefs|conseil|coup|diplôme|doctorat|emprunt|lycée|propriété|secret|homme|femme|police|religion|ministre|ministère|subvention|secrétaire|secrétariat|raison|ressortissant|université)s? d’(état)
+	<- option('maj')
+	-1> État                                            # Majuscule manquante : si vous parlez de l’institution dirigeante d’une nation, écrivez « État ».
+(?:défense|s[ûu]reté|agent|budget|caisse|capitale|constitution|charge|chef|dirigeant|denier|finance|fonction|fonctionnement|frontière|institution|propriété|monopole|pouvoir|rouage|ressource|service|subvention|suprême)s? de l’(état)
+	<- option('maj')
+	-1> État                                            # Majuscule manquante : si vous parlez de l’institution dirigeante d’une nation, écrivez « État ».
+
+# gentilés / ethnonymes
+(une?|certaine?s?|cet?|[cdl]es|cette|quelques|plusieurs|chaque) ((afghan|albanais|algérien|allemand|américain|andorran|angolais|anglais|argentin|arménien|australien|autrichien|azerbaïdjanais|bahamien|bangladais|bengladeshi|barbadien|basque|belge|bélizien|béninois|breton|bhoutanais|biélorusse|birman|bolivien|bosnien|botswanais|brésilien|britannique|brunéien|bulgare|burkinabé|burundais|cambodgien|camerounais|canadien|capverdien|centrafricain|chilien|chinois|chypriote|colombien|comorien|congolais|nord-coréen|corse|costaricien|croate|cubain|danois|djiboutien|dominicain|ivoirien|égyptien|émirati|équatorien|érythréen|estonien|espagnol|états-?unien|étasunien|éthiopien|fidjien|finlandais|formosan|français|gabonais|gambien|géorgien|ghanéen|grec|grenadien|guadeloupéen|guatémaltèque|guinéen|équato-guinéen|guyanien|haïtien|hondurien|hollandais|hongrois|indien|indochinois|indonésien|irakien|italien|iranien|irlandais|islandais|israélien|jamaïcain|japonais|jordanien|kazakh|kényan|kosovar|koweïtien|laotien|lapon|letton|libanais|libérien|libyen|liechtensteinois|lituanien|luxembourgeois|macédonien|malgache|malaisien|malawite|maldivien|malien|maltais|maori|marocain|martien|mauricien|mauritanien|mexicain|micronésien|moldave|monégasque|monténégrin|mongol|mozambicain|namibien|népalais|nicaraguayen|nigérien|nigérian|néerlandais|norvégien|néo-zélandais|ougandais|ouzbek|pakistanais|palestinien|panaméen|paraguayen|péruvien|philippin|polonais|polynésien|portugais|québécois|qatari|roumain|russe|rwandais|salvadorien|sénégalais|serbe|singapourien|slovaque|slovène|somalien|soudanais|srilankais|suédois|suisse|surinamais|syrien|tadjik|tanzanien|tchadien|tchèque|thaïlandais|togolais|tahitien|saoudien|scandinave|sud-africain|sud-coréen|sud-américain|tunisien|turkmène|turc|taïwanais|ukrainien|soviétique|uruguayen|vénézuélien|vietnamien|yéménite|yougoslave|zaïrois|zambien|zimbabwéen)(s|es|ne|nes|))(?! correct| courant| parfait| facile| aisé| impeccable)
+	<- option('maj') and not stemchk(word(-1), u"^(parler|apprendre|enseigner|étudier)$", False, False)
+	-2> =\2.capitalize()                                # S’il s’agit d’un gentilé, mettez une majuscule.
+
+(une? |certaine?s? |cet? |[cdl]es |cette |l[ea] |quelques |plusieurs |chaque )((européen|parisien|lyonnais|marseillais|lillois|toulousain|nantais|strasbourgeois|montpelliérain|bordelais|bruxellois|montréalais|genévois|zurichois|bâlois)(s|es|ne|nes|))
+	<- option('maj')
+	-2> =\2.capitalize()                                # S’il s’agit d’un nom, mettez une majuscule.
+
+# les langues
+((?:parl|cours|leçon|appr|étud|tradu|enseign|professeur|enseignant|dictionnaire|méthode)\w*) (?:le |d[eu] |l’|d’|qu’|)(Afrikaans|Albanais|Allemand|Alsacien|Anglais|Arabe|Aragonais|Arménien|Asturien|Basque|Bengali|Biélorusse|Birman|Bosniaque|Breton|Bulgare|Cantonais|Catalan|Cherokee|Chinois|Corse|Cornique|Coréen|Croate|Danois|Écossais|Espagnol|Espéranto|Estonien|Féroïen|Farsi|Finnois|Flamand|Français|Frison|Galicien|Gallois|Gaulois|Géorgien|Grec|Gujarati|Hakka|Hawaïen|Hébreu|Hindi|Hollandais|Hongrois|Javanais|Ido|Indonésien|Interlingua|Islandais|Italien|Irlandais|Japonais|Kazakh|Khmer|Kurde|Ladino|Laotien|Latin|Ligurien|Limbourgeois|Lituanien|Lombard|Luxembourgeois|Macédonien|Malais|Maldivien|Malgache|Maltais|Mandarin|Maori|Marathi|Marwari|Moldave|Mongol|Napolitain|Néerlandais|Norvégien|Occitan|Ourdou|Ouzbek|Persan|Peul|Piémontais|Polonais|Portugais|Provençal|Quichua|Romanche|Roumain|Russe|Sans[ck]rit|Sarde|Serbe|Sicilien|Sindhi|Slovaque|Slovène|Soudanais|Sorabe|Suédois|Swahili|Tagalog|Tahitien|Tamoul|Tatar|Tchèque|Thaï|Turc|Ukrainien|Vénitien|Vietnamien|Volapük|Wallon|Wo?u|Yiddish|Xhosa|Xiang|Zoulou)
+	<- option('maj') and stemchk(\1, u"^(parler|cours|leçon|apprendre|étudier|traduire|enseigner|professeur|enseignant|dictionnaire|méthode)", False)
+	-2> =\2.lower()                                     # Si vous parlez de la langue, pas de majuscule.
+
+(?:[Ee]n )(Afrikaans|Albanais|Allemand|Alsacien|Anglais|Arabe|Aragonais|Arménien|Asturien|Basque|Bengali|Biélorusse|Birman|Bosniaque|Breton|Bulgare|Cantonais|Catalan|Cherokee|Chinois|Corse|Cornique|Coréen|Croate|Danois|Écossais|Espagnol|Espéranto|Estonien|Féroïen|Farsi|Finnois|Flamand|Français|Frison|Galicien|Gallois|Gaulois|Géorgien|Grec|Gujarati|Hakka|Hawaïen|Hébreu|Hindi|Hollandais|Hongrois|Javanais|Ido|Indonésien|Interlingua|Islandais|Italien|Irlandais|Japonais|Kazakh|Khmer|Kurde|Ladino|Laotien|Latin|Ligurien|Limbourgeois|Lituanien|Lombard|Luxembourgeois|Macédonien|Malais|Maldivien|Malgache|Maltais|Mandarin|Maori|Marathi|Marwari|Moldave|Mongol|Napolitain|Néerlandais|Norvégien|Occitan|Ourdou|Ouzbek|Persan|Peul|Piémontais|Polonais|Portugais|Provençal|Quichua|Romanche|Roumain|Russe|Sans[ck]rit|Sarde|Serbe|Sicilien|Sindhi|Slovaque|Slovène|Soudanais|Sorabe|Suédois|Swahili|Tagalog|Tahitien|Tamoul|Tatar|Tchèque|Thaï|Turc|Ukrainien|Vénitien|Vietnamien|Volapük|Wallon|Wo?u|Yiddish|Xhosa|Xiang|Zoulou)
+	<- option('maj')
+	-1> =\1.lower()                                     # Si vous parlez de la langue, pas de majuscule.
+
+# Moyen Âge
+[Mm]oyen[- ][Aâa]ge <- option('maj') -> Moyen Âge       # Le « Moyen Âge ».
+
+# Dieu
+(?:[MmBb]on) (dieu) <- option('maj') -1> Dieu                                       # Il manque une majuscule.
+dieu <- option('maj') and not morph(word(-1), "po:det", False) -> Dieu              # Il manque une majuscule.
+
+# Points cardinaux
+(?:Afrique|Amérique|Asie|Corée|Galles|Europe|Irlande|Soudan|Rhodésie|Territoire) du (nord|sud) <- option('maj') -1> =\1.capitalize()    # Majuscule manquante.
+(?:Afrique|(?:ex-|)Allemagne|Asie|Europe|Pays) de l’(ouest|est) <- option('maj') -1> =\1.capitalize()                                   # Majuscule manquante.
+
+
+
+
+
+
+
+################################################################## CONJUGAISONS ################################################################################
+
+
+[Word]
+
+#### INFINITIF
+
+y +(\w[\w’-]+ée?s?) <- option('gv') and morph(\1, "po:v", False) -1> _                                              # Le verbe ne devrait pas être un participe passé.
+pour +(?:[nv]ous|lui) ((\w[\w’-]+)(?:ée?s?|ez)) <- option('gv') and morph(\1, "po:v", False) -1> \2er               # Le verbe devrait être à l’infinitif.
+(?:[mn]e|lui) (\w[\w-]+ée?s?) <- option('gv') and morph(\1, "po:ppas", False) -1> _                                 # Incohérence. Le verbe ne devrait pas être un participe passé.
+(?:te|se) ((\w[\w-]+)(?:ée?s?|ez)) <- option('gv') and morph(\1, "po:(ppas|2pl)", False) -1> \2er                   # Incohérence. Le verbe devrait être à l’infinitif.
+(?:nous|vous) (\w[\w-]+ée?s?)
+	<- option('gv') and morph(\1, "po:ppas", False) and not morph(xword(-1), "v0.*[12]pl", False)
+	-1> _                                                                                                             # Incohérence. Le verbe ne devrait pas être un participe passé.
+ne (?:pas|jamais|rien|jamais rien|plus|plus jamais|plus rien) ((\w[\w’-]+)(ée?s?|ez))
+	<- option('gv') and morph(\1, "po:v", False)
+	-1> \2er                                                                                                          # Le verbe devrait être à l’infinitif.
+
+
+#### PARTICIPES PRÉSENTS
+
+(ne|lui|me|te|se|nous|vous) (\w+ants)
+	<- option('gv')
+	-2> =\2[:-1]                                                   # Un participe présent est invariable|http://fr.wiktionary.org/wiki/participe_pr%C3%A9sent
+
+#### VERBES ET NÉGATION
+
+## il manque n’
+on ([aeéiouh]\w*) (pas|plus|jamais)
+	<- option('gv') and morph(\1, "po:3sg", False) -1> n’\1                  # Ne … \2 : vous avez oublié l’adverbe de négation.
+
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+## NOUVELLE PASSE
+################################################################################################################################################################
+################################################################################################################################################################
+
+[++]
+
+#
+# //////////////////////////////////////// PRÉPROCESSEUR ////////////////////////////////////////
+#
+[pp]
+
+[Word]
+
+### Avant les verbes
+ne (leur|lui) -1> *
+
+### Après les verbes
+jamais -> *
+guère -> *
+(\w+) (pas|point|rien|bien|si) <- morph(\1, ":v", False) -2> *
+
+### tous / tout / toute / toutes
+(tout) (?:le|ce|[mts]on|leur) -1> *
+(toute) (?:la|cette|[mts](?:a|on)|leur) -1> *
+(tou(?:te|)s) (?:[csmlt]es|[vn]os|leurs) -1> *
+
+### Simplification des groupes nominaux
+
+# règle * 2
+(les? |la |l’|des|ce[st]? |cette |[mts](?:es|on|a) |[nv]os |leurs? |certaine?s? |quelques) *(\w\w+) +(\w\w+)
+	<- morph(\2, "po:(nom|adj|ppas)", False) and morphex(\3, "po:(nom|adj|ppas)", "po:([1-3](sg|pl)|mg)")
+	-3> *
+(les? |la |l’|des|ce[st]? |cette |[mts](?:es|on|a) |[nv]os |leurs? |certaine?s? |quelques) *(\w\w+) +(\w\w+)
+	<- morph(\2, "po:(nom|adj|ppas)", False) and morphex(\3, "po:(nom|adj|ppas)", "po:([1-3](sg|pl)|mg)")
+	-3> *
+
+# groupe avec préposition
+
+((?:[aA]vec|[àÀ]|[sS](?:ur|ous)|[cC](?:ontre|hez)|[dD]ans|[eE]nvers|[pP]ar) +(?:les? |la |l’|des|ce[st]? |cette |[mts](?:es|on|a) |[nv]os |leurs? |certaine?s? |quelques) *(\w\w+)) +(\w\w+)
+	<- morph(\2, "po:(nom|adj|ppas)", False) and morphex(\3, "po:[1-3](sg|pl)", "po:(nom|adj|ppas)")
+	-1> *
+
+
+#
+# //////////////////////////////////////// RÈGLES DE CONTRÔLE ////////////////////////////////////////
+#
+[gc]
+
+[Word]
+
+#### INFINITIF
+
+((?:fai|f[iî]|fer|fon|v[oe]u)\w+) +((\w[\w-]+)(?:ée?s?|ez))
+	<- option('gv') and stemchk(\1, u"^(faire|vouloir)$", False) and not re.match(u"(?i)(en|[mtsld]es?|[nv]ous|un)$", xword(-1)) and morphex(\2, "po:v", "po:(patr|prn)")
+	-2> \3er                                                                                                        # Le verbe devrait être à l’infinitif.
+(s[auû]\w+) +(\w[\w-]+(?:ée?s?|ez))
+	<- option('gv') and 'savoir' in stem(\1) and morph(\2, "po:v", False) and not re.match("(?i)([mts]e|[vn]ous|les?|la|un)$", word(-1))
+	-2> _                                                                                                           # Le verbe devrait être à l’infinitif.
+
+
+#### ÊTRE + PARTICIPE PASSÉ / ADJ
+
+(je|j’(?:y|en)) +(?:ne +|n’|)((?:s[oue]|étai|fus|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False) and morphex(\3, ":(nom|adj|ppas).* is:pl", ":(mg|adv|sg|inv|infi)")
+	-3> _                                                                  # Accord avec le sujet « je » : « \3 » devrait être au singulier.
+
+tu +(?:ne +|n’|)((?:es|étai|fus|se[rm]|soi|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and stemchk(\1, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False) and morphex(\2, "po:(nom|adj|ppas).* is:pl", ":(mg|adv|sg|inv|infi)")
+	-2> _                                                                  # Accord avec le sujet « tu » : « \2 » devrait être au singulier.
+
+(il|ce|ce qui|celui +qui|ça +qui|lui +qui|celui-(?:ci|là)|quiconque) +(?:ne +|n’|)((?:es|étai|f[uû]|se[mr]|soi|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv|infi)") or morphex(\3, "po:(adj|ppas).* is:fem", ":(mg|adv|mas|epi|infi)"))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au masculin singulier.
+
+c’(?:est|était) +(\w[\w-]+)
+	<- option('gv') and (morphex(\1, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv|infi)") or morphex(\1, "po:(adj|ppas).* is:fem", ":(mg|adv|mas|epi|infi)"))
+	-1> _                                                                  # Accord avec le sujet « c’ » : « \1 » devrait être au masculin singulier.
+
+(ça|cela) +(?:ne +|n’|)((?:sembl|par|dev|redev)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, u"^(?:sembler|devenir|redevenir|para[îi]tre)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv|infi)") or morphex(\3, "po:(adj|ppas).* is:fem", ":(mg|adv|mas|epi|infi)"))
+	and not morph(word(-1), "po:prep", False, False)
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au masculin singulier.
+
+(elle|celle-(?:ci|là)) +(?:ne +|n’|)((?:es|étai|f[uû]|se[rm]|soi|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv|infi)") or morphex(\3, "po:(adj|ppas).* is:mas", ":(mg|adv|fem|epi|infi)"))
+	and not morph(word(-1), "po:prep", False, False)
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au féminin singulier.
+
+(c?elle +qui) +(?:ne +|n’|)((?:es|étai|f[uû]|se[rm]|soi|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv|infi)") or morphex(\3, "po:(adj|ppas).* is:mas", ":(mg|adv|fem|epi|infi)"))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au féminin singulier.
+
+(?<![nN][oO][uU][sS] )nous +(?:ne +|n’|)((?:sommes|étions|fûmes|fussions|seri?ons|soyons|sembl|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and stemchk(\1, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False) and morph(\1, "po:1pl", False)
+	and morphex(\2, "po:(nom|adj|ppas).* is:sg", ":(mg|adv|pl|inv|infi)")
+	-2> _                                                                  # Accord avec le sujet « nous » : « \2 » devrait être au pluriel.
+
+(ils|c?eux +qui|ceux-ci|ceux-là) +(?:ne +|n’|)((?:sont|étaient|fu[rs]|se[rm]|soient|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and not re.match(u"(?i)légion$", \2) and stemchk(\2, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:sg", ":(mg|adv|pl|inv|infi)") or morphex(\3, "po:(adj|ppas).* is:fem", ":(mg|adv|mas|epi|infi)"))
+	and (not re.match(u"ceux-(?:ci|là)$", \1) or not morph(word(-1), "po:prep", False, False))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au masculin pluriel.
+
+(elles|c?elles +qui|celles-(?:ci|là)) +(?:ne +|n’|)((?:sont|étai|fu[rs]|se[rm]|soi|dev|redev|par)\w*) +(\w[\w-]+)
+	<- option('gv') and not re.match(u"(?i)légion$", \3) and stemchk(\2, u"^(?:être|sembler|devenir|redevenir|para[îi]tre)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:sg", ":(mg|adv|pl|inv|infi)") or morphex(\3, "po:(adj|ppas).* is:mas", ":(mg|adv|fem|epi|infi)"))
+	and (not re.match(u"(elles|celles-(?:ci|là))$", \1) or not morph(word(-1), "po:prep", False, False))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au féminin pluriel.
+
+## Contrôle de l’accord en nombre avec la conjugaison de « être »
+(\w[\w-]+) +(?:qui +|)(?:ne +|n’|)(?:est|était|f[uû]t|sera|serait|soit) +(\w[\w-]+)
+	<- option('gv') and morphex(\2, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv)") and not morph(\1, "po:mg", False)
+	-2> _                                                                  # Accord avec « être » : « \2 » devrait être au singulier.
+
+(\w[\w-]+) +(?:qui +|)(?:ne +|n’|)(?:sont|étaient|furent|fussent|seront|seraient|soient) +(\w[\w-]+)
+	<- option('gv') and not re.match(u"(?i)légion$", \2) and morphex(\2, "po:(adj|ppas|nom).* is:sg", ":(mg|adv|pl|inv)") and not morph(\1, "po:mg", False)
+	-2> _                                                                  # Accord avec « être » : « \2 » devrait être au pluriel.
+
+## Contrôle de l’accord en genre avec le substantif précédent
+(?<![dD][eE] |[eE][tT] )(les? |la |l’|ce(?:s|t|tte|) |[mts](?:on|a|es) |[nv]os |leurs? ) *(\w[\w-]+) +(?:qui +|)(?:ne +|n’|)(?:est|était|f[uû]t|sera|serait|soit|sont|étaient|furent|fussent|seront|seraient|soient) +(\w[\w-]+)
+	<- option('gv') and not re.match(u"(?i)légion$", \3)
+	and ((morphex(\3, "po:(adj|ppas).* is:fem", ":(mg|adv|mas|epi)") and morphex(\2, "is:mas", ":(mg|epi|fem)")) or (morphex(\3, "po:(adj|ppas).* is:mas", ":(mg|adv|fem|epi)") and morphex(\2, "is:fem", ":(mg|mas|epi)")))
+	and not morph(word(-1), "po:prep", False, False)
+	-3> _                                                                  # Accord erroné : « \2 » et « \3 » ne sont pas accordés en genre.
+
+## Question pronominale (épineuse !)
+
+([êeésf]\w+) +(rendu(?:s|es?)) compte
+	<- option('gv') and morph(\1, "v0e", False) -2> rendu                  # Accord erroné : dans l’expression « se rendre compte », « compte » est le COD, « rendu » est donc invariable.
+
+## Inversion verbe/sujet
+(?:[sS][ou]is|[éÉ]tais|[fF]us|[fF]usse|[sS]erais?)-je +(\w[\w-]+)
+	<- option('gv') and morphex(\1, "po:([1-3](sg|pl)|(nom|adj|ppas).* is:pl)", ":(mg|adv|sg|inv)")
+	-1> _                                                                  # Accord avec le sujet « je » : « \1 » devrait être au singulier.
+(?:[eE]s|[éÉ]tais|[fF]us|[fF]usses|[sS]erai?s|[sS]ois)-tu +(\w[\w-]+)
+	<- option('gv') and morphex(\1, "po:([1-3](sg|pl)|(nom|adj|ppas).* is:pl)", ":(mg|adv|sg|inv)")
+	-1> _                                                                  # Accord avec le sujet « tu » : « \1 » devrait être au singulier.
+(?:[eE]st|[éÉ]tait|[fF][uû]t|[sS]era|[sS]erait|[sS]oit)-(?:[iI]l|ce) +(\w[\w-]+)
+	<- option('gv') and (morphex(\1, "po:([1-3](sg|pl)|(nom|adj|ppas).* is:pl)", ":(mg|adv|sg|inv)") or morphex(\1, "po:([1-3](sg|pl)|(adj|ppas).* is:fem)", ":(mg|adv|mas|epi)"))
+	-1> _                                                                  # Accord avec le sujet « il » : « \1 » devrait être au masculin singulier.
+(?:[eE]st|[éÉ]tait|[fF][uû]t|[sS]era|[sS]erait|[sS]oit)-elle +(\w[\w-]+)
+	<- option('gv') and (morphex(\1, "po:([1-3](sg|pl)|(nom|adj|ppas).* is:pl)", ":(mg|adv|sg|inv)") or morphex(\1, "po:([1-3](sg|pl)|(adj|ppas).* is:mas)", ":(mg|adv|fem|epi)"))
+	-1> _                                                                  # Accord avec le sujet « elle » : « \1 » devrait être au féminin singulier.
+(?:[sS]ommes|[éÉ]tions|[fF]ûmes|[fF]ussions|[sS]eri?ons|[sS]oyons)-nous +(\w[\w-]+)
+	<- option('gv') and morphex(\1, "po:([1-3](sg|pl)|(nom|adj|ppas).* is:sg)", ":(mg|adv|pl|inv)")
+	-1> _                                                                  # Accord avec le sujet « nous » : « \1 » devrait être au pluriel.
+(?:[sS]ont|[éÉ]taient|[fF]urent|[fF]ussent|[sS]eront|[sS]eraient|[sS]oient)-ils +(\w[\w-]+)
+	<- option('gv') and not re.match(u"(?i)légion$", \1) and (morphex(\1, "po:([1-3](sg|pl)|(nom|adj|ppas).* is:sg)", ":(mg|adv|pl|inv)") or morphex(\1, "po:([1-3](sg|pl)|(adj|ppas).* is:fem)", ":(mg|adv|mas|epi)"))
+	-1> _                                                                  # Accord avec « ils » : « \1 » devrait être au masculin pluriel.
+(?:[sS]ont|[éÉ]taient|[fF]urent|[fF]ussent|[sS]eront|[sS]eraient|[sS]oient)-elles +(\w[\w-]+)
+	<- option('gv') and not re.match(u"(?i)légion$", \1) and (morphex(\1, "po:([1-3](sg|pl)|(nom|adj|ppas).* is:sg)", ":(mg|adv|pl|inv)") or morphex(\1, "po:([1-3](sg|pl)|(adj|ppas).* is:mas)", ":(mg|adv|fem|epi)"))
+	-1> _                                                                  # Accord avec « elles » : « \1 » devrait être au féminin pluriel.
+
+## Accord et incohérences
+sont (\w[\w-]+)
+	<- morphex(\1, "po:(nom|adj)(?!.* is:(pl|inv))", "po:(ppas|adv|mg|nb)") and not re.match(u"(?i)(légion|nombre|cause)$", \1)
+	-1> _                                  # Incohérence : « \1 » est un nom ou un adjectif au singulier. Ou vous confondez « sont » et « son », ou l’accord en nombre est incorrect.
+
+sont (\w[\w-]+)
+	<- morphex(\1, "po:v", "po:(nom|ad[jv]|ppas|mg)")
+	-1> _                                  # Incohérence : « \1 » n’est pas un participe passé.
+
+
+#### SE CROIRE/SAVOIR/SENTIR/VOIR/VOULOIR + PARTICIPE PASSÉ/ADJ
+
+je +(?:ne +|)me +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\1, "^(croire|savoir|sentir|voir|vouloir)$", False) and morphex(\2, ":(nom|adj|ppas).* is:pl", ":(mg|adv|sg|inv)")
+	-2> _                                                                  # Accord avec le sujet « je » : « \2 » devrait être au singulier.
+
+tu +(?:ne +|)te +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\1, "^(croire|savoir|sentir|voir|vouloir)$", False) and morphex(\2, ":(nom|adj|ppas).* is:pl", ":(mg|adv|sg|inv)")
+	-2> _                                                                  # Accord avec le sujet « je » : « \2 » devrait être au singulier.
+
+(il|ce|ce qui|celui +qui|ça +qui|lui +qui|celui-(?:ci|là)|quiconque) +(?:ne +|)se +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, "^(croire|savoir|sentir|voir|vouloir)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv)") or morphex(\3, "po:(adj|ppas).* is:fem", ":(mg|adv|mas|epi)"))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \2 » devrait être au masculin singulier.
+
+(elle|celle-(?:ci|là)) +(?:ne +|)se +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, "^(croire|savoir|sentir|voir|vouloir)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv)") or morphex(\3, "po:(adj|ppas).* is:mas", ":(mg|adv|fem|epi)"))
+	and not morph(word(-1), "po:prep", False, False)
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \2 » devrait être au féminin singulier.
+
+(c?elle +qui) +(?:ne +|)se +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, "^(croire|savoir|sentir|voir|vouloir)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:pl", ":(mg|adv|sg|inv)") or morphex(\3, "po:(adj|ppas).* is:mas", ":(mg|adv|fem|epi)"))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \2 » devrait être au féminin singulier.
+
+nous +(?:ne +|)nous +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\1, "^(croire|savoir|sentir|voir|vouloir)$", False) and morphex(\2, ":(nom|adj|ppas).* is:sg", ":(mg|adv|pl|inv)")
+	-2> _                                                                  # Accord avec le sujet « nous » : « \2 » devrait être au pluriel.
+
+(ils|c?eux +qui|ceux-ci|ceux-là) +(?:ne +|)se +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, "^(croire|savoir|sentir|voir|vouloir)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:sg", ":(mg|adv|pl|inv)") or morphex(\3, "po:(adj|ppas).* is:fem", ":(mg|adv|mas|epi)"))
+	and (not re.match(u"ceux-(?:ci|là)$", \1) or not morph(word(-1), "po:prep", False, False))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au masculin pluriel.
+
+(elles|c?elles +qui|celles-(?:ci|là)) +(?:ne +|)se +((?:s|cr|v)\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\2, "^(croire|savoir|sentir|voir|vouloir)$", False)
+	and (morphex(\3, "po:(adj|ppas|nom).* is:sg", ":(mg|adv|pl|inv)") or morphex(\3, "po:(adj|ppas).* is:mas", ":(mg|adv|fem|epi)"))
+	and (not re.match(u"(elles|celles-(?:ci|là))$", \1) or not morph(word(-1), "po:prep", False, False))
+	-3> _                                                                  # Accord avec le sujet « \1 » : « \3 » devrait être au féminin pluriel.
+
+
+#### AVOIR + PARTICIPES PASSÉS
+
+#fait(s|e|es) (\w+) <- option('gv') and morph(\2, "po:v") and not morph(\2, "is:infi")
+#	-> fait \1                                                             # Le participe passé de faire reste au masculin singulier s’il est suivi par un verbe à l’infinitif.
+
+^ *(j’|je |tu |ils? |elles? |[nv]ous )(?:ne +|n’|)([aeo]\w*) +(\w[\w-]+)
+	<- option('gv') and not re.match("(?i)(confiance|envie|peine|prise|crainte)$", \3)
+	and morph(\2, "po:v0a", False) and morphex(\3, "po:([1-3](sg|pl)|ppas.* is:(pl|fem))", "po:(mg|adv|ppas.* is:mas is:(sg|inv))")
+	-3> _                                                                  # Ce verbe devrait être un participe passé au masculin singulier.|http://fr.wikipedia.org/wiki/Accord_du_participe_pass%C3%A9_en_fran%C3%A7ais
+
+^ *(l(?:’|es?|a|eurs) |ce(?:s|tte|rtaine?s|) |des |quelques |[mts](?:es|on)|[nv]os ) *(\w[\w-]+) +(?:ne +|n’|)([aeo]\w*) +(\w[\w-]+)
+	<- option('gv') and not re.match("(?i)(confiance|envie|peine|prise|crainte)$", \3)
+	and morph(\3, "po:v0a", False) and morphex(\4, "po:([1-3](sg|pl)|ppas.* is:(pl|fem))", "po:(mg|adv|ppas.* is:mas is:(sg|inv))")
+	-4> _                                                                  # Ce verbe devrait être un participe passé au masculin singulier.|http://fr.wikipedia.org/wiki/Accord_du_participe_pass%C3%A9_en_fran%C3%A7ais
+
+les +([aeo]\w*) +(\w[\w-]*(?:[éiut]e?|is|se))
+	<- option('gv') and morph(\1, "po:v0a", False) and morphex(\2, "po:v[1-3]\w*t.* po:ppas.* is:sg", ":(mg|adv|pl|inv)") and not morph(word(1), "po:v", False)
+	-2> _                                                                  # Accord avec le COD “les” : Le participe passé « \2 » devrait être au pluriel.|http://fr.wikipedia.org/wiki/Accord_du_participe_pass%C3%A9_en_fran%C3%A7ais
+
+#(\w+) (?:ne |)[nv]ous ([aeo]\w*) (?:pas |peu |guère |jamais |surtout |)(\w[\w-]*(?:[éiut]e?|is|se))
+#	<- option('gv') and morph(\1, "po:(nom|propersuj)", False) and morph(\2, "v0a", False) and morphex(\3, "po:v[1-3]\w*t.* is:ppas.* is:sg", "po:(mg|adv)")
+#	and not word(1)
+#	-> _                                                                   # La participe passé « \3 » devrait être au pluriel.
+
+([aeo]\w*) +(due?s?) +(\w[\w’-]+)
+	<- option('gv') and morph(\1, "po:v0a", False) and (morph(\3, "po:infi") or re.match("([mtsn]e|[nv]ous|leur|lui)$", \3))
+	-2> dû                                                                 # Participe passé de devoir : « dû ».
+
+([aeo]\w*) +(\w[\w’-]+e[rz])
+	<- option('gv') and not re.match("(A|avions|a)$", \1) and morph(\1, "po:v0a", False) and morph(\2, "po:v(?!.* po:ppas)")
+	-2> _                                                                  # Incohérence : « \2 » n’est pas un participe passé.
+# Note : si « a » est omis, c’est parce que si la phrase commence par « ça », le bug regex de Python envoie « a »
+
+
+# formes interrogatives
+(?<![lLtTmM]’)([aeo]\w*)[- ](?:je|tu|ils?|elles?|[nv]ous) +(\w\w+)
+	<- option('gv') and morph(\1, "po:v0a", False) and morphex(\2, "po:ppas.* is:(fem|pl)", "is:mas is:(sg|inv)") and \2 != "prise"
+	and not morph(xword(-1), "(st:(les|[nv]ous)|po:(nom|adj|ppas).* is:(fem|pl))", False)
+	-2> _                                                                  # Avec « avoir », il faut un participe passé au masculin singulier.
+
+les +([aeo]\w*)-(?:je|tu|ils?|elles?|-t-(?:ils?|elles?)|[nv]ous) +(\w[\w-]*(?:[éiut]e?|is|se))
+	<- option('gv') and morph(\1, "po:v0a", False) and morphex(\2, "po:v[1-3]\w*t.* po:ppas.* is:sg", ":(mg|adv|pl|inv)")
+	-2> _                                                                  # Accord avec le COD “les” : Le participe passé « \2 » devrait être au pluriel.
+
+
+#### IMPÉRATIF !
+
+# verbes du 1er et du 3e groupe en -e
+^ *((\w+e)s)(?![- ](je|tu|[nv]ous|ils?|elles?|t-ils?|t-elles?))
+	<- option('imp') and morphex(\1, "po:v[13].* po:ipre po:2sg", "po:(mg|nom|adj)")
+	-1> \2                                                                   # S’il s’agit d’un impératif, pas de “s”.
+^ *(ne |n’)((\w+e)s)(?![- ](je|tu|[nv]ous|ils?|elles?|t-ils?|t-elles?))
+	<- option('imp') and morphex(\2, "po:v[13].* po:ipre po:2sg", "po:mg")
+	-2> \3                                                                   # S’il s’agit d’un impératif, pas de “s”.
+
+# verbes du 2e et du 3e groupe en -t
+^ *((\w+i)t)(?![- ](je|tu|[nv]ous|ils?|elles?|t-ils?|t-elles?)) and not re.match("(?i)doit$", \1)
+	<- option('imp') and morphex(\1, "po:v[23].* po:ipre po:3sg", "po:(mg|nom|adj)")
+	-1> \2s                                                                  # S’il s’agit d’un impératif, la terminaison est “is”, non “it”.
+^ *(ne |n’)((\w+i)t)(?![- ](je|tu|[nv]ous|ils?|elles?|t-ils?|t-elles?))
+	<- option('imp') and morphex(\2, "po:v[23].* po:ipre po:3sg", "po:mg") and not re.match("(?i)doit$", \2)
+	-2> \3s                                                                  # S’il s’agit d’un impératif, la terminaison est “is”, non “it”.
+
+# verbes du 3e groupe en -d
+^ *(\w+d)(?![- ](je|tu|[nv]ous|ils?|elles?|t-ils?|t-elles?))
+	<- option('imp') and morphex(\1, "po:v3.* po:ipre po:3sg", "po:(mg|nom|adj)")
+	-> \1s                                                                   # S’il s’agit d’un impératif, ajoutez un “s”.
+^ *(ne |n’)(\w+d)(?![- ](je|tu|[nv]ous|ils?|elles?|t-ils?|t-elles?))
+	<- option('imp') and morphex(\2, "po:v3.* po:ipre po:3sg", "po:mg")
+	-2> \2s                                                                  # S’il s’agit d’un impératif, ajoutez un “s”.
+
+# aller
+^ *(?:ne |)(vas)(?![- ](je|tu|[nv]ous|ils?|elles?|t-ils?|t-elles?))
+	<- option('imp')
+	-1> va                                                                   # S’il s’agit d’un impératif, pas de “s”.
+
+# être
+^ *(?:ne |)(soit) +(?:pas|jamais|plus)
+	<- option('imp')
+	-1> sois                                                                 # S’il s’agit d’un impératif, écrivez « sois ».
+
+# avoir
+^ *(?:n’|)(ait?|aies) +(?:pas|jamais|plus)
+	<- option('imp')
+	-1> aie                                                                  # S’il s’agit d’un impératif, écrivez « aie ».
+
+# Contrôle
+(\w\w+)-(?:[mt]oi|lui|les|l[ea]|leur|[mt]’en)
+	<- option('imp') and not morph(\1, "po:impe", False) and spell(\1)
+	-1> _                                                                    # Erreur : ceci n’est pas une forme impérative.|http://fr.wikipedia.org/wiki/Imp%C3%A9ratif_%28grammaire%29
+
+## Traits d’union manquants
+(?<!’)(\w[\w-]+) ([mt]oi)
+	<- option('imp') and morphex(\1, "po:impe", "po:(prn|patr|mg)")
+	-> \1-\2                                                                   # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+(?<!’)(\w[\w-]+) ([nv]ous|lui|y)(?! en| y| est)
+	<- option('imp') and morphex(\1, "po:impe", "po:(prn|patr|mg)") and not morph(word(1), "po:infi", False, False) and morph(word(-1), "po:cjco", False, True)
+	-> \1-\2                                                                   # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+(?<!’)(\w[\w-]+) les(?! plus| moins| mieux| trop| très| en| y)
+	<- option('imp') and morphex(\1, "po:impe", "po:(prn|patr|mg)") and not morph(xword(1), "po:(nom|adj|ppas|infi|nb)", False, False) and morph(word(-1), "po:cjco", False, True)
+	-> \1-les                                                                  # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+(?<!’)(\w[\w-]+) (l[ea])(?! plus| moins| mieux| plupart| trop| très| une?)
+	<- option('imp') and morphex(\1, "po:impe", "po:(prn|patr|mg)") and not morph(xword(1), "po:(nom|adj|ppas|infi)", False, False) and morph(word(-1), "po:cjco", False, True)
+	-> \1-\2                                                                   # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+([mts])-en <- option('imp') -> \1’en                                           # « \1e » est ici abrégé, c’est une forme élidée. Il faut mettre une apostrophe et non un trait d’union.
+
+(\w[\w-]+) ([mt]’(?:en|y))
+	<- option('imp') and morphex(\1, "po:impe", "po:(prn|patr|mg)") and not morph(word(1), "po:(infi|[1-3])", False, False)
+	-> \1-\2                                                                   # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+(\w[\w-]+)-(en|les|l[ae]) ([mt]oi|lui)
+	<- option('imp') and morph(\1, "po:impe", False)
+	-> \1-\2-\3                                                                # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+(\w[\w-]+)-([mt]oi|[nv]ous|lui|leur|l[ae]|les) (en|y|leur)
+	<- option('imp') and morph(\1, "po:impe", False) and morphex(word(1), "po:(prep|cj)", "po:(nom|adj)", True)
+	-> \1-\2-\3                                                                # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+(\w[\w-]+)-(l[ae]|les) ([nv]ous)
+	<- option('imp') and morph(\1, "po:impe", False) and morphex(word(1), "po:(prep|cj)", "po:infi", True)
+	-> \1-\2-\3                                                                # S’il s’agit d’un impératif, mettez un trait d’union.|http://66.46.185.79/bdl/gabarit_bdl.asp?id=4206
+
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+## NOUVELLE PASSE
+################################################################################################################################################################
+################################################################################################################################################################
+
+[++]
+
+#
+# //////////////////////////////////////// PRÉPROCESSEUR ////////////////////////////////////////
+#
+[pp]
+
+### avant les verbes
+
+[Word]
+
+ne +(?:[mts]e|[nv]ous|lui|leur|la|les?) +(?:la|les?|lui|en|y) -> >
+ne +(?:[mts](?:e|’(?:en|y))|[nv]ous|lui|leur|la|les?) -> >
+(?:[mts]e|lui|leur|la|les?) +(?:la|les?|lui|en|y) -> >
+[nmts](?:e|’(?:en|y)) -> >
+(je|tu|ils?|on) ([nv]ous(?: la| les?|)|les?|la) -2> >
+(elles?|[nv]ous) ([nv]ous(?: la| les?|)|les?|la) <- not morph(word(-1), "po:prep", False, False) -2> >
+ce(?:ux|elles?|lui|la|) qui ([nv]ous(?: la| les?|)|les?|la) -1> >
+
+(à|de) ([nv]ous|lui|les?) -2> >
+
+[Char]
+(?<!-)\b[nmt]’ -> >
+(?<!-)\b(s’)(\w\w\w\w+) <- morph(\2, "po:v", False) -1> >
+(?<!-)\b(je|tu|ils?|elles?|on|[nv]ous|ce(?:ux|elles?|lui|la|) qui) (l’) -2> >
+
+
+
+#
+# //////////////////////////////////////// RÈGLES DE CONTRÔLE ////////////////////////////////////////
+#
+[gc]
+
+[Word]
+
+#### CONFUSION a / à
+^ *(je|tu|ils?|on|elles?) +>? *(\w[\w’-]+) +(a)
+	<- option('conf') and morph(\2, "po:v", False)
+	-3> à                                                                                                 # Confusion probable.
+^ *[nv]ous +>? *(\w[\w’-]+) +(a)
+	<- option('conf') and morphex(\1, "po:v", "po:infi")
+	-2> à                                                                                                 # Confusion probable.
+
+
+#### INFINITIF
+
+(?:[cC]omment|[oO]ù) +((\w[\w-]+)ée?s?) <- option('gv') and morph(\1, "po:v", False) -1> \2er                             # Le verbe devrait être à l’infinitif.
+de ((\w[\w-]+)(?:é|ez)) <- option('gv') and morph(\1, "po:v") -1> \2er                                                    # Le verbe devrait être à l’infinitif.
+(?:afin|en train|avant|façons?|intentions?|manières?) de +((\w[\w’-]+)(?:ée?s?|ez))
+	<- option('gv') and morph(\1, "po:(ppas|2pl)", False) -1> \2er                                                          # Incohérence. Le verbe devrait être à l’infinitif.
+((?:aim|all|v|ir|désir|esp|p)\w+) +((\w[\w-]+)(?:ée?s?|ez))
+	<- option('gv') and stemchk(\1, u"^(aimer|aller|désirer|devoir|espérer|pouvoir|préférer|souhaiter|venir)$", False) and not morph(\1, "po:(mg|nom)", False) and morph(\2, "po:v", False)
+	-2> \3er                                                                                                        # Le verbe devrait être à l’infinitif.
+(d[eouû]\w+) +((\w[\w-]+)(?:ée?s?|ez))
+	<- option('gv') and stemchk(\1, u"^devoir$", False) and morph(\2, "po:v", False) and not morph(word(-1), "po:det", False)
+	-2> \3er                                                                                                        # Le verbe devrait être à l’infinitif.
+((?:cess|dé|sugg|command|essa|tent|chois|permet|interd)\w*) +(?:pas|plus|point|guère|jamais|peu|rien|) *(?:de +|d’)((\w[\w’-]+)(?:ée?s?|ez))
+	<- option('gv') and stemchk(\1, u"^(cesser|décider|défendre|suggérer|commander|essayer|tenter|choisir|permettre|interdire)$") and morph(\2, "po:(ppas|2pl)", False)
+	-2> \3er                                                                                                        # Incohérence. Le verbe devrait être à l’infinitif.
+(?:de quoi|à (?:faire|même de)|avec qui|avant (?:même |)de|marre de|en vue de|du mal à|intérêt à|impossible de|pourquoi|quand|faut-il) +((\w[\w-]+)(?:ée?s?|ez))
+	<- option('gv') and morph(\1, "po:(ppas|2pl)", False)
+	-1> \2er                                                                                                        # Incohérence. Le verbe devrait être à l’infinitif.
+pour +((\w[\w’-]+)(?:é|ez)) <- option('gv') and 'passer' not in stem(word(-1)) and morphex(\1, "po:v", "po:(prn|patr|geo)")
+	-1> \2er                                                                                                        # Le verbe devrait être à l’infinitif.
+mieux (va\w+) +((\w[\w-]+)(?:ée?s?|ez))
+	<- option('gv') and "valoir" in stem(\1) and morphex(\2, "po:(ppas|2pl)", "po:(mg|patr|prn)") -2> \3er              # Le verbe devrait être à l’infinitif.
+à ((\w[\w-]+)(?:ée?|ez)) <- option('gv') and morphex(\1, "po:v1", "po:nom") and \1 != u"pâté" -1> \2er                # Incohérence. Le verbe devrait être à l’infinitif.
+([aeo]\w*) beau ((\w[\w-]+)(?:ée?s?|ez)) <- option('gv') and morphex(\2, "po:v1", "po:nom") -2> \3er                  # Le verbe devrait être à l’infinitif.|http://fr.wiktionary.org/wiki/avoir_beau
+
+#((all|v|ir)\w+) (\w[\w-]+é) <- option('gv') and stem(\1) == ['aller'] and morph(\2, "po:v", False) -> _            # Le verbe « \1 » devrait être à l’infinitif.
+#[aeo]\w* (dû|[ps]u|voulu) (\w[\w’-]+[éesz]) <- option('gv') and morph(\2, "po:v.* po:(ppas|2pl)", False) -> _      # Le verbe « \2 » devrait être à l’infinitif.
+
+
+#### PAS D’INFINITIF
+
+(?<![cC]’)([êeésf]\w+) +(\w[\w-]+er)
+	<- option('conf') and morph(\1, "po:v0e", False) and morphex(\2, "po:infi", "po:(adj|nom|ppas)") and not re.match(u"(?i)(soit|été)", \1) and not re.match(u"(?i)ce$", word(-1))
+	-2> _                                                                  # Incohérence. Après « être », le verbe ne doit pas être à l’infinitif.
+([aeo]\w*) +(\w[\w-]+er)
+	<- option('conf') and morph(\1, "po:v0a", False) and morph(\2, "po:infi", False)
+	-2> _                                                                  # Incohérence. Après « avoir », le verbe ne doit pas être à l’infinitif.
+
+
+#### CONJUGAISON
+
+# ([nmlts]e|[nv]ous|y|n’y|lui|leur|la|les|en|n’en)
+# ([nmlts]e|[nv]ous|y|n’y|lui|leur|la|les|en|n’en) +([mlts]e|[nv]ous|n’y|lui|leur|la|les|en)
+# ne +([mlts]e|[nv]ous|lui|leur|la|les) +([mlts]e|[nv]ous|lui|leur|la|les|en)
+
+## 1sg
+(je) +([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(1sg|mg)") and not (morph(\2, "po:pp", False) and morph(word(-1), "po:v0.* po:1sg", False, False))
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la première personne du singulier.
+(je) +> +([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(1sg|mg|1pl)")
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la première personne du singulier.
+(j’(?:y|en)|moi +qui) +>? *([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(1sg|mg|1pl)")
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la première personne du singulier.
+
+
+## 2sg
+(tu) +([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(mg|(?:i(?:pre|imp|psi|fut)|s(?:pre|imp)|cond).* po:2sg)") and not (morph(\2, "po:pp", False) and morph(word(-1), "po:v0.* po:2sg", False, False))
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la deuxième personne du singulier.
+(tu) +> +([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(mg|(?:i(?:pre|imp|psi|fut)|s(?:pre|imp)|cond).* po:2sg)")
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la deuxième personne du singulier.
+(toi +qui) +>? *([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(mg|(?:i(?:pre|imp|psi|fut)|s(?:pre|imp)|cond).* po:2sg)")
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la deuxième personne du singulier.
+
+
+## 3sg
+(il|on|quiconque) +([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(3sg|pp|mg)") and not (morph(\2, "po:pp", False) and morph(word(-1), "po:v0.* po:3sg", False, False))
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la troisième personne du singulier.
+(il|on|quiconque) +> +([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(3sg|pp|mg)")
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la troisième personne du singulier.
+
+(ce +qui|lui +qui|celui +qui|celle +qui|ça(?: qui +|)|ce(?:ci|la)(?: qui +|)|celui-(?:ci|là)|celle-(?:ci|là)) +>? *([\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(3sg|pp|mg)") and (not re.match("(ça|cela|ceci|celui-(ci|là)|celle-(ci|là))$", \1) or not morph(word(-1), "po:(prep|infi)", False, False))
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la troisième personne du singulier.
+
+(?<![dD]’)elle +([\w’-]+)
+	<- option('gv') and morphex(\1, "po:v", "po:(3sg|ppre|pp)") and not morph(word(-1), "po:prep", False, False) and not (morph(\1, "po:pp", False) and morph(word(-1), "po:v0.* po:3sg", False, False))
+	-1> _                                                                  # Conjugaison erronée. Accord avec « elle ». Le verbe devrait être à la troisième personne du singulier.
+(?<![dD]’)elle +> +([\w’-]+)
+	<- option('gv') and morphex(\1, "po:v", "po:(3sg|ppre|mg)") and not morph(word(-1), "po:prep", False, False)
+	-1> _                                                                  # Conjugaison erronée. Accord avec « elle ». Le verbe devrait être à la troisième personne du singulier.
+
+(?<![dD]’)(l[ea] |une? |l’|[mts]on |ce(?:tte|) |leur ) *(\w[\w-]+) +(?:qui +|)(?!j’|qu’|c’)(\w[\w’-]+)
+	<- option('gv') and morphex(word(-1), "po:cj", "po:infi", True) and morph(\2, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morph(\3, "po:v.\w+(?!.* po:(3sg|pp|infi|3pl!))")
+	and not (re.match("(?i)et|ou$", word(-1)) and morph(\3, "po:[1-3]pl", False))
+	-3> _                                                                  # Conjugaison erronée. Accord avec « \1 \2… ». Le verbe devrait être à la troisième personne du singulier.
+(?<![dD]’)(l[ea] |une? |l’|[mts]on |ce(?:tte|) |leur ) *(\w[\w-]+) +(?:qui +|)> +(\w[\w’-]+)
+	<- option('gv') and morphex(word(-1), "po:cj", "is:infi", True) and morph(\2, "po:(nom|adj|ppas).* is:(sg|inv)", False) and morph(\3, "po:v.\w+(?!.* po:(3sg|1pl|pp|infi|3pl!))")
+	and not (re.match("(?i)et|ou$", word(-1)) and morph(\3, "po:[1-3]pl", False))
+	-3> _                                                                  # Conjugaison erronée. Accord avec « \1 \2… ». Le verbe devrait être à la troisième personne du singulier.
+
+mieux (vaux|valais) <- option('gn') -1> =\1[:-1]+"t"                     # Conjugaison erronée. Accord avec “mieux” : utilisez la 3e personne du singulier.
+
+# personne, rien, tout le monde
+
+## 1pl
+#nous qui ([\w’-]+)
+#	<- option('gv') and \1 != 'lui' and not word(-1) and morph(\1, "po:v", False) and not morph(\1, "po:(1pl|infi)", False)
+#	-> _                                                                   # Conjugaison erronée. Le verbe devrait être à la première personne du pluriel.
+#nous qui ([nmlts]e|[nv]ous|n’y|lui|leur|la|les) ([\w’-]+)
+#	<- option('gv') and not word(-1) and morph(\2, "po:v", False) and not morph(\2, "po:(1pl|infi)", False)
+#	-> _                                                                   # Conjugaison erronée. Le verbe devrait être à la première personne du pluriel.
+
+## 2pl
+#vous qui (\w+) <- option('gv') and morph(\1, "po:v", False) and not morph(\1, "po:(2pl|pp)", False)
+#	-> _                                                                   # Conjugaison erronée. Le verbe devrait être à la première personne du pluriel.
+
+## 3pl
+(ils) +(\w[\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(3pl|pp|mg)") and not (morph(\2, "po:pp", False) and morph(word(-1), "po:v0.* po:3pl", False, False))
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la troisième personne du pluriel.
+(ils) +> +(\w[\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(3pl|pp|mg)")
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la troisième personne du pluriel.
+
+(c?eux +qui|c?elles +qui|ceux-ci|celles-ci|ceux-là|celles-là) +>? *(\w[\w’-]+)
+	<- option('gv') and morphex(\2, "po:v", "po:(3pl|pp|mg)") and (not re.match("(ceux-ci|celles-ci|ceux-là|celles-là)$", \1) or not morph(word(-1), "po:(prep|infi)", False, False))
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la troisième personne du pluriel.
+
+(?<![dD]’)elles +(\w[\w’-]+)
+	<- option('gv') and morphex(\1, "po:v", "po:(3pl|pp|mg)") and not morph(word(-1), "po:prep", False, False) and not (morph(\1, "po:pp", False) and morph(word(-1), "po:v0.* is:3pl", False, False))
+	-1> _                                                                  # Conjugaison erronée. Accord avec « elles ». Le verbe devrait être à la troisième personne du pluriel.
+(?<![dD]’)elles +> +([\w’-]+)
+	<- option('gv') and morphex(\1, "po:v", "po:(3pl|pp|mg)") and not morph(word(-1), "po:prep", False, False)
+	-1> _                                                                  # Conjugaison erronée. Accord avec « elles ». Le verbe devrait être à la troisième personne du pluriel.
+
+
+(ils|c?eux +qui|c?elles +qui) +(on)
+	<- option('gv')
+	-2> ont                                                                # Incohérence : « on » est un pronom personnel, « ont » est une conjugaison du verbe avoir.
+
+(?<![dD]’)(elles|ceux-ci|celles-ci|ceux-là|celles-là) +(on)
+	<- option('gv') and not re.match("(avec|sur|chez)$", word(-1))
+	-2> ont                                                                # Conjugaison : « on » est un pronom personnel, « ont » est une conjugaison du verbe avoir.
+
+
+([lcmts]es|[nv]os|leurs|quelques|certaine?s) +(\w[\w-]+) +(?:qui +|)(?!j’|qu’|c’)(\w[\w’-]+)
+	<- option('gv') and morphex(xword(-1), "po:cj", "po:infi", True) and morph(\2, "po:(nom|adj).* is:(pl|inv)", False) and morph(\3, "po:v.\w+(?!.* po:(3pl|pp|infi))")
+	-3> _                                                                  # Conjugaison erronée. Accord avec « \1 \2… ». Le verbe devrait être à la troisième personne du pluriel.
+([lcmts]es|[nv]os|leurs|quelques|certaine?s) +(\w[\w-]+) +(?:qui +|)> +(\w[\w’-]+)
+	<- option('gv') and morphex(xword(-1), "po:cj", "po:infi", True) and morph(\2, "po:(nom|adj).* is:(pl|inv)", False) and morph(\3, "po:v.\w+(?!.* po:([13]pl|pp|infi))")
+	-3> _                                                                  # Conjugaison erronée. Accord avec « \1 \2… ». Le verbe devrait être à la troisième personne du pluriel.
+
+
+#### INVERSION VERBE SUJET
+
+qu(?:[eE] +|’)(\w+) (?:[lc]e|[mts]on)
+	<- option('gv') and morphex(\1, "po:[12]sg", "po:(3sg|mg|adv)")
+	-1> _                                                                  # Conjugaison erronée. Le verbe devrait être à la 3e personne du singulier.
+
+qu(?:[eE] +|’)(\w+) [ldcmts]es
+	<- option('gv') and morphex(\1, "po:[123]sg", "po:(3pl|mg|adv)")
+	-1> _                                                                  # Conjugaison erronée. Le verbe devrait être à la 3e personne du pluriel.
+
+"qu(?:[eE] +|’)(\w[\w-]*)  "
+	<- option('gv') and morphex(\1, "po:[12](?:sg|pl)", "po:(?:mg|adv|3(?:sg|pl)|infi|pp)")
+	-1> _                                                                  # Conjugaison erronée. Ce verbe devrait être à la 3e personne.
+
+que +> +(\w[\w-]*) (?![jJ]e|[tT]u|[nNvV]ous|[eE]t)
+	<- option('gv') and morphex(\1, "po:v.* po:[12](?:sg|pl)", "po:(?:mg|adv|3(?:sg|pl))")
+	-1> _                                                                  # Conjugaison erronée. Ce verbe devrait être à la 3e personne. **
+
+
+#### NOMS PROPRES
+
+# 3sg
+(?<!et |ou |[dD][eu] |ni )([A-ZÉÈ][\w-]+) +>? *([\w’-]+)
+	<- option('gv') and morph(\1, "po:(prn|patr|npr)", False) and morphex(\2, "po:v.* po:[123](sg|pl)", "po:(mg|3sg|3pl!|ppre|(adj|ppas).* is:(sg|inv))")
+	and not morph(xword(-1), "po:(prep|v|det)", False, False)
+	-2> _                                                                  # Conjugaison erronée. Accord avec « \1 ». Le verbe devrait être à la troisième personne du singulier.
+
+# 3pl
+(?<!et |ou |[dD][eu] |ni )([A-ZÉÈ][\w-]+) et ([A-ZÉÈ][\w-]+) +>? *([\w’-]+)
+	<- option('gv') and morph(\1, "po:(prn|patr|npr)", False) and morph(\2, "po:(prn|patr|npr)", False)
+	and morphex(\3, "po:v.* po:[123](sg|pl)", "po:(mg|3pl|ppre|ppas.* is:(pl|inv))") and not morph(word(-1), "po:prep", False, False)
+	-3> _                                                                  # Conjugaison erronée. Accord avec « \1 et \2 ». Le verbe devrait être à la troisième personne du pluriel.
+
+
+#### INTERROGATIVES ?
+
+(?<![jJ]’)((\w[\w-]+)[éèe]) je
+	<- option('inte') and morphex(\1, "po:v.* po:1sg", "po:(mg|adv|nom)") and not re.match("(?i)je$", word(-1))
+	-> \2é-je                                                                  # Forme interrogative ? Mettez un trait d’union.
+(?<![jJ]’)((\w[\w-]+)[^éèe]) je
+	<- option('inte') and morphex(\1, "po:v.* po:1sg", "po:(mg|adv|nom)") and not re.match("(?i)je$", word(-1))
+	-> \1-je                                                                   # Forme interrogative ? Mettez un trait d’union.
+(\w[\w’-]+s) tu(?! en| y)
+	<- option('inte') and morphex(\1, "po:v.* po:2sg", "po:(mg|adv|nom)") and not before(r"(?i)\b(je|tu) +>? *$")
+	-> \1-tu                                                                   # Forme interrogative ? Mettez un trait d’union.
+(\w[\w’-]+[td]) (il|on)(?! en| y)
+	<- option('inte') and morphex(\1, "po:v.* po:3sg", "(po:(mg|adv|nom)|dp:ca)") and not re.match("(?i)(ce|il|elle)$", word(-1))
+	-> \1-\2                                                                   # Forme interrogative ? Mettez un trait d’union.
+(\w[\w’-]+[td]) elle(?! en| y| aussi)
+	<- option('inte') and morphex(\1, "po:v.* po:3sg", "(po:(mg|adv|nom)|dp:ca)") and not re.match("(?i)(ce|il|elle)$", word(-1))
+	-> \1-elle                                                                 # Forme interrogative ? Mettez un trait d’union.
+(\w[\w’-]+[eac])(?: t[’' -]|-t[’' ])(il|elle|on)(?! en| y)
+	<- option('inte') and morphex(\1, "po:v.* po:3sg", "po:(mg|adv|nom)") and not re.match("(?i)(ce|il|elle)$", word(-1))
+	-> \1-t-\2                                                                 # Forme interrogative ? Mettez deux traits d’union.
+(\w[\w’-]+ons) nous(?! en| y| aussi)
+	<- option('inte') and morphex(\1, "po:v.* po:1pl", "po:(mg|adv|nom)") and not morph(word(-1), "po:propersuj", False, False) and not morph(word(1), "po:infi", False, False)
+	-> \1-nous                                                                 # Forme interrogative ? Mettez un trait d’union.
+(\w[\w’-]+ez) vous(?! en| y| aussi)
+	<- option('inte') and \1 != 'veuillez' and morphex(\1, "po:v.* is:2pl", "po:(mg|adv|nom)") and not morph(word(-1), "po:propersuj", False, False) and not morph(word(1), "po:infi", False, False)
+	-> \1-vous                                                                 # Forme interrogative ? Mettez un trait d’union.
+(\w[\w’-]+nt) (ils|elles)(?! en| y| aussi)
+	<- option('inte') and morphex(\1, "po:v.* po:3pl", "po:(mg|adv|nom)") and not re.match("(?i)(ce|ils|elles)$", word(-1))
+	-> \1-\2                                                                   # Forme interrogative ? Mettez un trait d’union.
+
+(\w[\w’]+)-(?:je|tu|(?:t-|)(il|elle|on)|nous|vous|ils|elles)
+	<- option('inte') and not morph(\1, "po:v", False) and \1 != u"voilà" and not re.match("(tes|vite)$", \1) and spell(\1)
+	-1> _                                                                      # Forme interrogative. Incohérence : « \1 » n’est pas un verbe.
+
+(\w+)-je <- option('inte') and not morph(\1, "po:1[ij]?sg", False) and spell(\1)
+	-1> _                                                                      # Forme interrogative : « \1 » n’est pas un verbe à la première personne du singulier.
+(\w+)-tu <- option('inte') and not morph(\1, "po:(.pre|.imp|ipsi|ifut|cond).* po:2sg", False) and spell(\1)
+	-1> _                                                                      # Forme interrogative. « \1 » n’est pas un verbe à la deuxième personne du singulier.
+(\w+)-(?:t-|)(il|elle|on) <- option('inte') and not morph(\1, "po:3sg", False) and (\1 != u"voilà" or \2 != 'il') and spell(\1)
+	-1> _                                                                      # Forme interrogative : « \1 » n’est pas un verbe à la troisième personne du singulier.
+(\w+)-nous <- option('inte') and not morph(\1, "po:(1pl|2sg|2pl)", False) and spell(\1) and not spell(\0)
+	-1> _                                                                      # Forme interrogative ou impérative : « \1 » n’est pas un verbe à la première personne du pluriel.
+(\w+)-vous <- option('inte') and not morph(\1, "po:2pl", False) and not spell(\0) and \1 != 'tes' and spell(\1)
+	-1> _                                                                      # Forme interrogative ou impérative : « \1 » n’est pas un verbe à la deuxième personne du pluriel.
+(\w+)-(?:ils|elles) <- option('inte') and not morph(\1, "po:3pl", False) and spell(\1)
+	-1> _                                                                      # Forme interrogative : « \1 » n’est pas un verbe à la troisième personne du pluriel.
+# and \1 != 'tes', car il y a un bug avec êtes-vous (bug regex Python 2.6)
+# Ajout de la condition « and spell(\1) » pour contourner le bug de Python
+
+
+#### CONTRÔLE DES MODES
+
+# Si suivi du conditionnel ou du subjonctif
+si +(\w+) +>? *(\w+)
+	<- option('gv') and morph(\1, "po:(propersuj|patr|prn|geo)", False) and morphex(\2, "po:(cond|spre|simp)", "po:(mg|v0|i)") and not word(-1)
+	-2> _                                                                  # Le verbe ne peut être ni au conditionnel, ni au subjonctif.
+(?:si [jt]’|s’ils? )>? *(\w+)
+	<- option('gv') and morphex(\1, "po:(cond|spre|simp)", "po:(mg|v0|i)") and not word(-1)
+	-1> _                                                                  # Le verbe ne peut être ni au conditionnel, ni au subjonctif.
+
+# verbe que + subjonctif
+((?:perm|fa|v|ordonn|exig|désir|suff)[\w-]+) +(?:que +|qu’)(\w+) +(\w[\w-]+)
+	<- option('gv') and stemchk(\1, u"^(permettre|falloir|vouloir|ordonner|exiger|désirer|suffire)$", False)
+	and morph(\2, "po:(prn|patr|propersuj)", False) and not morph(\3, "po:(spre|simp|mg|infi)", False)
+	-3> _                                                                  # Le verbe « \3 » devrait être au subjonctif.
+
+# Après que + indicatif
+après qu(?:’|e )([\w-]+) +([\w’-]+)
+	<- option('gv') and morph(\1, "po:(propersuj|patr|prn|geo)", False) and morph(\2, "po:v.* po:s(pre|imp)")
+	-> _                                                                   # Après « après que », le verbe s’emploie pas au subjonctif mais à l’indicatif, si l’action s’est déroulée de façon certaine.
+
+
+
+################################################################################################################################################################
+################################################################################################################################################################
+## GRAMMALECTE CODE
+################################################################################################################################################################
+################################################################################################################################################################
+
+[code]
+
+# Note : nword and nwordmin are now obsolete, it was used to get next or previous word without considering punctuation
+
+# in Compile.py, add the lines:
+# s = re.sub("nword\(\s*(\d)", r'nword(s[m.end():],\1', s)	 # nword(n)
+# s = re.sub("nword\(\s*-(\d)", r'nwordmin(s[:m.start()],\1', s) # nword(-n)
+
+## get the nth word of the input string or None
+#def nword(s, n):
+#	a = re.match(u"(?u)( [ -.,'’()«»“”\w%]+){" + str(n-1) + u"}( [ -.,'’()«»“”\w%]+)", s)
+#	if not a:
+#		return ''
+#	return a.group(2)[1:]
+
+# get the (-)nth word of the input string or None
+#def nwordmin(s, n):
+#	a = re.search(u"(?u)([ -.,'’()«»“”\w%]+ )([ -.,'’()«»“”\w%]+ ){" + str(n-1) + u"}$", s)
+#	if not a:
+#		return ''
+#	return a.group(1)[:-1]

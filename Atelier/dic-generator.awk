@@ -27,6 +27,8 @@ function verbes(){
 	if ($6 ~ /^inf;$/){
 	    if ($1 ~/^[aeiouéàâêïîô]/){
 		print "\"" $2 "\": \"" $1 "\",";
+		print "\"POUl/" $2 "\": \"pour " $1 "\",";
+		print "\"A/F*OIl/P*O/" $2 "\": \"avoir beau" $1 "\",";
 		print "\"T*" $2 "\": \"d'" $1 "\",";
 		print "\"A/FIn/T*" $2 "\": \"afin d'" $1 "\",";
 		print "\"A/F*An/T*" $2 "\": \"avant d'" $1 "\",";
@@ -53,6 +55,9 @@ function verbes(){
 
 	    if ($1 ~/^[^aeiouéàâêïîô]/){
 		print "\"" $2 "\": \"" $1 "\",";
+		print "\"POUl/" $2 "\": \"pour " $1 "\",";
+		print "\"A/F*OIl/P*O/" $2 "\": \"avoir beau" $1 "\",";
+
 		print "\"T*/" $2 "\": \"de " $1 "\",";
 		print "\"A/FIn/T*/" $2 "\": \"afin de " $1 "\",";
 		print "\"A/F*An/T*/" $2 "\": \"avant de " $1 "\",";
@@ -317,6 +322,7 @@ function noms(){
 	    # print "\"LE/" $2 "\": \"les " $1 "\",";
 	    # print "\"T*E/" $2 "\": \"des " $1 "\",";
 	    print "\"SE/" $2 "\": \"ces " $1 "\",";
+	    print "\"SE/" $2 "/LA\": \"ces " $1 "-là\",";
 	    print "\"SE/" $2 "/*\": \"ses " $1 "\",";
 	    print "\"ME/" $2 "\": \"mes " $1 "\",";
 	    # print "\"TE/" $2 "\": \"tes " $1 "\",";
@@ -377,10 +383,13 @@ function noms(){
 		# print "\"L/" $2 "\": \"le " $1 "\",";
 		# print "\"KL/" $2 "\": \"que le " $1 "\",";
 		print "\"S/" $2 "\": \"ce " $1 "\",";
+		print "\"S/" $2 "/LA\": \"ce " $1 "-là\",";
 		if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
 	    }
 
-	    if ($1 ~ /^h/){
+
+	    if ($1 ~ /^h/)
+	    {
 		if ( $1 !~ /^hâblerie$/  &&  $1 !~ /^hâbleur$/ &&  $1 !~ /^hâbleuse$/ &&  $1 !~ /^hachage$/ &&  $1 !~ /^hache$/ &&  $1 !~ /^haché$/ &&  $1 !~ /^hachée$/ &&  $1 !~ /^hache-légumes$/ &&  $1 !~ /^hachement$/ &&  $1 !~ /^hache-paille$/ &&  $1 !~ /^hacher$/ &&  $1 !~ /^hachette$/ &&  $1 !~ /^hacheur$/ &&  $1 !~ /^hache-viande$/ &&  $1 !~ /^hachis$/ &&  $1 !~ /^hachisch$/ &&  $1 !~ /^hachoir$/ &&  $1 !~ /^hachure$/ &&  $1 !~ /^hachurer$/ &&  $1 !~ /^hackle$/ &&  $1 !~ /^hadal$/ &&  $1 !~ /^hadale$/ &&  $1 !~ /^hadaux$/ &&  $1 !~ /^haddock$/ &&  $1 !~ /^haflinger$/ &&  $1 !~ /^hafnium$/ &&  $1 !~ /^hagard$/ &&  $1 !~ /^haggis$/ &&  $1 !~ /^haie$/ &&  $1 !~ /^haillon$/ &&  $1 !~ /^haillonneuse$/ &&  $1 !~ /^haillonneux$/ &&  $1 !~ /^haine$/ &&  $1 !~ /^haineuse$/ &&  $1 !~ /^haineusement$/ &&  $1 !~ /^haineux$/ &&  $1 !~ /^haïr$/ &&  $1 !~ /^haire$/ &&  $1 !~ /^haïssable$/ &&  $1 !~ /^Haïtien$/ &&  $1 !~ /^Haïtienne$/ &&  $1 !~ /^halage$/ &&  $1 !~ /^hâlage$/ &&  $1 !~ /^halal$/ &&  $1 !~ /^halbi$/ &&  $1 !~ /^halbran$/ &&  $1 !~ /^halbrené$/ &&  $1 !~ /^halbrenée$/ &&  $1 !~ /^halde$/ &&  $1 !~ /^hâle$/ &&  $1 !~ /^hâlé$/ &&  $1 !~ /^hale-bas$/ &&  $1 !~ /^hale-breu$/ &&  $1 !~ /^hale-croc$/ &&  $1 !~ /^hâlée$/ &&  $1 !~ /^halefis$/ &&  $1 !~ /^hâle-haut$/ &&  $1 !~ /^haler$/ &&  $1 !~ /^hâler$/ &&  $1 !~ /^haletant$/ &&  $1 !~ /^halètement$/ &&  $1 !~ /^haleter$/ &&  $1 !~ /^haleur$/ &&  $1 !~ /^haleuse$/ &&  $1 !~ /^half-track$/ &&  $1 !~ /^hall$/ &&  $1 !~ /^halle$/ &&  $1 !~ /^hallebarde$/ &&  $1 !~ /^hallux$/ &&  $1 !~ /^halo$/ &&  $1 !~ /^halte$/ &&  $1 !~ /^halte-garderie$/ &&  $1 !~ /^hamac$/ &&  $1 !~ /^hamada$/ &&  $1 !~ /^hamburger$/ &&  $1 !~ /^hameau$/ &&  $1 !~ /^hamman$/ &&  $1 !~ /^hampe$/ &&  $1 !~ /^hamster$/ &&  $1 !~ /^hanche$/ &&  $1 !~ /^hanchement$/ &&  $1 !~ /^hancher$/ &&  $1 !~ /^hand-ball$/ &&  $1 !~ /^handballeur$/ &&  $1 !~ /^handballeuse$/ &&  $1 !~ /^handicap$/ &&  $1 !~ /^handicapant$/ &&  $1 !~ /^handicapante$/ &&  $1 !~ /^handicapé$/ &&  $1 !~ /^handicapée$/ &&  $1 !~ /^handicaper$/ &&  $1 !~ /^handicapeur$/ &&  $1 !~ /^handisport$/ &&  $1 !~ /^hangar$/ &&  $1 !~ /^hanneton$/ &&  $1 !~ /^hanon$/ &&  $1 !~ /^hanse$/ &&  $1 !~ /^hanter$/ &&  $1 !~ /^hantise$/ &&  $1 !~ /^happement$/ &&  $1 !~ /^happening$/ &&  $1 !~ /^happer$/ &&  $1 !~ /^happy end$/ &&  $1 !~ /^haque$/ &&  $1 !~ /^haquenée$/ &&  $1 !~ /^haquet$/ &&  $1 !~ /^hara-kiri$/ &&  $1 !~ /^harangue$/ &&  $1 !~ /^haranguer$/ &&  $1 !~ /^harangueur$/ &&  $1 !~ /^harangueuse$/ &&  $1 !~ /^haras$/ &&  $1 !~ /^harassant$/ &&  $1 !~ /^harassante$/ &&  $1 !~ /^harassé$/ &&  $1 !~ /^harassée$/ &&  $1 !~ /^harassement$/ &&  $1 !~ /^harasser$/ &&  $1 !~ /^harcelant$/ &&  $1 !~ /^harcelante$/ &&  $1 !~ /^harcèlement$/ &&  $1 !~ /^harceler$/ &&  $1 !~ /^hard$/ &&  $1 !~ /^hard-bop$/ &&  $1 !~ /^hard-core$/ &&  $1 !~ /^harde$/ &&  $1 !~ /^hardé$/ &&  $1 !~ /^hard-edge$/ &&  $1 !~ /^harder$/ &&  $1 !~ /^hardes$/ &&  $1 !~ /^hard ground$/ &&  $1 !~ /^hardi$/ &&  $1 !~ /^hardie$/ &&  $1 !~ /^hardiesse$/ &&  $1 !~ /^hardiment$/ &&  $1 !~ /^hard-rock$/ &&  $1 !~ /^hard-top$/ &&  $1 !~ /^hardware$/ &&  $1 !~ /^harem$/ &&  $1 !~ /^hareng$/ &&  $1 !~ /^harengade$/ &&  $1 !~ /^harengaison$/ &&  $1 !~ /^harengère$/ &&  $1 !~ /^harenguet$/ &&  $1 !~ /^harengueux$/ &&  $1 !~ /^harenguier$/ &&  $1 !~ /^harenguière$/ &&  $1 !~ /^haret$/ &&  $1 !~ /^harfang$/ &&  $1 !~ /^hargne$/ &&  $1 !~ /^hargneuse$/ &&  $1 !~ /^hargneusement$/ &&  $1 !~ /^hargneux$/ &&  $1 !~ /^haricot$/ &&  $1 !~ /^haridelle$/ &&  $1 !~ /^harissa$/ &&  $1 !~ /^harka$/ &&  $1 !~ /^harki$/ &&  $1 !~ /^harnachement$/ &&  $1 !~ /^harnacher$/ &&  $1 !~ /^harnais$/ &&  $1 !~ /^harnat$/ &&  $1 !~ /^harnois$/ &&  $1 !~ /^haro$/ &&  $1 !~ /^harouelle$/ &&  $1 !~ /^harpail$/ &&  $1 !~ /^harpaye$/ &&  $1 !~ /^harpe$/ &&  $1 !~ /^harpe-cithare$/ &&  $1 !~ /^harpe-luth$/ &&  $1 !~ /^harpette$/ &&  $1 !~ /^harpie$/ &&  $1 !~ /^harpiste$/ &&  $1 !~ /^harpocéras$/ &&  $1 !~ /^harpodon$/ &&  $1 !~ /^harpoise$/ &&  $1 !~ /^harpon$/ &&  $1 !~ /^harponnage$/ &&  $1 !~ /^harponnement$/ &&  $1 !~ /^harponner$/ &&  $1 !~ /^harponneur$/ &&  $1 !~ /^harpye$/ &&  $1 !~ /^harrier$/ &&  $1 !~ /^hart$/ &&  $1 !~ /^hasard$/ &&  $1 !~ /^hasarder$/ &&  $1 !~ /^hasardeuse$/ &&  $1 !~ /^hasardeusement$/ &&  $1 !~ /^hasardeux$/ &&  $1 !~ /^has been$/ &&  $1 !~ /^hasch$/ &&  $1 !~ /^haschich$/ &&  $1 !~ /^haschisch$/ &&  $1 !~ /^hase$/ &&  $1 !~ /^hâte$/ &&  $1 !~ /^hâter$/ &&  $1 !~ /^hatha-yoga$/ &&  $1 !~ /^hâtier$/ &&  $1 !~ /^hâtif$/ &&  $1 !~ /^hâtive$/ &&  $1 !~ /^hattéria$/ &&  $1 !~ /^hauban$/ &&  $1 !~ /^haubanage$/ &&  $1 !~ /^haubaner$/ &&  $1 !~ /^haubert$/ &&  $1 !~ /^hausse$/ &&  $1 !~ /^hausse-col$/ &&  $1 !~ /^haussement$/ &&  $1 !~ /^hausser$/ &&  $1 !~ /^hausse-repère$/ &&  $1 !~ /^haussier$/ &&  $1 !~ /^haussière$/ &&  $1 !~ /^haut$/ &&  $1 !~ /^hautain$/ &&  $1 !~ /^hautaine$/ &&  $1 !~ /^haut-bar$/ &&  $1 !~ /^hautbois$/ &&  $1 !~ /^hautboïste$/ &&  $1 !~ /^haut-commissaire$/ &&  $1 !~ /^haut-commissariat$/ &&  $1 !~ /^haut-de-chausse(s)$/ &&  $1 !~ /^haut-de-côtelettes$/ &&  $1 !~ /^haut-de-côtes$/ &&  $1 !~ /^haut-de-forme$/ &&  $1 !~ /^haute$/ &&  $1 !~ /^haute-contre$/ &&  $1 !~ /^hautement$/ &&  $1 !~ /^haute-tige$/ &&  $1 !~ /^hauteur$/ &&  $1 !~ /^haut-fond$/ &&  $1 !~ /^haut-fourneau$/ &&  $1 !~ /^hautin$/ &&  $1 !~ /^haut-jointé$/ &&  $1 !~ /^haut-jointée$/ &&  $1 !~ /^haut-le-cœur$/ &&  $1 !~ /^haut-le-corps$/ &&  $1 !~ /^haut-le-pied$/ &&  $1 !~ /^haut-parc$/ &&  $1 !~ /^haut-parleur$/ &&  $1 !~ /^haut-relief$/ &&  $1 !~ /^hauturier$/ &&  $1 !~ /^hauturière$/ &&  $1 !~ /^havage$/ &&  $1 !~ /^havane$/ &&  $1 !~ /^hâve$/ &&  $1 !~ /^havée$/ &&  $1 !~ /^haveneau$/ &&  $1 !~ /^havenet$/ &&  $1 !~ /^haver$/ &&  $1 !~ /^haveur$/ &&  $1 !~ /^haveuse$/ &&  $1 !~ /^havre$/ &&  $1 !~ /^havresac$/ &&  $1 !~ /^havrit$/ &&  $1 !~ /^haylage$/ &&  $1 !~ /^hayon$/ &&  $1 !~ /^hé !$/ &&  $1 !~ /^heat-set$/ &&  $1 !~ /^heaume$/ &&  $1 !~ /^hein !$/ &&  $1 !~ /^héler$/ &&  $1 !~ /^hem !$/ &&  $1 !~ /^henné$/ &&  $1 !~ /^hennin$/ &&  $1 !~ /^hennir$/ &&  $1 !~ /^hennissant$/ &&  $1 !~ /^hennissante$/ &&  $1 !~ /^hennissement$/ &&  $1 !~ /^hennuyer$/ &&  $1 !~ /^hep !$/ &&  $1 !~ /^héraut$/ &&  $1 !~ /^hère$/ &&  $1 !~ /^hérissé$/ &&  $1 !~ /^hérissée$/ &&  $1 !~ /^hérissement$/ &&  $1 !~ /^hérisser$/ &&  $1 !~ /^hérisson$/ &&  $1 !~ /^hérissonne$/ &&  $1 !~ /^herniaire$/ &&  $1 !~ /^hernie$/ &&  $1 !~ /^hernié$/ &&  $1 !~ /^herniée$/ &&  $1 !~ /^hernieuse$/ &&  $1 !~ /^hernieux$/ &&  $1 !~ /^héroïne$/ &&  $1 !~ /^héron$/ &&  $1 !~ /^héronneau$/ &&  $1 !~ /^héronnier$/ &&  $1 !~ /^héronnière$/ &&  $1 !~ /^héros$/ &&  $1 !~ /^hersage$/ &&  $1 !~ /^herse$/ &&  $1 !~ /^herser$/ &&  $1 !~ /^hersillon$/ &&  $1 !~ /^hêtraie$/ &&  $1 !~ /^hêtre$/ &&  $1 !~ /^heu !$/ &&  $1 !~ /^heurt$/ &&  $1 !~ /^heurter$/ &&  $1 !~ /^heurtoir$/ &&  $1 !~ /^hibou$/ &&  $1 !~ /^hic$/ &&  $1 !~ /^hickory$/ &&  $1 !~ /^hideur$/ &&  $1 !~ /^hideuse$/ &&  $1 !~ /^hideusement$/ &&  $1 !~ /^hideux$/ &&  $1 !~ /^hidjab$/ &&  $1 !~ /^hiement$/ &&  $1 !~ /^hiérarchie$/ &&  $1 !~ /^hiérarchique$/ &&  $1 !~ /^hiérarchiquement$/ &&  $1 !~ /^hiérarchisation$/ &&  $1 !~ /^hiérarchiser$/ &&  $1 !~ /^hiérarque$/ &&  $1 !~ /^hi-fi$/ &&  $1 !~ /^high bulk$/ &&  $1 !~ /^high-tech$/ &&  $1 !~ /^hilaire$/ &&  $1 !~ /^hile$/ &&  $1 !~ /^hindi$/ &&  $1 !~ /^hip !$/ &&  $1 !~ /^hip-hop$/ &&  $1 !~ /^hippie$/ &&  $1 !~ /^hippy$/ &&  $1 !~ /^hissage$/ &&  $1 !~ /^hit$/ &&  $1 !~ /^hit-parade$/ &&  $1 !~ /^ho !$/ &&  $1 !~ /^hobby$/ &&  $1 !~ /^hobbyste$/ &&  $1 !~ /^hobereau$/ &&  $1 !~ /^hochement$/ &&  $1 !~ /^hochepot$/ &&  $1 !~ /^hochequeue$/ &&  $1 !~ /^hocher$/ &&  $1 !~ /^hochet$/ &&  $1 !~ /^hockey$/ &&  $1 !~ /^hockeyeur$/ &&  $1 !~ /^hockeyeuse$/ &&  $1 !~ /^ho! hisse!$/ &&  $1 !~ /^holà !$/ &&  $1 !~ /^holding$/ &&  $1 !~ /^hold-up$/ &&  $1 !~ /^Hollande$/ &&  $1 !~ /^hollandite$/ &&  $1 !~ /^hollywoodien$/ &&  $1 !~ /^hollywoodienne$/ &&  $1 !~ /^homard$/ &&  $1 !~ /^homarderie$/ &&  $1 !~ /^homardier$/ &&  $1 !~ /^home$/ &&  $1 !~ /^home-trainer$/ &&  $1 !~ /^hongre$/ &&  $1 !~ /^hongrer$/ &&  $1 !~ /^hongreur$/ &&  $1 !~ /^hongreuse$/ &&  $1 !~ /^Hongrie$/ &&  $1 !~ /^hongroierie$/ &&  $1 !~ /^hongroyage$/ &&  $1 !~ /^hongroyer$/ &&  $1 !~ /^hongroyeur$/ &&  $1 !~ /^honning$/ &&  $1 !~ /^honnir$/ &&  $1 !~ /^honoris causa$/ &&  $1 !~ /^honte$/ &&  $1 !~ /^honteuse$/ &&  $1 !~ /^honteusement$/ &&  $1 !~ /^honteux$/ &&  $1 !~ /^hooligan$/ &&  $1 !~ /^hooliganisme$/ &&  $1 !~ /^hop !$/ &&  $1 !~ /^hop-je$/ &&  $1 !~ /^hoquet$/ &&  $1 !~ /^hoqueter$/ &&  $1 !~ /^hoqueton$/ &&  $1 !~ /^horde$/ &&  $1 !~ /^horion$/ &&  $1 !~ /^hormis$/ &&  $1 !~ /^hornblende$/ &&  $1 !~ /^hors$/ &&  $1 !~ /^horsain$/ &&  $1 !~ /^hors-bord$/ &&  $1 !~ /^hors-cote$/ &&  $1 !~ /^hors de$/ &&  $1 !~ /^hors-de-cour$/ &&  $1 !~ /^hors-d'œuvre$/ &&  $1 !~ /^horse-guard$/ &&  $1 !~ /^horse power$/ &&  $1 !~ /^horsin$/ &&  $1 !~ /^hors-jeu$/ &&  $1 !~ /^hors-la-loi$/ &&  $1 !~ /^hors-ligne$/ &&  $1 !~ /^hors-marché$/ &&  $1 !~ /^hors-piste$/ &&  $1 !~ /^hors-pistes$/ &&  $1 !~ /^hors-statut$/ &&  $1 !~ /^horst$/ &&  $1 !~ /^hors-texte$/ &&  $1 !~ /^hot$/ &&  $1 !~ /^hot dog$/ &&  $1 !~ /^hot-flue$/ &&  $1 !~ /^hotinus$/ &&  $1 !~ /^hot money$/ &&  $1 !~ /^hotte$/ &&  $1 !~ /^hottée$/ &&  $1 !~ /^hotu$/ &&  $1 !~ /^hou !$/ &&  $1 !~ /^houache$/ &&  $1 !~ /^houage$/ &&  $1 !~ /^houaiche$/ &&  $1 !~ /^houblon$/ &&  $1 !~ /^houe$/ &&  $1 !~ /^houer$/ &&  $1 !~ /^houille$/ &&  $1 !~ /^houiller$/ &&  $1 !~ /^houillère$/ &&  $1 !~ /^houle$/ &&  $1 !~ /^houlette$/ &&  $1 !~ /^houleuse$/ &&  $1 !~ /^houleux$/ &&  $1 !~ /^houligan$/ &&  $1 !~ /^houliganisme$/ &&  $1 !~ /^houlque$/ &&  $1 !~ /^houp !$/ &&  $1 !~ /^houppe$/ &&  $1 !~ /^houppelande$/ &&  $1 !~ /^houppette$/ &&  $1 !~ /^houppier$/ &&  $1 !~ /^hourd$/ &&  $1 !~ /^hourdage$/ &&  $1 !~ /^hourder$/ &&  $1 !~ /^hourdir$/ &&  $1 !~ /^hourdis$/ &&  $1 !~ /^houri$/ &&  $1 !~ /^hourque$/ &&  $1 !~ /^hourra !$/ &&  $1 !~ /^hourri$/ &&  $1 !~ /^hourrite$/ &&  $1 !~ /^hourvari$/ &&  $1 !~ /^housche$/ &&  $1 !~ /^houseau$/ &&  $1 !~ /^house-boat$/ &&  $1 !~ /^houspiller$/ &&  $1 !~ /^houssage$/ &&  $1 !~ /^housse$/ &&  $1 !~ /^housser$/ &&  $1 !~ /^housset$/ &&  $1 !~ /^houssière$/ &&  $1 !~ /^houst !$/ &&  $1 !~ /^houx$/ &&  $1 !~ /^hovéa$/ &&  $1 !~ /^hoyau$/ &&  $1 !~ /^hoyé$/ &&  $1 !~ /^hoyée$/ &&  $1 !~ /^huard$/ &&  $1 !~ /^huart$/ &&  $1 !~ /^hublot$/ &&  $1 !~ /^huche$/ &&  $1 !~ /^hucher$/ &&  $1 !~ /^huchier$/ &&  $1 !~ /^hue !$/ &&  $1 !~ /^huée$/ &&  $1 !~ /^huer$/ &&  $1 !~ /^huerta$/ &&  $1 !~ /^huguenot$/ &&  $1 !~ /^huipil$/ &&  $1 !~ /^huir$/ &&  $1 !~ /^huis clos$/ &&  $1 !~ /^huit$/ &&  $1 !~ /^huitain$/ &&  $1 !~ /^huitaine$/ &&  $1 !~ /^huitante$/ &&  $1 !~ /^huit-en-huit$/ &&  $1 !~ /^huitième$/ &&  $1 !~ /^huitièmement$/ &&  $1 !~ /^huit-reflets$/ &&  $1 !~ /^hulotte$/ &&  $1 !~ /^hululation$/ &&  $1 !~ /^hululement$/ &&  $1 !~ /^hululer$/ &&  $1 !~ /^humer$/ &&  $1 !~ /^hum ! $/ &&  $1 !~ /^humantin$/ &&  $1 !~ /^hune$/ &&  $1 !~ /^hunier$/ &&  $1 !~ /^hunter$/ &&  $1 !~ /^huppe$/ &&  $1 !~ /^huppé$/ &&  $1 !~ /^huppée$/ &&  $1 !~ /^huque$/ &&  $1 !~ /^hurdler$/ &&  $1 !~ /^hure$/ &&  $1 !~ /^hurlant$/ &&  $1 !~ /^hurlement$/ &&  $1 !~ /^hurler$/ &&  $1 !~ /^hurleur$/ &&  $1 !~ /^hurleuse$/ &&  $1 !~ /^huron$/ &&  $1 !~ /^Huron$/ &&  $1 !~ /^huronne$/ &&  $1 !~ /^hurrah !$/ &&  $1 !~ /^hurricane$/ &&  $1 !~ /^husky$/ &&  $1 !~ /^hussard$/ &&  $1 !~ /^hussarde$/ &&  $1 !~ /^hutinet$/ &&  $1 !~ /^hutte$/ &&  $1 !~ /^hutteau$/ &&  $1 !~ /^hack$/ &&  $1 !~ /^hacker$/ &&  $1 !~ /^haïk$/ &&  $1 !~ /^hadj$/ &&  $1 !~ /^havanaise$/ &&  $1 !~ /^havanais$/ &&  $1 !~ /^high/ &&  $1 !~ /^haï/ && $1 !~ /^haka$/ && $1 !~ /^hakka$/ &&  $1 !~ /^handball$/ &&  $1 !~ /^house/ &&  $1 !~ /^hadith$/)
 
 		{
@@ -388,18 +397,26 @@ function noms(){
 		    print "\"KL" $2 "\": \"que l'" $1 "\",";
 		    print "\"ST" $2 "\": \"cet " $1 "\",";
 		    print "\"ST/" $2 "\": \"cet " $1 "\",";
+		    print "\"ST" $2 "/LA\": \"cet " $1 "-là\",";
+		    print "\"ST/" $2 "/LA\": \"cet " $1 "-là\",";
+
 		}
 		else
 		{
 		print "\"S/" $2 "\": \"ce " $1 "\",";
+		print "\"S/" $2 "/LA\": \"ce " $1 "-là\",";
 		}
 	    }
+
 
 	    if ($1 ~ /^[aeiouéàâêïîô]/){
 		print "\"L" $2 "\": \"l'" $1 "\",";
 		print "\"KL" $2 "\": \"que l'" $1 "\",";
 		print "\"ST" $2 "\": \"cet " $1 "\",";
 		print "\"ST/" $2 "\": \"cet " $1 "\",";
+		print "\"ST" $2 "/LA\": \"cet " $1 "-là\",";
+		print "\"ST/" $2 "/LA\": \"cet " $1 "-là\",";
+
 		# print "\"NO/TR" $2 "\": \"notre " $1 "\",";
 		# print "\"F*O/TR" $2 "\": \"votre " $1 "\",";
 	    }
@@ -410,6 +427,7 @@ function noms(){
 	    print "\"" $2 "\": \"" $1 "\",";
 	    # print "\"UnC/" $2 "\": \"une " $1 "\",";
 	    print "\"ST/" $2 "\": \"cette " $1 "\",";
+	    print "\"ST/" $2 "/LA\": \"cette " $1 "-là\",";
 	    # print "\"NO/TR/" $2 "\": \"notre " $1 "\",";
 	    # print "\"F*O/TR/" $2 "\": \"votre " $1 "\",";
 	    # print "\"LEUl/" $2 "\": \"leur " $1 "\",";
@@ -426,6 +444,7 @@ function noms(){
 	    if ($1  ~ /^[^aeiouéàâêïîôh]/){
 		# print "\"LA/" $2 "\": \"la " $1 "\",";
 		print "\"ST/" $2 "\": \"cette " $1 "\",";
+		print "\"ST/" $2 "/LA\": \"cette " $1 "-là\",";
 		# print "\"MA/" $2 "\": \"ma " $1 "\",";
 		# print "\"TA/" $2 "\": \"ta " $1 "\",";
 		# print "\"SA/" $2 "\": \"sa " $1 "\",";
@@ -442,6 +461,7 @@ function noms(){
 		    print "\"KL" $2 "\": \"que l'" $1 "\",";
 		    # print "\"ST" $2 "\": \"cette " $1 "\",";
 		    print "\"ST/" $2 "\": \"cette " $1 "\",";
+		    print "\"ST/" $2 "/LA\": \"cette " $1 "-là\",";
 		}
 	    }
 
@@ -449,6 +469,7 @@ function noms(){
 	    if ($1 ~ /^[aeiouéàâêïîô]/){
 		print "\"L" $2 "\": \"l'" $1 "\",";
 		print "\"ST" $2 "\": \"cette " $1 "\",";
+		print "\"ST/" $2 "/LA\": \"cette " $1 "-là\",";
 		print "\"KL" $2 "\": \"que l'" $1 "\",";
  		# print "\"SOn/" $2 "\": \"son " $1 "\",";
 		# print "\"MOn/" $2 "\": \"mon " $1 "\",";
@@ -470,7 +491,9 @@ function noms(){
 		# print "\"L/" $2 "\": \"le " $1 "\",";
 		# print "\"KL/" $2 "\": \"que le " $1 "\",";
 		print "\"S/" $2 "\": \"ce " $1 "\",";
+		print "\"S/" $2 "/LA\": \"ce " $1 "-là\",";
 		print "\"ST/" $2 "\": \"cette " $1 "\",";
+		print "\"ST/" $2 "/LA\": \"cette " $1 "-là\",";
 		if ($2 ~ /^[KPMTFNLR]/)				{ssone = gensub(/([KPMTFNLR])/, "S\\1", 1,$2);  print "\"" ssone "\": \"ce " $1 "\",";}
 		if ($2 ~ /^[FNLR]/)				{stsone = gensub(/([KPMTFNLR])/, "ST\\1", 1,$2);  print "\"" stsone "\": \"cette " $1 "\",";}
 	    }
