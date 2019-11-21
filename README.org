@@ -216,8 +216,8 @@ Toutes les consonnes sont représentées à la main gauche.
 Certaines sont immédiatement représentées, comme pour les sons Seu,
 Peu, Teu, Neu, Keu, Meu, Feu, Reu, Leu.
 
-Il faut comprendre que les caractères représentés sur le clavier ne
-désignent pas plus la lettre dans son acception alphabétique que le
+Il faut comprendre que les caractères représentés  sur  le  clavier 
+désignent  moins  la lettre  dans son acception alphabétique que le 
 son qu'elle produit.
 
 Ainsi, le son Keu correspondant à la touche K servira aussi bien pour
